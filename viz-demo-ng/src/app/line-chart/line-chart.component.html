@@ -1,0 +1,55 @@
+
+
+ <!-- Simple line chart example -->
+
+<!-- <main role="main" class="container">
+    <div>
+        <div style="display:block">
+            <canvas baseChart
+                [datasets]="lineChartData"
+                [labels]="lineChartLabels"
+                [options]="lineChartOptions"
+                [legend]="lineChartLegend"
+                [chartType]="lineChartType">
+            </canvas>
+        </div>
+    </div>
+  </main>  -->
+  <!-- End of simple line chart example -->
+
+  <!-- maybe put code in this container -->
+  <main role="main" class="container">
+    
+   
+
+    <!-- <button id="button_three" class="btn btn-light btn-sm btn-block" style="font-size: 15px; margin-bottom: 15px;" (click)="open(content, 'Volume_Graph')" disabled>SNODAS SWE Volume Graph</button> -->
+
+    <ng-template #content let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title"> Basin ID: GMRC2L_F</h4>
+          <button type="button" class="close" style="float: right;" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div *ngIf="isDataAvaliable">
+                <button type="button" class="btn btn-outline-dark" (click)="saveChart()">
+                    <a id="saveChartLink">Save Chart</a>
+                </button>
+                <div style="display: block; max-width: 990px; margin-left: auto; margin-right: auto; background-color: white; padding: 20px;">
+                    <canvas class="chart2" baseChart id="chart"
+                        [datasets]="chartData"
+                        [labels]="chartLabels"
+                        [options]="chartOptions"
+                        [legend]="chartLegend"
+                        [chartType]="chartType"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Close</button>
+        </div>
+        </ng-template>
+        <button id="button_three" style="font-size: 15px; margin-bottom: 15px;" (click)="open(content, 'Volume_Graph')" >SNODAS SWE Volume Graph</button>
+  </main>
+  
