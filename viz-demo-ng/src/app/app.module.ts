@@ -14,6 +14,7 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { LineChartComponent } from './line-chart/line-chart.component';
 import { PlotlyComponent } from './plotly/plotly.component';
 import { GeneralChartjsComponent } from './line-chart/general-chartjs/general-chartjs.component';
+import { GenericContentComponent } from './generic-content/generic-content.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { GeneralChartjsComponent } from './line-chart/general-chartjs/general-ch
     NavBarComponent,
     LineChartComponent,
     PlotlyComponent,
-    GeneralChartjsComponent
+    GeneralChartjsComponent,
+    GenericContentComponent
   ],
   imports: [
     BrowserModule,
