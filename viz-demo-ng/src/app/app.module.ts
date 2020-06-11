@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { ChartsModule } from 'ng2-charts';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 
 
@@ -29,7 +30,9 @@ import { GenericContentComponent } from './generic-content/generic-content.compo
     BrowserModule,
     AppRoutingModule,
     ChartsModule,
-    NgbModule
+    NgbModule,
+    ModalModule.forRoot()
+
   ],
   providers: [],
   bootstrap: [AppComponent]
