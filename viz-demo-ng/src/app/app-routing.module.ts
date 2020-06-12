@@ -12,7 +12,7 @@ const routes: Routes = [
   {path: 'general-chartjs-ex', component: GeneralChartjsComponent},
   {path: 'general-plotly-chart', component: PlotlyComponent},
   {path: 'home', component: GenericContentComponent},
-  {path: 'ng-vizualizations', component: GenericContentComponent}
+  
 
 
 
