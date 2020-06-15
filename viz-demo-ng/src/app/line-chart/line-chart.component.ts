@@ -70,12 +70,14 @@ export class LineChartComponent implements OnInit {
              .then(function (parsedData) {
                  results = parsedData
              });
-     
+            //  console.log("Results: ", results);
          return results
        }
+       
  
        chartData = await waitForParsedData(data);
- 
+       console.log("chartData 78: ", chartData);
+
        _this.chartType = 'line';
        _this.chartLegend = true;
  
@@ -115,10 +117,13 @@ export class LineChartComponent implements OnInit {
                if(row == 0 && col != 0){
                  nameLabelsArray[col-1] = chartData['data'][row][col].substr(chartData['data'][row][col].indexOf("[")+1, 4);
                  lineData[col-1] = new Array();
+                 console.log("line data", lineData);
                }
                // Add each date to the labelsArray
                else if(col == 0){
                  labelsArray[row-1] = new Date (chartData['data'][row][col]);
+                 console.log("labelsArray", labelsArray);
+
                }
                else if(row != 0 && col != 0){
                  if(chartData['data'][row][col] == ""){
@@ -126,7 +131,7 @@ export class LineChartComponent implements OnInit {
                  }
                  else{
                    lineData[col-1][row-1] = Number(chartData['data'][row][col]);
-                   console.log(lineData[3]);
+                  //  console.log(lineData[3]);
  
                  }
                }

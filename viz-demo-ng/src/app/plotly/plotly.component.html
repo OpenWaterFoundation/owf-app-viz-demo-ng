@@ -1,9 +1,51 @@
 
+<!-- <main role="main" class="container">
+
+    <h1> Generic Plotly Example</h1>
+
+    <div id="chart">
+
+    </div>
+</main> -->
+
 <main role="main" class="container">
 
     <h1> Generic Plotly Example</h1>
 
-    <div #chart>
-        <!-- chart will appear here -->
-    </div>
+    <!-- <button type="button" class="btn btn-primary" 
+    (click)="open(content, 'Volume_Graph')">Modal button</button> -->
+    <ng-template #content let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title"> Plotly Chart in Modal</h4>
+          <button type="button" class="close" style="float: right;" aria-label="Close"
+           (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div *ngIf="isDataAvaliable">
+                <div style="display: block; max-width: 990px; margin-left: auto; margin-right: auto; background-color: white; padding: 20px;">
+                    <!-- <div id="chart"> 
+                    </div>  -->
+                    chart to be generated here
+                </div>
+            </div>
+            <!-- <div>
+                <div style="display: block; max-width: 990px; margin-left: auto;
+                 margin-right: auto; background-color: white; padding: 20px;">
+                    Hello world
+                </div>
+            </div> -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark"
+           (click)="modal.close('Save click')">Close</button>
+        </div>
+        </ng-template>
+        <button id="button_three" style="font-size: 15px; margin-bottom: 15px;" (click)="open(content, 'Volume_Graph')" >Plotly Snodas Volume Graph</button>
+
+    <!-- DOM is defined -->
+        <div id="chart">
+        </div>
+    
 </main>
