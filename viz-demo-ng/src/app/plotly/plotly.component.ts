@@ -136,7 +136,7 @@ export class PlotlyComponent implements OnInit {
             _this.chartData.push({
               // fill: false,
               // label: nameLabelsArray[i],
-              data: lineData[i]
+              x: lineData[i]
               // borderColor: '#800080',
               // backgroundColor: '#800080',
               // lineTension: 0,
@@ -248,7 +248,7 @@ export class PlotlyComponent implements OnInit {
       },
 
   ];
-    this.chartData = data;
+    // this.chartData = data;
 
     const style = {
       margin: { t: 0 }
