@@ -4,7 +4,11 @@ import { NgModule } from '@angular/core';
 import { ChartsModule } from 'ng2-charts';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalModule } from 'ngx-bootstrap/modal';
-
+import {MatDialogModule } from '@angular/material/dialog';
+import {MatInputModule} from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button';
+import {MatCardModule} from '@angular/material/card';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 
 
@@ -17,6 +21,7 @@ import { PlotlyComponent } from './plotly/plotly.component';
 import { GeneralChartjsComponent } from './line-chart/general-chartjs/general-chartjs.component';
 import { GenericContentComponent } from './generic-content/generic-content.component';
 import { GeneralPlotlyComponent } from './plotly/general-plotly/general-plotly.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -33,7 +38,13 @@ import { GeneralPlotlyComponent } from './plotly/general-plotly/general-plotly.c
     AppRoutingModule,
     ChartsModule,
     NgbModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatInputModule,
+    MatButtonModule, 
+    MatCardModule,
+    MatFormFieldModule
 
   ],
   providers: [],

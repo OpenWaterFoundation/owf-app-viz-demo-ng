@@ -1,5 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component,Inject, OnInit } from '@angular/core';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+
 declare var Plotly: any;
+export interface DialogData {
+  animal: string;
+  name: string;
+}
 @Component({
   selector: 'app-general-plotly',
   templateUrl: './general-plotly.component.html',
@@ -7,7 +13,29 @@ declare var Plotly: any;
 })
 export class GeneralPlotlyComponent implements OnInit {
 
-  constructor() { }
+  constructor(public dialog: MatDialog) {}
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+      height: '650px',
+      width: '1000px',
+     
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+     
+    });
+  }
+ 
+  
+
+}
+@Component({
+  selector: 'dialog-overview-example-dialog',
+  templateUrl: 'modal-content.html',
+})
+export class DialogOverviewExampleDialog implements OnInit  {
 
   ngOnInit() {
     this.basicChart();
@@ -38,6 +66,15 @@ export class GeneralPlotlyComponent implements OnInit {
     };
 
     Plotly.plot( element, data, style);
+  }
+
+
+  constructor(
+    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 
 }
