@@ -13,6 +13,7 @@ declare var Plotly: any;
 export class PlotlyComponent implements OnInit {
 
   public chartData;
+  public plotChartData;
   public typeOfSnodasChart = '';
   public chartBasinID = 'GMRC2L_F';
   isDataAvaliable:boolean = false;
@@ -80,26 +81,6 @@ export class PlotlyComponent implements OnInit {
       /* switch statement that sets up the data and chart options 
       according to what type of chart is being created */
       switch(TypeOfData){
-        case 'Upstream_Total_Volume_Graph':
-          yAxisLabelString = 'SWE Acre-foot'; // label for yAxis of chart
-          for(let i = 1; i < chartData['data'].length; i++){ //add dashes to the dates
-            let date = chartData['data'][i][0].substring(0,4) + '-' + chartData['data'][i][0].substring(4,6) + '-' + chartData['data'][i][0].substring(6);
-            labelsArray[i-1] = new Date(date);
-            lineData[i-1] = chartData['data'][i][3];
-          }
-          min_time = labelsArray[0]; // minimum date on the xAxis
-          max_time = labelsArray[labelsArray.length - 2]; // maximum date on the xAxis
-          _this.chartData = [ // data object for the chart
-            {
-              fill: false,
-              label: 'Upstream Total Volume',
-              data: lineData,
-              borderColor: '#800080',
-              // backgroundColor: '#800080',
-              lineTension: 0
-            }
-          ]
-          break;
         case 'Volume_Graph':
           console.log("Inside Second case: ");
           yAxisLabelString = 'SWE Acre-foot'; // label for yAxis of chart
@@ -109,12 +90,12 @@ export class PlotlyComponent implements OnInit {
               if(row == 0 && col != 0){
                 nameLabelsArray[col-1] = chartData['data'][row][col].substr(chartData['data'][row][col].indexOf("[")+1, 4);
                 lineData[col-1] = new Array();
-                console.log("line data", lineData);
+                // console.log("line data", lineData);
               }
               // Add each date to the labelsArray
               else if(col == 0){
                 labelsArray[row-1] = new Date (chartData['data'][row][col]);
-                console.log("labelsArray", labelsArray);
+                // console.log("labelsArray", labelsArray);
 
               }
               else if(row != 0 && col != 0){
@@ -129,100 +110,33 @@ export class PlotlyComponent implements OnInit {
               }
             }
           }
+          console.log("LineData Array: ", lineData);
+          console.log("nameLabels Array: ", nameLabelsArray);
+
           min_time = labelsArray[0];
           max_time = labelsArray[labelsArray.length - 1];
           _this.chartData = [];
           for(let i = 0; i < nameLabelsArray.length; i++){
             _this.chartData.push({
-              // fill: false,
-              // label: nameLabelsArray[i],
-              x: lineData[i]
-              // borderColor: '#800080',
-              // backgroundColor: '#800080',
-              // lineTension: 0,
-              // borderWidth: 1.5
+              type: "Scatter",
+              mode: "lines",
+              name: nameLabelsArray[i],
+             
+              y: lineData[i]
+         
             })
           }
+          this.plotChartData = _this.chartData;
+          console.log("ChartData: ", _this.chartData);
           break;
       }
-      /* Dates for the xAxis */
-      // _this.chartLabels = labelsArray;
-
-      // _this.chartOptions = {
-      //   plugins: {
-      //     zoom: {
-      //       pan: {
-      //         enabled: true,
-      //         mode: 'x',
-      //         rangeMin: {
-      //           x: min_time
-      //         },
-      //         rangeMax: {
-      //           x: max_time
-      //         },
-      //         // onPan: function({chart}) {}
-      //       },
-      //       zoom: {
-      //         enabled: true,
-      //         mode: 'x',
-      //         rangeMin: {
-      //           x: min_time
-      //         },
-      //         rangeMax: {
-      //           x: max_time
-      //         },
-      //         speed: .1,
-      //         // onZoom: function({chart}) {},
-      //         // drag: true
-      //       }
-      //     },
-      //   },
-      //   responsive: true,
-      //   scales: {
-      //     xAxes: [{
-      //       type: 'time',
-      //       time: {
-      //         tooltipFormat: "MMM D",
-      //         displayFormats: {
-      //           month: 'MMM',
-      //         }
-      //       },
-      //       distribution: 'linear',
-      //       ticks:{
-      //         min: min_time,
-      //         max: max_time,
-      //         // tooltipFormat: 'MM/DD'
-      //       },
-      //       display: true,
-      //       scaleLabel: {
-      //         display: true,
-      //         labelString: "Date",
-      //       }
-      //   }],
-      //     yAxes: [{
-      //       display: true,
-      //       scaleLabel: {
-      //         display: true,
-      //         labelString: yAxisLabelString
-      //       },
-      //       ticks: {
-      //         userCallback: function(value, index, values) {
-      //           return value.toLocaleString(); // Adds commas to numbers in the yAxis
-      //         }
-      //       }
-      //     }]
-      //   },
-      //   elements: {
-      //     point: {
-      //       // radius: 1
-      //     }
-      //   }
-      // };
-
+      
       _this.isDataAvaliable = true;
     });
 
   }
+
+ 
 
   constructor(private modalService: NgbModal,private papa: Papa) { }
 
@@ -234,27 +148,19 @@ export class PlotlyComponent implements OnInit {
     const element = document.getElementById("chart") as HTMLDivElement;
     console.log("Element: ", element);
 
-    const data = [
-      { x: [1, 2, 3, 4, 5],
-        y: [1, 2, 4, 8, 16],
-        name: "first" 
-
+    var layout = {
+      title: 'SNODAS Volume Graph',
+      xaxis: {
+        range: ['2019-10-01', '2020-09-30'],
+        type: 'date'
       },
-       
-      { x: [2, 2, 6, 4, 5],
-        y: [1, 1, 2, 3, 10],
-        name: "second"
-      
-      },
-
-  ];
-    // this.chartData = data;
-
-    const style = {
-      margin: { t: 0 }
+      yaxis: {
+        autorange: true,
+        type: 'linear'
+      }
     };
 
-    Plotly.plot( element, this.chartData, style);
+    Plotly.plot( element, this.plotChartData, layout);
   }
 
 }
