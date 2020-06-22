@@ -2,16 +2,13 @@ import { Component,Inject, OnInit } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 declare var Plotly: any;
-export interface DialogData {
-  animal: string;
-  name: string;
-}
+
 @Component({
   selector: 'app-general-plotly',
   templateUrl: './general-plotly.component.html',
   styleUrls: ['./general-plotly.component.css']
 })
-export class GeneralPlotlyComponent implements OnInit {
+export class GeneralPlotlyComponent {
 
   constructor(public dialog: MatDialog) {}
 
@@ -45,36 +42,58 @@ export class DialogOverviewExampleDialog implements OnInit  {
     const element = document.getElementById("chart") as HTMLDivElement;
     console.log("Element: ", element);
 
-    const data = [
-      { x: [1, 2, 3, 4, 5],
-        y: [1, 2, 4, 8, 16],
-        name: "first" 
+ 
 
+    Plotly.d3.csv("https://raw.githubusercontent.com/plotly/datasets/master/finance-charts-apple.csv", function(err, rows){
+
+    function unpack(rows, key) {
+    return rows.map(function(row) { return row[key]; });
+    }
+
+
+    var trace1 = {
+      type: "scatter",
+      mode: "lines",
+      x: unpack(rows, 'Date'),
+      y: unpack(rows, 'AAPL.High'),
+      line: {color: '#17BECF'}
+    }
+
+    var trace2 = {
+      type: "scatter",
+      mode: "lines",
+      x: unpack(rows, 'Date'),
+      y: unpack(rows, 'AAPL.Low'),
+      line: {color: '#7F7F7F'}
+    }
+
+    var data = [trace1,trace2];
+
+    var layout = {
+      title: 'Custom Range',
+      xaxis: {
+        range: ['2016-07-01', '2016-12-31'],
+        type: 'date'
       },
-       
-      { x: [2, 2, 6, 4, 5],
-        y: [1, 1, 2, 3, 10],
-        name: "second"
-      
-      },
-
-  ];
-    // this.chartData = data;
-
-    const style = {
-      margin: { t: 0 }
+      yaxis: {
+        autorange: true,
+        range: [86.8700008333, 138.870004167],
+        type: 'linear'
+      }
     };
 
-    Plotly.plot( element, data, style);
+    Plotly.plot( element, data, layout);
+    })
+
+
+        
   }
 
 
   constructor(
-    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>
+   ) {}
 
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
+ 
 
 }
