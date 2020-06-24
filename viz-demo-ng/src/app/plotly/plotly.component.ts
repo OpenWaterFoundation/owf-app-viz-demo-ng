@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, TemplateRef  } from '@angular
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { Papa } from 'ngx-papaparse';
 import * as $ from "jquery";
+import { NativeDateAdapter } from '@angular/material/core';
 
 declare var Plotly: any;
 
@@ -96,21 +97,22 @@ export class PlotlyComponent implements OnInit {
               // Add each date to the labelsArray
               else if(col == 0){
                 labelsArray[row-1] = new Date (chartData['data'][row][col]);
+                let ogdate = chartData['data'][row][col];
                 // formating date for plotly chart
                 let pos1 =  chartData['data'][row][col].indexOf("/");
                 let month = chartData['data'][row][col].substr(chartData['data'][row][col], chartData['data'][row][col].indexOf("/"));
                 let year = chartData['data'][row][col].substr(chartData['data'][row][col].indexOf("/",pos1 +1)+1, chartData['data'][row][col].length);
-                let almostday = chartData['data'][row][col].substr(pos1+1, chartData['data'][row][col].indexOf("/",pos1));
-                
-                let day = almostday;
-                if (almostday.indexOf("/")> -1){
-                  day = almostday.length-1;
+                let day = chartData['data'][row][col].substr(chartData['data'][row][col].indexOf("/") +1, chartData['data'][row][col].indexOf("/",pos1 +1));
+
+                if (day.indexOf("/20") > -1){
+                  day = day.replace("/20", '');
                 }
-                
-                let newdate =  year + "-" + month + "-" + day;
-             
-                datesArray.push(newdate);
-                // console.log("labelsArray", labelsArray);
+                if (day.indexOf("/2") > -1){
+                  day = day.replace("/2", '');
+                }
+                let plotlyDate =  year + "-" + month + "-" + day;
+                datesArray.push(plotlyDate);
+               
 
               }
               else if(row != 0 && col != 0){
@@ -136,16 +138,6 @@ export class PlotlyComponent implements OnInit {
               type: "Scatter",
               mode: "lines+markers",
               name: nameLabelsArray[i],
-              // x: ['2019-10-1','2019-10-2','2019-10-3','2019-10-4','2019-10-5','2019-10-6','2019-10-7','2019-10-8','2019-10-9','2019-10-10','2019-10-11','2019-10-12','2019-10-13','2019-10-14','2019-10-15','2019-10-16','2019-10-17','2019-10-18','2019-10-19',
-              // '2019-10-20','2019-10-21','2019-10-22','2019-10-23','2019-10-24','2019-10-25','2019-10-26','2019-10-27','2019-10-28','2019-10-29','2019-10-30','2019-10-31',
-              // '2019-11-1','2019-11-2','2019-11-3','2019-11-4','2019-11-5','2019-11-6','2019-11-7','2019-11-8','2019-11-9','2019-11-10','2019-11-11','2019-11-12','2019-11-13','2019-11-14','2019-11-15','2019-11-16','2019-11-17','2019-11-18','2019-11-19',
-              // '2019-11-20','2019-11-21','2019-11-22','2019-11-23','2019-11-24','2019-11-25','2019-11-26','2019-11-27','2019-11-28','2019-11-29','2019-11-30','2019-11-31',
-              // '2019-12-1','2019-12-2','2019-12-3','2019-12-4','2019-12-5','2019-12-6','2019-12-7','2019-12-8','2019-12-9','2019-12-10','2019-12-11','2019-12-12','2019-12-13','2019-12-14','2019-12-15','2019-12-16','2019-12-17','2019-12-18','2019-12-19',
-              // '2019-12-20','2019-12-21','2019-12-22','2019-12-23','2019-12-24','2019-12-25','2019-12-26','2019-12-27','2019-12-28','2019-12-29','2019-12-30','2019-12-31',
-              // '2020-1-1','2020-1-2','2020-1-3','2020-1-4','2020-1-5','2020-1-6','2020-1-7','2020-1-8','2020-11-9','2020-1-10','2020-1-11','2020-1-12','2020-1-13','2020-1-14','2020-1-15','2020-1-16','2020-1-17','2020-1-18','2020-1-19',
-              // '2020-1-20','2020-1-21','2020-1-22','2020-1-23','2020-1-24','2020-1-25','2020-1-26','2020-1-27','2020-1-28','2020-1-29','2020-1-30','2020-1-31',
-              // '2019-12-1','2019-12-2','2019-12-3','2019-12-4','2019-12-5','2019-12-6','2019-12-7','2019-12-8','2019-12-9','2019-12-10','2019-12-11','2019-12-12','2019-12-13','2019-12-14','2019-12-15','2019-12-16','2019-12-17','2019-12-18','2019-12-19',
-              // '2019-12-20','2019-12-21','2019-12-22','2019-12-23','2019-12-24','2019-12-25','2019-12-26','2019-12-27','2019-12-28','2019-12-29','2019-12-30','2019-12-31'],
               x: datesArray,
               y: lineData[i]
          
@@ -163,8 +155,10 @@ export class PlotlyComponent implements OnInit {
               type: 'date'
             },
             yaxis: {
+              text: 'Y axis',
               autorange: true,
               type: 'linear'
+            
             }
           };
           
