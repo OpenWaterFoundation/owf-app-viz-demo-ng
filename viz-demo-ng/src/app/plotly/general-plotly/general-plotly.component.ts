@@ -1,5 +1,7 @@
 import { Component,Inject, OnInit } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { EventEmitterService } from '../../event-emitter.service';    
+
 
 declare var Plotly: any;
 
@@ -8,11 +10,24 @@ declare var Plotly: any;
   templateUrl: './general-plotly.component.html',
   styleUrls: ['./general-plotly.component.css']
 })
-export class GeneralPlotlyComponent {
+export class GeneralPlotlyComponent implements OnInit {
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, private eventEmitterService: EventEmitterService ) {}
+  // Step 3: Subscrived the "invoceFirstComponentFunction" event emitter serves and called firstFunction method
+  ngOnInit() { 
+    console.log("Inside ngOnInit:")   
+    if (this.eventEmitterService.subsVar==undefined) {  
+      console.log("Inside if statement: ")  
+      this.eventEmitterService.subsVar = this.eventEmitterService.    
+      invokeFirstComponentFunction.subscribe((name:string) => {    
+        this.openDialog();    
+      });    
+    }    
+  }    
+    
 
   openDialog(): void {
+    console.log("Entered openDialog Function")
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
       height: '650px',
       width: '1000px',

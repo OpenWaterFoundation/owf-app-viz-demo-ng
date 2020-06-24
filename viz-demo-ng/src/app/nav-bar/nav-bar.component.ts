@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GeneralPlotlyComponent } from '../plotly/general-plotly/general-plotly.component';
+import { EventEmitterService } from '../event-emitter.service';    
 
 
 @Component({
@@ -14,9 +14,13 @@ export class NavBarComponent implements OnInit {
   // navbarOpen(): void{
   //   this.gplotly.openDialog();
   // }
-  constructor() { }
+  constructor( private eventEmitterService: EventEmitterService ) { }
 
- 
+  //Step 1: first (plotly) component function call
+  firstComponentFunction(){  
+    console.log('Inside firstComponentFunction call: ')  
+    this.eventEmitterService.onFirstComponentButtonClick();    
+  }
 
   ngOnInit(): void {
   }

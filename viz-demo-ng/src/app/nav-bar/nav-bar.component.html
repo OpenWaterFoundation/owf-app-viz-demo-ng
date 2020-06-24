@@ -27,15 +27,17 @@
         <li ngbDropdown class="nav-item dropdown">
             <a ngbDropdownToggle class="nav-link dropdown-toggle"  id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Plotly</a>
             <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown01">
-              <a class="dropdown-item" routerLink = "general-plotly-chart" routerLinkActive="active"> General Plotly Chart</a>
+              <a class="dropdown-item" (click)="firstComponentFunction()"> General Plotly Chart</a>
               <a class="dropdown-item" routerLink = "snodas-plotly-chart" routerLinkActive="active">SNODAS Line Chart Example</a>
               <a class="dropdown-item" href="#">HeatMap Example</a>
             </div>
           </li>
       </ul>
+
       <!-- <form class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
       </form> -->
     </div>
   </nav>
+

@@ -22,6 +22,7 @@ import { GeneralChartjsComponent } from './line-chart/general-chartjs/general-ch
 import { GenericContentComponent } from './generic-content/generic-content.component';
 import { GeneralPlotlyComponent } from './plotly/general-plotly/general-plotly.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { EventEmitterService } from './event-emitter.service';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatFormFieldModule
 
   ],
-  providers: [],
+  providers: [EventEmitterService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
