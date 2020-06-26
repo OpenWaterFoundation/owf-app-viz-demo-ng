@@ -23,6 +23,7 @@ import { GenericContentComponent } from './generic-content/generic-content.compo
 import { GeneralPlotlyComponent } from './plotly/general-plotly/general-plotly.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EventEmitterService } from './event-emitter.service';
+import { HeatmapComponent } from './plotly/heatmap/heatmap.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { EventEmitterService } from './event-emitter.service';
     PlotlyComponent,
     GeneralChartjsComponent,
     GenericContentComponent,
-    GeneralPlotlyComponent
+    GeneralPlotlyComponent,
+    HeatmapComponent
   ],
   imports: [
     BrowserModule,
