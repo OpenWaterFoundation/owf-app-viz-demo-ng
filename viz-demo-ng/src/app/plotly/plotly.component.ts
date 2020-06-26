@@ -1,17 +1,46 @@
-import { Component, OnInit, ViewChild, ElementRef, TemplateRef  } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, TemplateRef, inject, Inject } from '@angular/core';
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { Papa } from 'ngx-papaparse';
 import * as $ from "jquery";
 import { NativeDateAdapter } from '@angular/material/core';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig} from '@angular/material/dialog';
+
 
 declare var Plotly: any;
-
+var TypeofData;
 @Component({
   selector: 'app-plotly',
   templateUrl: './plotly.component.html',
   styleUrls: ['./plotly.component.css']
 })
-export class PlotlyComponent implements OnInit {
+export class PlotlyComponent {
+  constructor(public dialog: MatDialog ) {}
+
+  openDialog(DataSpecification): void {
+    TypeofData = DataSpecification;
+    
+    console.log("Entered openDialog Function")
+    const dialogRef = this.dialog.open(SnodasPlotlyDialog, {
+      height: '650px',
+      width: '1000px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+     
+    });
+  }
+}
+
+
+@Component({
+  selector: 'snodas-plotly-dialog',
+  templateUrl: 'snodas-plotly-modal-content.html'
+})
+
+export class SnodasPlotlyDialog implements OnInit{
+
+  // console.log('Inside SnodasPlotlyDialog component');
 
   public chartData;
   public plotChartData;
@@ -19,11 +48,19 @@ export class PlotlyComponent implements OnInit {
   public chartBasinID = 'GMRC2L_F';
   isDataAvaliable:boolean = false;
 
+  public typeOfChart = TypeofData;
+  
 
+  ngOnInit() {
+    console.log(this.typeOfChart);
 
-  public open(content, TypeOfData){
+    this.plotlychart(this.typeOfChart);
+  }
+
+  public plotlychart(TypeOfData){
+    console.log('Inside SnodasPlotlyDialog component');
     let _this = this;
-    _this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'xl'});
+    // _this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'xl'});
     let file;
     /* switch statement to determine where to get the data from 
     depending on the type of chart */
@@ -47,7 +84,7 @@ export class PlotlyComponent implements OnInit {
     var chartData;
     $.get(file, async function(data) {
       /* waitForParsedData waits for papaparse to parse the csv file */
-      console.log("Inside Get function");
+      // console.log("Inside Get function");
       const waitForParsedData = async (file) => {
         let parsePromise = function (file) {
             return new Promise(function (complete, error) {
@@ -69,7 +106,7 @@ export class PlotlyComponent implements OnInit {
       
 
       chartData = await waitForParsedData(data);
-      console.log("chartData 78: ", chartData);
+      // console.log("chartData 78: ", chartData);
 
       // _this.chartType = 'line';
       // _this.chartLegend = true;
@@ -165,6 +202,7 @@ export class PlotlyComponent implements OnInit {
           console.log("Right befor plotting plotChartData: ", this.plotChartData );
 
           Plotly.plot( element, this.plotChartData, layout);
+          console.log("Chart is ploted")
           break;
           
       }
@@ -174,31 +212,11 @@ export class PlotlyComponent implements OnInit {
 
   }
 
+  constructor(private modalService: NgbModal,private papa: Papa,
+    public dialogRef: MatDialogRef<SnodasPlotlyDialog>) { }
+
  
 
-  constructor(private modalService: NgbModal,private papa: Papa) { }
-
-  ngOnInit() {
-    // this.basicChart();
-  }
-
-  // basicChart(){
-  //   const element = document.getElementById("chart") as HTMLDivElement;
-  //   console.log("Element: ", element);
-
-  //   var layout = {
-  //     title: 'SNODAS Volume Graph',
-  //     xaxis: {
-  //       range: ['2019-10-01', '2020-09-30'],
-  //       type: 'date'
-  //     },
-  //     yaxis: {
-  //       autorange: true,
-  //       type: 'linear'
-  //     }
-  //   };
-  //     // console.log("Right befor plotting plotChartData: ", this.plotChartData );
-  //   // Plotly.plot( element, this.plotChartData, layout);
-  // }
-
 }
+
+
