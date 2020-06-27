@@ -1,9 +1,15 @@
 import { Component,Inject, OnInit } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { EventEmitterService } from '../../event-emitter.service';    
+import { ActivatedRoute, Router } from '@angular/router';
+import * as $ from "jquery";
+
 
 
 declare var Plotly: any;
+declare var require: any;
+const showdown = require('showdown');
+
 
 @Component({
   selector: 'app-general-plotly',
@@ -12,19 +18,29 @@ declare var Plotly: any;
 })
 export class GeneralPlotlyComponent implements OnInit {
 
-  constructor(public dialog: MatDialog, private eventEmitterService: EventEmitterService ) {}
+  constructor(public dialog: MatDialog, private eventEmitterService: EventEmitterService, private router: Router ) {}
   // Step 3: Subscrived the "invoceFirstComponentFunction" event emitter serves and called firstFunction method
   ngOnInit() { 
+    this.convertMarkdownToHTML('assets/README.md', "markdown-div");
     console.log("Inside ngOnInit:")   
     if (this.eventEmitterService.subsVar==undefined) {  
-      console.log("Inside if statement: ")  
       this.eventEmitterService.subsVar = this.eventEmitterService.    
       invokeFirstComponentFunction.subscribe((name:string) => {    
         this.openDialog();    
       });    
     }    
   }    
-    
+  
+  convertMarkdownToHTML(inputFile, outputDiv) {
+    console.log("Input file :", inputFile);
+    $.get(inputFile, (textString) => {
+        var converter = new showdown.Converter({tables: true, strikethrough: true});
+        document.getElementById(outputDiv).innerHTML = converter.makeHtml(textString);
+    }).fail(()=> {
+      console.error("The markdown file '" + inputFile + "' could not be read");
+      this.router.navigateByUrl('not-found');
+    })
+  }
 
   openDialog(): void {
     console.log("Entered openDialog Function")

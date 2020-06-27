@@ -25,12 +25,13 @@
           </div>
         </li>
         <li ngbDropdown class="nav-item dropdown">
-            <a ngbDropdownToggle class="nav-link dropdown-toggle"  id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Plotly</a>
+            <a ngbDropdownToggle class="nav-link dropdown-toggle"  id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+            routerLink = "general-plotly-chart" routerLinkActive="active">Plotly</a>
             <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown01">
-              <a class="dropdown-item" (click)="firstComponentFunction()">  Chart Ex: Popup</a>
-              <a class="dropdown-item"routerLink = "general-plotly-chart" routerLinkActive="active"> 2D Line Chart- Monthly Time Series Data</a>
-              <a class="dropdown-item" routerLink = "snodas-plotly-chart" routerLinkActive="active">SNODAS Line Chart Example</a>
-              <a class="dropdown-item"routerLink = "plotly-heatmap" routerLinkActive="active">HeatMap Example</a>
+              <a class="dropdown-item" (click)="firstComponentFunction()">  Chart Ex: Popup from navigation</a>
+              <a class="dropdown-item"routerLink = "general-plotly-chart" routerLinkActive="active"> 2D Line Chart-Monthly Time Series Data</a>
+              <a class="dropdown-item" routerLink = "snodas-plotly-chart" routerLinkActive="active"> SNODAS Line Chart-Daily Time Series Data</a>
+              <a class="dropdown-item"routerLink = "plotly-heatmap" routerLinkActive="active">Basic HeatMap Example</a>
             </div>
           </li>
       </ul>
