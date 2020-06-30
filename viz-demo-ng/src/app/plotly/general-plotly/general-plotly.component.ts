@@ -5,7 +5,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as $ from "jquery";
 
 
-
 declare var Plotly: any;
 declare var require: any;
 const showdown = require('showdown');
@@ -22,7 +21,7 @@ export class GeneralPlotlyComponent implements OnInit {
   // Step 3: Subscrived the "invoceFirstComponentFunction" event emitter serves and called firstFunction method
   ngOnInit() { 
     this.convertMarkdownToHTML('assets/README.md', "markdown-div");
-    console.log("Inside ngOnInit:")   
+    console.log("General Plotly Component Created");
     if (this.eventEmitterService.subsVar==undefined) {  
       this.eventEmitterService.subsVar = this.eventEmitterService.    
       invokeFirstComponentFunction.subscribe((name:string) => {    
@@ -56,7 +55,6 @@ export class GeneralPlotlyComponent implements OnInit {
     });
   }
  
-  
 
 }
 @Component({

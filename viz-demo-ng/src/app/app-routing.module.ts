@@ -6,8 +6,7 @@ import { GeneralChartjsComponent } from './line-chart/general-chartjs/general-ch
 import { GenericContentComponent } from './generic-content/generic-content.component';
 import { GeneralPlotlyComponent } from './plotly/general-plotly/general-plotly.component';
 import { HeatmapComponent } from './plotly/heatmap/heatmap.component';
-
-import { combineLatest } from 'rxjs';
+import { TstoolGraphConfigComponent } from './tstool-graph-config/tstool-graph-config.component';
 
 
 
@@ -18,7 +17,8 @@ const routes: Routes = [
   {path: 'general-plotly-chart', component: GeneralPlotlyComponent},
   {path: 'snodas-plotly-chart', component: PlotlyComponent},
   {path: 'plotly-heatmap', component: HeatmapComponent},
-  {path: 'home', component: GenericContentComponent}
+  {path: 'home', component: GenericContentComponent},
+  {path: 'tstool-graph-config', component: TstoolGraphConfigComponent}
   
 
 

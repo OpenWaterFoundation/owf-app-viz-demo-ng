@@ -98,6 +98,8 @@ export class LineChartComponent implements OnInit {
            }
            min_time = labelsArray[0]; // minimum date on the xAxis
            max_time = labelsArray[labelsArray.length - 2]; // maximum date on the xAxis
+           console.log('MinTime: ', min_time);
+           console.log('MaxTIme: ', max_time);
            _this.chartData = [ // data object for the chart
              {
                fill: false,

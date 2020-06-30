@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 import { ChartsModule } from 'ng2-charts';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -24,6 +25,7 @@ import { GeneralPlotlyComponent } from './plotly/general-plotly/general-plotly.c
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EventEmitterService } from './event-emitter.service';
 import { HeatmapComponent } from './plotly/heatmap/heatmap.component';
+import { TstoolGraphConfigComponent } from './tstool-graph-config/tstool-graph-config.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,8 @@ import { HeatmapComponent } from './plotly/heatmap/heatmap.component';
     GeneralChartjsComponent,
     GenericContentComponent,
     GeneralPlotlyComponent,
-    HeatmapComponent
+    HeatmapComponent,
+    TstoolGraphConfigComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +50,8 @@ import { HeatmapComponent } from './plotly/heatmap/heatmap.component';
     MatInputModule,
     MatButtonModule, 
     MatCardModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    HttpClientModule
 
   ],
   providers: [EventEmitterService],
