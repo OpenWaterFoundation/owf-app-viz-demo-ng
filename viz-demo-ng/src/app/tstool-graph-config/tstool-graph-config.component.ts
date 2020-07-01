@@ -7,10 +7,15 @@ import { DateTime } from '../../assets/TsToolGraphConfigFiles/DateTime';
 import { TimeInterval } from '../../assets/TsToolGraphConfigFiles/TimeInterval';
 import { StringUtil } from '../../assets/TsToolGraphConfigFiles/StringUtil';
 import { TimeUtil } from '../../assets/TsToolGraphConfigFiles/TimeUtil';
-import * as Chart from 'chart.js';
+// import * as Chart from 'chart.js';
+import { Chart } from 'chart.js';
 import { forkJoin, Observable, of} from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
+var TSID_Location;
+var graphFilePath;
+var featureProperties: any;
+var globalGraphtemplateObject: object;
 
 @Component({
   selector: 'app-tstool-graph-config',
@@ -24,81 +29,83 @@ export class TstoolGraphConfigComponent implements OnInit {
   constructor(public dialog: MatDialog, public http: HttpClient, public router: Router) { }
 
   ngOnInit(): void {
-    this.getJSONData('assets/TsToolGraphConfigFiles/diversion-graph-template.json').subscribe((graphTemplateObject: Object) => {
+    this.graphTsToolConfig();
+    // this.getJSONData('assets/TsToolGraphConfigFiles/diversion-graph-template.json').subscribe((graphTemplateObject: Object) => {
 
-      var TSID_Location;
-      var graphFilePath;
-      var featureProperties: any;
-      featureProperties = 
-      {
-        abbrev: "LACDITCO",
-        county: "LARIMER",
-        dataSource: "Cooperative SDR Program of CDWR & NCWCD",
-        dataSourceAbbrev: "NWSDR",
-        division: 1,
-        flagA: "",
-        flagB: "U",
-        gnisId: "00205018",
-        latitude: 40.656563,
-        longitude: -105.185363,
-        measDateTime: "2020-06-02T13:00:00.0000000-06:00",
-        measValue: 348.21,
-        moreInformation: "https://dwr.state.co.us/Tools/Stations/LACDITCO",
-        parameter: "DISCHRG",
-        stage: null,
-        stationName: "LARIMER COUNTY DITCH",
-        stationPorEnd: "2020-06-02T00:00:00.0000000-06:00",
-        stationPorStart: "2015-11-06T00:00:00.0000000-07:00",
-        stationStatus: "Active",
-        stationType: "Diversion Structure",
-        streamMile: 53.32,
-        structureType: "Ditch",
-        thirdParty: "False",
-        units: "CFS",
-        usgsStationId: "",
-        waterDistrict: 3,
-        waterSource: "CACHE LA POUDRE RIVER",
-        wdid: "0300911"
-      }
+    //   var TSID_Location;
+    //   var graphFilePath;
+    //   var featureProperties: any;
+    //   featureProperties = 
+    //   {
+    //     abbrev: "LACDITCO",
+    //     county: "LARIMER",
+    //     dataSource: "Cooperative SDR Program of CDWR & NCWCD",
+    //     dataSourceAbbrev: "NWSDR",
+    //     division: 1,
+    //     flagA: "",
+    //     flagB: "U",
+    //     gnisId: "00205018",
+    //     latitude: 40.656563,
+    //     longitude: -105.185363,
+    //     measDateTime: "2020-06-02T13:00:00.0000000-06:00",
+    //     measValue: 348.21,
+    //     moreInformation: "https://dwr.state.co.us/Tools/Stations/LACDITCO",
+    //     parameter: "DISCHRG",
+    //     stage: null,
+    //     stationName: "LARIMER COUNTY DITCH",
+    //     stationPorEnd: "2020-06-02T00:00:00.0000000-06:00",
+    //     stationPorStart: "2015-11-06T00:00:00.0000000-07:00",
+    //     stationStatus: "Active",
+    //     stationType: "Diversion Structure",
+    //     streamMile: 53.32,
+    //     structureType: "Ditch",
+    //     thirdParty: "False",
+    //     units: "CFS",
+    //     usgsStationId: "",
+    //     waterDistrict: 3,
+    //     waterSource: "CACHE LA POUDRE RIVER",
+    //     wdid: "0300911"
+    //   }
   
-      graphTemplateObject = this.replaceProperties(graphTemplateObject, featureProperties);
-      var dialog = this.dialog;
+    //   graphTemplateObject = this.replaceProperties(graphTemplateObject, featureProperties);
+    //   var dialog = this.dialog;
                                                               
-      if (graphTemplateObject['product']['subProducts'][0]['data'][0]['properties'].TSID) {
-        let TSID: string = graphTemplateObject['product']['subProducts'][0]['data'][0]['properties'].TSID;
-        // Split on the ~ and set the actual file path we want to use so our dialog-content component
-        // can determine what kind of file was given.
-        TSID_Location = TSID.split('~')[0];
-        // If the TSID has one tilde (~), set the path using the correct index compared to if the 
-        // TSID contains two tildes.
-        if (TSID.split('~').length === 2) {
-          graphFilePath = TSID.split("~")[1];
-        } else if (TSID.split('~').length === 3) {
-          graphFilePath = TSID.split("~")[2];
-        }
-      } else console.error('The TSID has not been set in the graph template file');
+    //   if (graphTemplateObject['product']['subProducts'][0]['data'][0]['properties'].TSID) {
+    //     let TSID: string = graphTemplateObject['product']['subProducts'][0]['data'][0]['properties'].TSID;
+    //     // Split on the ~ and set the actual file path we want to use so our dialog-content component
+    //     // can determine what kind of file was given.
+    //     TSID_Location = TSID.split('~')[0];
+    //     // If the TSID has one tilde (~), set the path using the correct index compared to if the 
+    //     // TSID contains two tildes.
+    //     if (TSID.split('~').length === 2) {
+    //       graphFilePath = TSID.split("~")[1];
+    //     } else if (TSID.split('~').length === 3) {
+    //       graphFilePath = TSID.split("~")[2];
+    //     }
+    //   } else console.error('The TSID has not been set in the graph template file');
     
-
-    showGraph(dialog, graphTemplateObject, graphFilePath, TSID_Location);
+    //   console.log("ShowGraph call");
+    // showGraph(dialog, graphTemplateObject, graphFilePath, TSID_Location);
     
-    /**
-      * Creates the Dialog object to show the graph in and passes the info needed for it.
-      * @param dialog The dialog object needed to create the Dialog popup
-      * @param graphTemplateObject The template config object of the current graph being shown
-      * @param graphFilePath The file path to the current graph that needs to be read
-      */
-      function showGraph(dialog: any, graphTemplateObject: any, graphFilePath: string, TSID_Location: string): void {
-        // Create and use a MatDialogConfig object to pass the data we need for the graph that will be shown
-        const dialogConfig = new MatDialogConfig();
-        dialogConfig.data = {
-          graphTemplate: graphTemplateObject,
-          graphFilePath: graphFilePath,
-          TSID_Location: TSID_Location
-        }
-      const dialogRef = dialog.open(DialogContent, dialogConfig);
-        
-      }
-      });
+    // /**
+    //   * Creates the Dialog object to show the graph in and passes the info needed for it.
+    //   * @param dialog The dialog object needed to create the Dialog popup
+    //   * @param graphTemplateObject The template config object of the current graph being shown
+    //   * @param graphFilePath The file path to the current graph that needs to be read
+    //   */
+    //   function showGraph(dialog: any, graphTemplateObject: any, graphFilePath: string, TSID_Location: string): void {
+    //    console.log("Inside showGraph function:")
+    //     // Create and use a MatDialogConfig object to pass the data we need for the graph that will be shown
+    //     const dialogConfig = new MatDialogConfig();
+    //     dialogConfig.data = {
+    //       graphTemplate: graphTemplateObject,
+    //       graphFilePath: graphFilePath,
+    //       TSID_Location: TSID_Location
+    //     }
+    //   const dialogRef = dialog.open(DialogContent, dialogConfig);
+    //     console.log("Open Dialog call");
+    //   }
+    //   });
   }
 
   /**
@@ -126,7 +133,7 @@ export class TstoolGraphConfigComponent implements OnInit {
              * @param featureProperties 
              */
   obtainPropertiesFromLine(key: any, value: string, featureProperties: Object): string {
-
+    console.log( "Inside ObtainPropertiesFromLine function");
       var propertyString = '';
       var valueLength = 0;
       var formattedValue = '';
@@ -199,6 +206,109 @@ export class TstoolGraphConfigComponent implements OnInit {
     catchError(this.handleError<any>(path))
   );
 }
+
+  graphTsToolConfig(){
+      this.getJSONData('assets/TsToolGraphConfigFiles/diversion-graph-template.json').subscribe((graphTemplateObject: Object) => {
+
+      // var TSID_Location;
+      // var graphFilePath;
+      // var featureProperties: any;
+      featureProperties = 
+      {
+        abbrev: "LACDITCO",
+        county: "LARIMER",
+        dataSource: "Cooperative SDR Program of CDWR & NCWCD",
+        dataSourceAbbrev: "NWSDR",
+        division: 1,
+        flagA: "",
+        flagB: "U",
+        gnisId: "00205018",
+        latitude: 40.656563,
+        longitude: -105.185363,
+        measDateTime: "2020-06-02T13:00:00.0000000-06:00",
+        measValue: 348.21,
+        moreInformation: "https://dwr.state.co.us/Tools/Stations/LACDITCO",
+        parameter: "DISCHRG",
+        stage: null,
+        stationName: "LARIMER COUNTY DITCH",
+        stationPorEnd: "2020-06-02T00:00:00.0000000-06:00",
+        stationPorStart: "2015-11-06T00:00:00.0000000-07:00",
+        stationStatus: "Active",
+        stationType: "Diversion Structure",
+        streamMile: 53.32,
+        structureType: "Ditch",
+        thirdParty: "False",
+        units: "CFS",
+        usgsStationId: "",
+        waterDistrict: 3,
+        waterSource: "CACHE LA POUDRE RIVER",
+        wdid: "0300911"
+      }
+  
+      graphTemplateObject = this.replaceProperties(graphTemplateObject, featureProperties);
+      var dialog = this.dialog;
+                                                              
+      if (graphTemplateObject['product']['subProducts'][0]['data'][0]['properties'].TSID) {
+        let TSID: string = graphTemplateObject['product']['subProducts'][0]['data'][0]['properties'].TSID;
+        // Split on the ~ and set the actual file path we want to use so our dialog-content component
+        // can determine what kind of file was given.
+        TSID_Location = TSID.split('~')[0];
+        // If the TSID has one tilde (~), set the path using the correct index compared to if the 
+        // TSID contains two tildes.
+        if (TSID.split('~').length === 2) {
+          graphFilePath = TSID.split("~")[1];
+        } else if (TSID.split('~').length === 3) {
+          graphFilePath = TSID.split("~")[2];
+        }
+      } else console.error('The TSID has not been set in the graph template file');
+    
+      globalGraphtemplateObject = graphTemplateObject;
+    // showGraph(dialog, graphTemplateObject, graphFilePath, TSID_Location);
+    
+    // /**
+    //   * Creates the Dialog object to show the graph in and passes the info needed for it.
+    //   * @param dialog The dialog object needed to create the Dialog popup
+    //   * @param graphTemplateObject The template config object of the current graph being shown
+    //   * @param graphFilePath The file path to the current graph that needs to be read
+    //   */
+    //   function showGraph(dialog: any, graphTemplateObject: any, graphFilePath: string, TSID_Location: string): void {
+    //   //  console.log("Inside showGraph function:")
+    //     // Create and use a MatDialogConfig object to pass the data we need for the graph that will be shown
+    //     const dialogConfig = new MatDialogConfig();
+    //     dialogConfig.data = {
+    //       graphTemplate: graphTemplateObject,
+    //       graphFilePath: graphFilePath,
+    //       TSID_Location: TSID_Location
+    //     }
+    //   const dialogRef = dialog.open(DialogContent, dialogConfig);
+    //     // console.log("Open Dialog call");
+    //   }
+      });
+  }
+  
+  openDialog(){
+    this.showGraph(this.dialog, globalGraphtemplateObject, graphFilePath, TSID_Location);
+  }
+  
+    
+  /**
+    * Creates the Dialog object to show the graph in and passes the info needed for it.
+    * @param dialog The dialog object needed to create the Dialog popup
+    * @param graphTemplateObject The template config object of the current graph being shown
+    * @param graphFilePath The file path to the current graph that needs to be read
+    */
+    showGraph(dialog: any, graphTemplateObject: any, graphFilePath: string, TSID_Location: string): void {
+    //  console.log("Inside showGraph function:")
+      // Create and use a MatDialogConfig object to pass the data we need for the graph that will be shown
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.data = {
+        graphTemplate: graphTemplateObject,
+        graphFilePath: graphFilePath,
+        TSID_Location: TSID_Location
+      }
+    const dialogRef = dialog.open(DialogContent, dialogConfig);
+      // console.log("Open Dialog call");
+    }
 
   // getJSONData('assets/TsToolGraphConfigFiles/diversion-graph-template.json').subscribe((graphTemplateObject: Object) => {
 
@@ -312,13 +422,14 @@ export class TstoolGraphConfigComponent implements OnInit {
      */
     createGraph(config: PopulateGraph[]): void {
   
-      console.log(config);
+      console.log( config);
       
       
       // Typescript does not support dynamic invocation, so instead of creating ctx
       // on one line, we can cast the html element to a canvas element. Then we can
       // create the ctx variable by using getContext() on the canvas variable.
       var canvas = <HTMLCanvasElement> document.getElementById('myChart');
+      console.log("Canvas: ", canvas);
       var ctx = canvas.getContext('2d');
   
       // TODO: jpkeahey 2020.06.03 - Maybe use a *ngFor loop in the DialogContent
@@ -632,7 +743,7 @@ export class TstoolGraphConfigComponent implements OnInit {
       // if (this.graphFilePath.includes('.csv'))
       //   this.parseCSVFile();
       // else if (this.graphFilePath.includes('.stm'))
-      //   this.parseStateModFile();
+        this.parseStateModFile();
     }
   
   
@@ -3848,597 +3959,3 @@ export class TS {
   
   
   
-  // export class TS {
-  
-  //   /**
-  //   Data flavor for transferring this object.
-  //   */
-  //   // public static DataFlavor tsFlavor = new DataFlavor(RTi.TS.TS.class,"RTi.TS.TS");
-  
-  //   /**
-  //   General string to use for status of the time series (use as appropriate by
-  //   high-level code).  This value is volatile - do not assume its value will remain
-  //   for long periods.  This value is not used much now that the GRTS package has been updated.
-  //   */
-  //   _status: string;
-  
-  //   /**
-  //   Beginning date/time for data, at a precision appropriate for the data.
-  //   Missing data may be included in the period.
-  //   */
-  //   _date1: any;
-  
-  //   /**
-  //   Ending date/time for data, at a precision appropriate for the data.
-  //   Missing data may be included in the period.
-  //   */
-  //   _date2: any;
-  
-  //   /**
-  //   Original starting date/time for data, at a precision appropriate for the data.
-  //   For example, this may be used to indicate the period in a database, which is
-  //   different than the period that was actually queried and saved in memory.
-  //   */
-  //   _date1_original: any;
-  
-  //   /**
-  //   Original ending date/time for data, at a precision appropriate for the data.
-  //   For example, this may be used to indicate the period in a database, which is
-  //   different than the period that was actually queried and saved in memory.
-  //   */
-  //   _date2_original: any;
-  
-  //   /**
-  //   The data interval base.  See TimeInterval.HOUR, etc.
-  //   */
-  //   _data_interval_base: number;  
-  
-  //   /**
-  //   The base interval multiplier (what to multiply _interval_base by to get the
-  //   real interval).  For example 15-minute data would have
-  //   _interval_base = TimeInterval.MINUTE and _interval_mult = 15.
-  //   */
-  //   _data_interval_mult: number;
-  
-  //   /**
-  //   The data interval in the original data source (for example, the source may be
-  //   in days but the current time series is in months).
-  //   */
-  //   _data_interval_base_original: number;
-  
-  //   /**
-  //   The data interval multiplier in the original data source.
-  //   */
-  //   _data_interval_mult_original: number;
-  
-  //   /**
-  //   Number of data values inclusive of _date1 and _date2.  Set in the
-  //   allocateDataSpace() method.  This is useful for general information.
-  //   */
-  //   _data_size: any;  
-  
-  //   /**
-  //   Data units.  A list of units and conversions is typically maintained in the DataUnits* classes.
-  //   */
-  //   _data_units: string;
-  
-  //   /**
-  //   Units in the original data source (e.g., the current data may be in CFS and the
-  //   original data were in CMS).
-  //   */
-  //   _data_units_original: string;
-  
-  //   /**
-  //   Indicates whether data flags are being used with data.  If enabled, the derived
-  //   classes that store data should override the allocateDataSpace(boolean, int)
-  //   method to create a data array to track the data flags.  It is recommended to
-  //   save space that the flags be handled using String.intern().
-  //   */
-  //   _has_data_flags: boolean = false;
-  
-  //   /**
-  //   Indicate whether data flags should use String.intern().
-  //   */
-  //   _internDataFlagStrings: boolean = true;
-  
-  //   // FIXME SAM 2007-12-13 Need to phase this out in favor of handling in DAO code.
-  //   /**
-  //   Version of the data format (mainly for use with files).
-  //   */
-  //   _version: string;
-  
-  //   // FIXME SAM 2007-12-13 Need to evaluate renaming to avoid confusion with TSIdent input name.
-  //   // Implementing a DataSource concept for input/output may help (but also have data source in TSIdent!).
-  //   /**
-  //   Input source information.  Filename if read from file or perhaps a database
-  //   name and table (e.g., HydroBase.daily_flow).  This is the actual location read,
-  //   which should not be confused with the TSIdent storage name (which may not be fully expanded).
-  //   */
-  //   _input_name: string;  
-  
-  //   /**
-  //   Time series identifier, which provides a unique and absolute handle on the time series.
-  //   An alias is provided within the TSIdent class.
-  //   */
-  //   _id: TSIdent;
-  
-  //   /**
-  //   Indicates whether the time series data have been modified by calling
-  //   setDataValue().  Call refresh() to update the limits.  This is not used with header data.
-  //   */
-  //   _dirty: boolean;
-  
-  //   /**
-  //   Indicates whether the time series is editable.  This primarily applies to the
-  //   data (not the header information).  UI components can check to verify whether
-  //   users should be able to edit the time series.  It is not intended to be checked
-  //   by low-level code (manipulation is always granted).
-  //   */
-  //   _editable: boolean = false;
-  
-  //   /**
-  //   A short description (e.g, "XYZ gage at ABC river").
-  //   */
-  //   _description: string;
-  
-  //   /**
-  //   Comments that describe the data.  This can be anything from an original data
-  //   source.  Sometimes the comments are created on the fly to generate a standard
-  //   header (e.g., describe drainage area).
-  //   */
-  //   _comments: any[];
-  
-  //   /**
-  //   List of metadata about data flags.  This provides a description about flags
-  //   encountered in the time series.
-  //   */
-  //   // private List<TSDataFlagMetadata> __dataFlagMetadataList = new Vector<TSDataFlagMetadata>();
-  
-  //   /**
-  //   History of time series.  This is not the same as the comments but instead
-  //   chronicles how the time series is manipulated in memory.  For example the first
-  //   genesis note may be about how the time series was read.  The second may
-  //   indicate how it was filled.  Many TSUtil methods add to the genesis.
-  //   */
-  //   _genesis: any[];
-  
-  //   /**
-  //   TODO SAM 2010-09-21 Evaluate whether generic "Attributable" interface should be implemented instead.
-  //   Properties for the time series beyond the built-in properties.  For example, location
-  //   information like county and state can be set as a property.
-  //   */
-  //   // private LinkedHashMap<String,Object> __property_HashMap = null;
-  
-  //   /**
-  //   The missing data value.  Default for some legacy formats is -999.0 but increasingly Double.NaN is used.
-  //   */
-  //   _missing: number;
-  
-  //   /**
-  //   Lower bound on the missing data value (for quick comparisons and when missing data ranges are used).
-  //   */
-  //   _missingl: number;
-  
-  //   /**
-  //   Upper bound on the missing data value (for quick comparisons and when missing data ranges are used).
-  //   */
-  //   _missingu: number;
-  
-  //   /**
-  //   Limits of the data.  This also contains the date limits other than the original dates.
-  //   */
-  //   _data_limits: TSLimits;
-  
-  //   /**
-  //   Limits of the original data.  Currently only used by apps like TSTool.
-  //   */
-  //   // TSLimits _data_limits_original;
-  
-  //   //TODO SAM 2007-12-13 Evaluate need now that GRTS is available.
-  //   /**
-  //   Legend to show when plotting or tabulating a time series.  This is generally a short legend.
-  //   */
-  //   _legend: string;
-  
-  //   // TODO SAM 2007-12-13 Evaluate need now that GRTS is available.
-  //   /**
-  //   Legend to show when plotting or tabulating a time series.  This is usually a
-  //   long legend.  This may be phased out now that the GRTS package has been phased in for visualization.
-  //   */
-  //   _extended_legend: string;
-  
-  //   /**
-  //   Indicates whether time series is enabled (used to "comment" out of plots, etc).
-  //   This may be phased out.
-  //   */
-  //   _enabled: boolean;
-  
-  //   /**
-  //   Indicates whether time series is selected (e.g., as result of a query).
-  //   Often time series might need to be programmatically selected (e.g., with TSTool
-  //   selectTimeSeries() command) to simplify output by other commands.
-  //   */
-  //   _selected: boolean;
-  
-  
-  //   /**
-  //   Construct a time series and initialize the member data.  Derived classes should
-  //   set the _data_interval_base.
-  //   */
-  //   constructor () {    
-  //     this.TSInit();
-  //   }
-  
-  //   /**
-  //   Initialize data members.
-  //   */
-  //   TSInit() {
-  //     this._version = "";
-  
-  //     this._input_name = "";
-  
-  //     // Need to initialize an empty TSIdent...    
-  //     this._id = new TSIdent ();
-  //     this._legend = "";
-  //     this._extended_legend = "";
-  //     this._data_size = 0;
-  //     // DateTime need to be initialized somehow...
-  //     this.setDataType( "" );
-  //     this._data_interval_base = 0;
-  //     this._data_interval_mult = 1;
-  //     this._data_interval_base_original = 1;
-  //     this._data_interval_mult_original = 0;
-  //     this.setDescription( "" );
-  //     // TODO: jpkeahey 2020.06.09 - Add these in later
-  //     // this._comments = new Vector<String>(2,2);
-  //     // this._genesis = new Vector<String>(2,2);
-  //     this.setDataUnits( "" );
-  //     this.setDataUnitsOriginal( "" );
-  //     this.setMissing ( -999.0 );
-  //     this._data_limits = new TSLimits();
-  //     this._dirty = true; // We need to recompute limits when we get the chance
-  //     this._enabled = true;
-  //     this._selected = false; // Let other code select, e.g., as query result
-  //     this._editable = false;
-  //   }
-  
-  //   /**
-  //   Allocate the data space for the time series.  This requires that the data
-  //   interval base and multiplier are set correctly and that _date1 and _date2 have
-  //   been set.  If data flags are used, hasDataFlags() should also be called before
-  //   calling this method.  This method is meant to be overridden in derived classes
-  //   (e.g., MinuteTS, MonthTS) that are optimized for data storage for different intervals.
-  //   @return 0 if successful allocating memory, non-zero if failure.
-  //   */
-  //   public allocateDataSpace ( ): number {
-  //     console.error ( 1, "TS.allocateDataSpace", "TS.allocateDataSpace() is virtual, define in derived classes." );
-  //     return 1;
-  //   }
-  
-  //   /**
-  //   Determine if a data value for the time series is missing.  The missing value can
-  //   be set to a range of values or a single value, using setMissing().
-  //   There is no straightforward way to check to see if a value is equal to NaN
-  //   (the code: if ( value == Double.NaN ) will always return false if one or both
-  //   values are NaN).  Consequently there is no way to see know if only one or both
-  //   values is NaN, using the standard operators.  Instead, we assume that NaN
-  //   should be interpreted as missing and do the check if ( value != value ), which
-  //   will return true if the value is NaN.  Consequently, code that uses time series
-  //   data should not check for missing and treat NaN differently because the TS class treats NaN as missing.
-  //   @return true if the data value is missing, false if not.
-  //   @param value Value to check.
-  //   */
-  //   public isDataMissing ( value: number ): boolean {
-  //     if ( isNaN(value) ) {
-  //       return true;
-  //     }
-  //     if ( (value >= this._missingl) && (value <= this._missingu) ) {
-  //       return true;
-  //     }
-  //     return false;
-  //   }
-  
-  //   /**
-  //   Return the data interval base.
-  //   @return The data interval base (see TimeInterval.*).
-  //   */
-  //   public getDataIntervalBase(): number {
-  //     return this._data_interval_base;
-  //   }
-  
-  //   /**
-  //   Return the original data interval base.
-  //   @return The data interval base of the original data.
-  //   */
-  //   public getDataIntervalBaseOriginal(): number {
-  //     return this._data_interval_base_original;
-  //   }
-  
-  //   /**
-  //   Return the data interval multiplier.
-  //   @return The data interval multiplier.
-  //   */
-  //   public getDataIntervalMult(): number {
-  //     return this._data_interval_mult;
-  //   }
-  
-  //   /**
-  //   Return the original data interval multiplier.
-  //   @return The data interval multiplier of the original data.
-  //   */
-  //   public getDataIntervalMultOriginal(): number {
-  //     return this._data_interval_mult_original;
-  //   }
-  
-  //   /**
-  //   Return the first date in the period of record (returns a copy).
-  //   @return The first date in the period of record, or null if the date is null.
-  //   */
-  //   public getDate1(): DateTime {
-  //     if ( this._date1 == null ) {
-  //       return null;
-  //     }    
-  //     return DateTime.copyConstructor ( this._date1 );
-  //   }
-  
-  //   /**
-  //   Return the first date in the original period of record (returns a copy).
-  //   @return The first date of the original data source (generally equal to or
-  //   earlier than the time series that is actually read), or null if the date is null.
-  //   */
-  //   public getDate1Original(): DateTime {
-  //     if ( this._date1_original == null ) {
-  //       return null;
-  //     }
-  //     return DateTime.copyConstructor ( this._date1_original);
-  //   }
-  
-  //   /**
-  //   Return the last date in the period of record (returns a copy).
-  //   @return The last date in the period of record, or null if the date is null.
-  //   */
-  //   public getDate2(): DateTime {
-  //     if ( this._date2 == null ) {
-  //       return null;
-  //     }
-  //     return DateTime.copyConstructor ( this._date2 );
-  //   }
-  
-  //   /**
-  //   Return the last date in the original period of record (returns a copy).
-  //   @return The last date of the original data source (generally equal to or
-  //   later than the time series that is actually read), or null if the date is null.
-  //   */
-  //   public getDate2Original(): DateTime {
-  //     if ( this._date2_original == null ) {
-  //       return null;
-  //     }
-  //     return DateTime.copyConstructor ( this._date2_original );
-  //   }
-  
-  //   /**
-  //   Return the location part of the time series identifier.  Does not include location type.
-  //   @return The location part of the time series identifier (from TSIdent).
-  //   */
-  //   public getLocation(): string {
-  //     return this._id.getLocation();
-  //   }
-  
-  //   /**
-  //   Return the time series identifier as a TSIdent.
-  //   @return the time series identifier as a TSIdent.
-  //   @see TSIdent
-  //   */
-  //   public getIdentifier(): TSIdent { 
-  //     return this._id;
-  //   }
-  
-  //   /**
-  //   Set the first date in the period.  A copy is made.
-  //   The date precision is set to the precision appropriate for the time series.
-  //   @param t First date in period.
-  //   @see DateTime
-  //   */
-  //   public setDate1 ( t: any ): void {
-  //     if ( t != null ) {
-  //       this._date1 = DateTime.copyConstructor ( t );
-  //       if ( this._data_interval_base != TimeInterval.IRREGULAR ) {
-  //           // For irregular, rely on the DateTime precision
-  //           this._date1.setPrecisionOne ( this._data_interval_base );
-  //       }
-  //     }
-  //   }
-  
-  //   /**
-  //   Set the first date in the period in the original data.  A copy is made.
-  //   The date precision is set to the precision appropriate for the time series.
-  //   @param t First date in period in the original data.
-  //   @see DateTime
-  //   */
-  //   public setDate1Original( t: any ): void {
-  //     if ( t != null ) {
-  //       this._date1_original = DateTime.copyConstructor ( t );
-  //       if ( this._data_interval_base != TimeInterval.IRREGULAR ) {
-  //               // For irregular, rely on the DateTime precision
-  //           this._date1_original.setPrecisionOne ( this._data_interval_base );
-  //       }
-  //     }
-  //   }
-  
-  //   /**
-  //   Set the last date in the period.  A copy is made.
-  //   The date precision is set to the precision appropriate for the time series.
-  //   @param t Last date in period.
-  //   @see DateTime
-  //   */
-  //   public setDate2 ( t: any ): void {
-  //     if ( t != null ) {
-  //       this._date2 = DateTime.copyConstructor ( t );
-  //       if ( this._data_interval_base != TimeInterval.IRREGULAR ) {
-  //               // For irregular, rely on the DateTime precision
-  //           this._date2.setPrecisionOne ( this._data_interval_base );
-  //       }
-  //     }
-  //   }
-  
-  //   /**
-  //   Set the last date in the period in the original data. A copy is made.
-  //   The date precision is set to the precision appropriate for the time series.
-  //   @param t Last date in period in the original data.
-  //   @see DateTime
-  //   */
-  //   public setDate2Original( t: any ): void {
-  //     if ( t != null ) {
-  //       this._date2_original = DateTime.copyConstructor ( t );
-  //       if ( this._data_interval_base != TimeInterval.IRREGULAR ) {
-  //               // For irregular, rely on the DateTime precision
-  //           this._date2_original.setPrecisionOne ( this._data_interval_base );
-  //       }
-  //     }
-  //   }
-  
-  //   /**
-  //   Set the data interval.
-  //   @param base Base interval (see TimeInterval.*).
-  //   @param mult Base interval multiplier.
-  //   */
-  //   setDataInterval ( base: number, mult: number ) {
-  //     this._data_interval_base = base;
-  //     this._data_interval_mult = mult;
-  //   }
-  
-  //   /**
-  //   Set the data interval for the original data.
-  //   @param base Base interval (see TimeInterval.*).
-  //   @param mult Base interval multiplier.
-  //   */
-  //   setDataIntervalOriginal ( base: number, mult: number ) {
-  //     this._data_interval_base_original = base;
-  //     this._data_interval_mult_original = mult;
-  //   }
-  
-  //   /**
-  //   Set the data type.
-  //   @param data_type Data type abbreviation.
-  //   */
-  //   setDataType( data_type: string ) {
-  //     if ( (data_type != null) && (data_type !== 'undefined') && (this._id != null) ) {      
-  //       this._id.setType ( data_type );
-  //     }
-  //   }
-  
-  //   /**
-  //   Set the data units.
-  //   @param data_units Data units abbreviation.
-  //   @see RTi.Util.IO.DataUnits
-  //   */
-  //   setDataUnits( data_units: string ) {
-  //     if (( data_units != null ) && (data_units !== 'undefined')) {
-  //       this._data_units = data_units;
-  //     }
-  //   }
-  
-  //   /**
-  //   Set the data units for the original data.
-  //   @param units Data units abbreviation.
-  //   @see RTi.Util.IO.DataUnits
-  //   */
-  //   setDataUnitsOriginal( units: string ) {
-  //     if ( units != null ) {
-  //       this._data_units_original = units;
-  //     }
-  //   }
-  
-  //   /**
-  //   Set the number of data points including the full period.  This should be called by refresh().
-  //   @param data_size Number of data points in the time series.
-  //   */
-  //   protected setDataSize ( data_size: number ): void {
-  //     this._data_size = data_size;
-  //   }
-  
-  //   /**
-  //   Set a data value for the specified date.
-  //   @param date Date of interest.
-  //   @param val Data value for date.
-  //   @see RTi.Util.Time.DateTime
-  //   */
-  //   public setDataValue ( date: DateTime, val: number ): void {
-  //     console.error ("TS.setDataValue", "TS.setDataValue is " +
-  //     "virtual and should be redefined in derived classes" );
-  //   }
-  
-  //   /**
-  //   Set the description.
-  //   @param description Time series description (this is not the comments).
-  //   */
-  //   setDescription( description: string ) {
-  //     if ( description != null ) {
-  //       this._description = description;
-  //     }
-  //   }
-  
-  //   /**
-  //   Set the time series identifier using a string.
-  //   Note that this only sets the identifier but
-  //   does not set the separate data fields (like data type).
-  //   @param identifier Time series identifier.
-  //   @exception Exception If there is an error setting the identifier.
-  //   */
-  //   setIdentifierString( identifier: string ) {    
-  //     if ( identifier != null ) {
-  //         this._id.setIdentifier( identifier );
-  //     }
-  //   }
-  
-  //   /**
-  //   Set the time series identifier using a TSIdent.
-  //   Note that this only sets the identifier but
-  //   does not set the separate data fields (like data type).
-  //   @param id Time series identifier.
-  //   @see TSIdent
-  //   @exception Exception If there is an error setting the identifier.
-  //   */
-  //   public setIdentifierObject ( id: any ): void {
-  //     if ( id != null ) {
-  //       this._id = new TSIdent ( id );
-  //     }
-  //   }
-  
-  //   /**
-  //   Set the input name (file or database table).
-  //   */
-  //   public setInputName ( input_name: string ): void {
-  //     if ( input_name != null ) {
-  //       this._input_name = input_name;
-  //     }
-  //   }
-  
-  //   /**
-  //   Set the missing data value for the time series.  The upper and lower bounds
-  //   of missing data are set to this value +.001 and -.001, to allow for precision truncation.
-  //   The value is constrained to Double.MAX and Double.Min.
-  //   @param missing Missing data value for time series.
-  //   */
-  //   setMissing ( missing: number ) {
-  //     this._missing = missing;
-  //     if ( isNaN(missing) ) {
-  //       // Set the bounding limits also just to make sure that values like -999 are not treated as missing.
-  //         this._missingl = NaN;
-  //         this._missingu = NaN;
-  //       return;
-  //     }
-  //     // TODO: jpkeahey 2020.06.09 - Is MAX_SAFE_INTEGER correct here? It used to be Double.MAX_VALUE for Java
-  //     // Will this value work with Typescript?
-  //     if ( missing == Number.MAX_SAFE_INTEGER ) {
-  //       this._missingl = missing - .001;
-  //       this._missingu = missing;
-  //     }
-  //     else {
-  //       // Set a range on the missing value check that is slightly on each side of the value
-  //       this._missingl = missing - .001;
-  //       this. _missingu = missing + .001;
-  //     }
-  //   }
-  
-  // }

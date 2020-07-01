@@ -26,6 +26,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EventEmitterService } from './event-emitter.service';
 import { HeatmapComponent } from './plotly/heatmap/heatmap.component';
 import { TstoolGraphConfigComponent } from './tstool-graph-config/tstool-graph-config.component';
+import { PlotlyTstoolGraphComponent } from './tstool-graph-config/plotly-tstool-graph/plotly-tstool-graph.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { TstoolGraphConfigComponent } from './tstool-graph-config/tstool-graph-c
     GenericContentComponent,
     GeneralPlotlyComponent,
     HeatmapComponent,
-    TstoolGraphConfigComponent
+    TstoolGraphConfigComponent,
+    PlotlyTstoolGraphComponent
   ],
   imports: [
     BrowserModule,
