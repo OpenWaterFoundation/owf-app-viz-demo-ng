@@ -13,3 +13,16 @@ export class GenericContentComponent implements OnInit {
   }
 
 }
+@Component({
+  selector: 'link-content',
+  templateUrl: './link-content.html',
+  styleUrls: ['./link-content.css']
+})
+export class LinksComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+}

@@ -3,8 +3,8 @@
     
     <h1> Chart.js Example: SNODAS Volume Graph</h1>
 
-
-    <button id="button_three" class="btn btn-light btn-sm btn-block" style="font-size: 15px; margin-bottom: 15px;" (click)="open(content, 'Volume_Graph')" disabled>SNODAS SWE Volume Graph</button>
+    <p>Description: </p>
+    <!-- <button id="button_three" class="btn btn-light btn-sm btn-block" style="font-size: 15px; margin-bottom: 15px;" (click)="open(content, 'Volume_Graph')" disabled>SNODAS SWE Volume Graph</button> -->
 
     <ng-template #content let-modal>
         <div class="modal-header">
@@ -33,5 +33,17 @@
         </div>
         </ng-template>
         <button id="button_three" style="font-size: 15px; margin-bottom: 15px;" (click)="open(content, 'Volume_Graph')" >SNODAS SWE Volume Graph</button>
+        
+      <br>
+      <br>
+    
+      <h6>To replicate this example, click below to download the necessary data:</h6>
+      <br>
+      <button style="margin-left: 3%;" mat-raised-button > TODO: DATA</button>
+      <br>
+      <br>
+  
+      <p> Additionally, the demo content for this visualization can be found at Open Water Foundation's <a href="https://github.com/OpenWaterFoundation/owf-app-viz-demo-ng">owf-app-viz-demo-ng</a>
+           repository.</p>   
   </main>
   

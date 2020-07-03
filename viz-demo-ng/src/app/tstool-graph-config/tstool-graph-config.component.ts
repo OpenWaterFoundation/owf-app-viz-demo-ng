@@ -124,6 +124,10 @@ export class TstoolGraphConfigComponent implements OnInit {
       return of(result as T);
     };
   }
+
+
+
+  
   /**
              * While the end of the value string from the graph template file hasn't ended yet, look for the '${' start
              * that we need and build the property, adding it to the propertyArray when we've detected the end of the
@@ -422,7 +426,7 @@ export class TstoolGraphConfigComponent implements OnInit {
      */
     createGraph(config: PopulateGraph[]): void {
   
-      console.log( config);
+      console.log( "config: ", config);
       
       
       // Typescript does not support dynamic invocation, so instead of creating ctx
