@@ -14,6 +14,7 @@ export class HeatmapComponent implements OnInit {
   constructor(public dialog: MatDialog,) { }
 
   ngOnInit(): void {
+    this.openDialog();
   }
 
   openDialog(): void {

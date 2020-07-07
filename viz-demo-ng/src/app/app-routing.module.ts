@@ -21,7 +21,8 @@ const routes: Routes = [
   {path: 'home', component: GenericContentComponent},
   {path: 'tstool-graph-config', component: TstoolGraphConfigComponent},
   {path: 'plotly-tstool-graph', component: PlotlyTstoolGraphComponent},
-  {path: 'charting-packages-links', component: LinksComponent}
+  {path: 'charting-packages-links', component: LinksComponent},
+  { path: '**', component: GenericContentComponent },
 
 
 ];

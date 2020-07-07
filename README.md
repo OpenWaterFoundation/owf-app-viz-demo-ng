@@ -14,7 +14,7 @@ This repository contains an Open Water Foundation application that tests differe
 
 ## Introduction 
 
-This repository contains the necessary files for developing and deploying the OWF "Angular Visualization Demos" application, developed using the [Angular](https://angular.io/) web framework.
+This repository contains the necessary files for developing and deploying the OWF "Angular Visualization Demos" application, developed using the [Angular](https://angular.io/) web framework. These demos are intended to be plugged into various applications, such as OWF's [InfoMapper](link),  in order to support packages and improve functionality over time. 
 
 
 

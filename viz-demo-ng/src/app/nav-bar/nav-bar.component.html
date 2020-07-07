@@ -28,12 +28,12 @@
             <a ngbDropdownToggle class="nav-link dropdown-toggle"  id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
             >Plotly</a>
             <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown01">
-              <a class="dropdown-item" (click)="firstComponentFunction()">  Chart Ex: Popup from navigation</a>
-              <a class="dropdown-item"routerLink = "general-plotly-chart" routerLinkActive="active"> 2D Line Chart-Monthly Time Series Data</a>
+              <!-- <a class="dropdown-item" >  Chart Ex: Popup from navigation</a> -->
+              <a class="dropdown-item" routerLink = "general-plotly-chart" routerLinkActive="active" (click)="firstComponentFunction()"> 2D Line Chart-Monthly Time Series Data</a>
               <a class="dropdown-item" routerLink = "snodas-plotly-chart" routerLinkActive="active"> SNODAS Line Chart-Daily Time Series Data</a>
               <a class="dropdown-item"routerLink = "plotly-heatmap" routerLinkActive="active">Basic HeatMap Example</a>
               <a class="dropdown-item"routerLink = "plotly-tstool-graph" routerLinkActive="active">TsTool Graph Configuration- Monthly Data </a>
-
+              <!-- routerLink = "general-plotly-chart" routerLinkActive="active" -->
             </div>
           </li>
           <li ngbDropdown class="nav-item dropdown">

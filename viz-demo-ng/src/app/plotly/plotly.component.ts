@@ -7,14 +7,17 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig} from '@angula
 
 
 declare var Plotly: any;
-var TypeofData;
+var TypeofData; 
 @Component({
   selector: 'app-plotly',
   templateUrl: './plotly.component.html',
   styleUrls: ['./plotly.component.css']
 })
-export class PlotlyComponent {
+export class PlotlyComponent implements OnInit{
   constructor(public dialog: MatDialog ) {}
+  ngOnInit() {
+    this.openDialog('Volume_Graph');
+  }
 
   openDialog(DataSpecification): void {
     TypeofData = DataSpecification;
