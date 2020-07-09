@@ -72,6 +72,33 @@ owf-app-viz-demo-ng/                      Git repository files for this reposito
 
 
 
+## Application Menus and Corresponding Workflow
+
+The web application provides menus, which display context-specific maps, as follows. The README for each product provides information about data sources and workflow processing.
+
+| **Menu**                                                | **README**  | **Description**                                              |
+| ------------------------------------------------------- | ----------- | ------------------------------------------------------------ |
+| ***Resources***                                         | =========== | ===============================                              |
+| ***ShowdownJS***                                        | [README]()  | Showdown demonstration relevant to Angular application integration |
+| ***ChartJS/***                                          | =========== | ===============================                              |
+| ***Generic ChartJS Demo***                              | [README]()  | Generic ChartJS Demo for beginners                           |
+| ***SNODAS Line Chart Demo- Daily Time Series Data***    | [README]()  | ChartJS graphing demonstration using daily time series data from |
+| ***TsTool Graph Configuration Demo- Monthly TS Data***  | [README]()  | ChartJS graphing demonstration using monthly time series data from TsTool configuration files |
+| ***PlotlyJS/***                                         | =========== | ===============================                              |
+| ***2D Line Chart Demo- Monthly TS Data***               | [README]()  | Generic Plotly time series graphing demonstration            |
+| ***SNODAS Line Chart Demo - Daily TS Data***            | [README]()  | PlotlyJS graphing demonstration using daily time series data from |
+| ***Basic HeatMap Demo***                                | [README]()  | Generic PlotlyJS HeatMap graphing demonstration              |
+| ***TsTool Graph Configuration Demo - Monthly TS Data*** | [README]()  | Plotly graphing demonstration using monthly time series data from TsTool configuration files |
+| ***Dygraphs/***                                         | =========== | ======== **In Development**========                          |
+| ***D3/***                                               | =========== | ======== **In Development**========                          |
+|                                                         |             |                                                              |
+|                                                         |             |                                                              |
+|                                                         |             |                                                              |
+|                                                         |             |                                                              |
+|                                                         |             |                                                              |
+
+
+
 ## Getting Started 
 
 Development and deployment of this angular based web application requires the following tools:

@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
 import { ChartsModule } from 'ng2-charts';
@@ -22,7 +22,7 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { LineChartComponent } from './line-chart/line-chart.component';
 import { PlotlyComponent } from './plotly/plotly.component';
 import { GeneralChartjsComponent } from './line-chart/general-chartjs/general-chartjs.component';
-import { GenericContentComponent } from './generic-content/generic-content.component';
+import { GenericContentComponent, LinksComponent, NGXShowdownComponent } from './generic-content/generic-content.component';
 import { GeneralPlotlyComponent } from './plotly/general-plotly/general-plotly.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EventEmitterService } from './event-emitter.service';
@@ -41,7 +41,8 @@ import { PlotlyTstoolGraphComponent } from './tstool-graph-config/plotly-tstool-
     GeneralPlotlyComponent,
     HeatmapComponent,
     TstoolGraphConfigComponent,
-    PlotlyTstoolGraphComponent
+    PlotlyTstoolGraphComponent,
+    LinksComponent, NGXShowdownComponent
   ],
   imports: [
     BrowserModule,
@@ -60,6 +61,7 @@ import { PlotlyTstoolGraphComponent } from './tstool-graph-config/plotly-tstool-
 
   ],
   providers: [EventEmitterService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  
 })
 export class AppModule { }

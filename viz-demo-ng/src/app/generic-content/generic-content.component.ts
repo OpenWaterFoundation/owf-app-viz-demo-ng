@@ -26,3 +26,16 @@ export class LinksComponent implements OnInit {
   }
 
 }
+@Component({
+  selector: 'showdown-content',
+  templateUrl: './showdown-content.html'
+  
+})
+export class NGXShowdownComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+}
