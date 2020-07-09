@@ -4,7 +4,9 @@
 
 This library is responsive, and allows for mixed chart types (ex. a line chart with a bar graph on top of it), as well as different axis types (date time, logarithmic, and even custom scales), and even supports animations.
 
-**Library Documentation:** [www.chartjs.org/](https://www.chartjs.org/)
+**Library Documentation:** 
+
+* [**Chart.JS**](https://www.chartjs.org/)
 
 **Open Water Foundation demonstration of chart.js library:**  [OpenWaterFoundation/owf-lib-chart-js](https://github.com/OpenWaterFoundation/owf-lib-viz-chart-js)   
 
