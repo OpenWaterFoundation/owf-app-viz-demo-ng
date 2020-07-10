@@ -277,31 +277,50 @@ export class PlotlyTstoolGraphComponent implements OnInit {
       // TODO: jpkeahey 2020.06.03 - Maybe use a *ngFor loop in the DialogContent
       // template file to create as many charts as needed. As well as a for loop
       // here obviously for going through subProducts?
+      // plotly
       var x_array = []
       var y_array = [];
       // console.log("Dataset length: ", config[0].datasetData.length);
 
       for( let i = 0; i < config[0].datasetData.length; i++){
         // console.log(i , config[0].datasetData[i]['x']);
-        x_array.push(config[0].datasetData[i]['x']);
+        let ogdate: string;
+        ogdate = config[0].datasetData[0]['x']; 
+        x_array.push( moment(new Date(ogdate)).format('YYYY-MM'));
         y_array.push(config[0].datasetData[i]['y']);
       }
       console.log("X Array: ", x_array);
-      console.log("Y Array: ", y_array);
+      console.log("y Array: ", y_array);
+
+
+      console.log("Converting X values: ")
+
+      //  moment(config[0].datasetData[0]['x']).format('YYYY MM');
+
+      // console.log("Original x Value: ", config[0].datasetData[0]['x']);
+
+      // let ogdate: string;
+      // ogdate = config[0].datasetData[0]['x'];
+      // console.log("After conversion: ",  moment(new Date(ogdate)).format('MM YYYY'));
+      // console.log("prover order conversion: ",  moment(new Date(ogdate)).format('YYYY-MM'));
+
+      // console.log("Y Array: ", y_array);
       // for ( let i = 0; i < )
 
       // TODO: need to change date format of why array
-      // var data = {
-      //   type: 'Scatter',
-      //   mode: 'lines+markers',
-      //   name: config[0].legendLabel,
-      //   x:
-      //   y:
-      // }
+      var data = {
+        type: 'Scatter',
+        mode: 'lines+markers',
+        name: config[0].legendLabel,
+        x: x_array,
+        y: y_array
+      }
 
-      console.log("Dataset length: ", config[0].datasetData.length);
-      console.log("Dataset: x only: ", config[0].datasetData[0]['x']);
-      console.log("Dataset: y only: ", config[0].datasetData[0]['y']);
+      Plotly.plot(element,[data]);
+
+      // console.log("Dataset length: ", config[0].datasetData.length);
+      // console.log("Dataset: x only: ", config[0].datasetData[0]['x']);
+      // console.log("Dataset: y only: ", config[0].datasetData[0]['y']);
       
 
       var myChart = new Chart(ctx, {
@@ -555,7 +574,9 @@ export class PlotlyTstoolGraphComponent implements OnInit {
           }        
           return dates;
         case 'months':
+          console.log("Current Date: ", currentDate);
           currentDate = moment(startDate);
+          console.log("Current date after moment: ", currentDate);
           var stopDate = moment(endDate);        
           while (currentDate <= stopDate) {
               dates.push( moment(currentDate).format('MMM YYYY') )
@@ -564,6 +585,7 @@ export class PlotlyTstoolGraphComponent implements OnInit {
           return dates;
       }
       
+      // console.log("Dates Array: ", dates);
     };
   
     /**
