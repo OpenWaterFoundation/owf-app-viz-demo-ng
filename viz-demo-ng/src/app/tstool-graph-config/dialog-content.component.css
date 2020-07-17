@@ -1,0 +1,40 @@
+/* In the container box class, the <h1> there is the draggable element by the user. Its default had a margin of 20px,
+and was not draggable, being useless in this case. Getting rid of the margin and padding the top and bottom of the <h1>
+allowed the ability to expand the draggable area, hopefully making the process easier for users. */
+h1 {
+    background-color: #e6e6e6;
+    padding-top: 10px;
+    padding-bottom: 15px;
+    margin-bottom: 0px;
+  }
+  
+  h4 {
+    text-align: center;
+    padding-top: 10px;
+  }
+  
+  /* The arrows need to be positioned to the very right in the header element. */
+  /* h1 svg {
+    float: right;
+  } */
+  
+  /* Sets a max height for the text in the Dialog, as well as uses Courier font for formatting the text correctly and making the
+  font smaller so that's it still readable, but the user won't have to scroll a lot to get around the data. */
+  div pre {
+    height: 600px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: small;
+  }
+  
+  /* Changes the background color of the Close button in the Dialog */
+  .mat-raised-button {
+    background-color: #c2c1c1;
+  }
+  
+  .mat-dialog-actions button {
+    margin-left: 5px;
+  }
+  
+  .myChart {
+    margin-top: 5px;
+  }

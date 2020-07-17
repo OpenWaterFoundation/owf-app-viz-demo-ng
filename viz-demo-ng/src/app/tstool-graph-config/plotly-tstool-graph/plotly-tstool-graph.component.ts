@@ -1,33 +1,28 @@
-import { Component, 
-          OnInit, 
-          Inject }          from '@angular/core';       
-import { HttpClient }       from '@angular/common/http';
-import { Router }           from '@angular/router';
-import {MatDialog, 
-          MatDialogRef, 
-          MAT_DIALOG_DATA, 
-          MatDialogConfig}  from '@angular/material/dialog';
+import { Component, OnInit, Inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig} from '@angular/material/dialog';
+import * as moment from 'moment';
 
-import { Chart }            from 'chart.js';
-import * as moment          from 'moment';
-          
-import { forkJoin, 
-            Observable, 
-            of}             from 'rxjs';
-import { catchError, map }  from 'rxjs/operators';
 
 import { DateTime }         from '../../../assets/TsToolGraphConfigFiles/DateTime';
 import { TimeInterval }     from '../../../assets/TsToolGraphConfigFiles/TimeInterval';
 import { StringUtil }       from '../../../assets/TsToolGraphConfigFiles/StringUtil';
 import { TimeUtil }         from '../../../assets/TsToolGraphConfigFiles/TimeUtil';
+// import * as Chart from 'chart.js';
+import { Chart } from 'chart.js';
+import { forkJoin, Observable, of} from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
+import { type } from 'jquery';
+import { EventEmitterService } from '../../event-emitter.service';    
 
-declare var Plotly: any;
 
 var TSID_Location;
 var graphFilePath;
 var featureProperties: any;
 var globalGraphtemplateObject: object;
+declare var Plotly: any;
 
 @Component({
   selector: 'app-plotly-tstool-graph',
@@ -38,11 +33,97 @@ export class PlotlyTstoolGraphComponent implements OnInit {
 
 
 
-  constructor(public dialog: MatDialog, public http: HttpClient, public router: Router) { }
+  constructor(public dialog: MatDialog, public http: HttpClient, public router: Router, private eventEmitterService: EventEmitterService) { }
 
   ngOnInit(): void {
     this.graphTsToolConfig();
+    if (this.eventEmitterService.subsVar==undefined) {  
+      this.eventEmitterService.subsVar = this.eventEmitterService.    
+      invokeTSToolComponentFunction.subscribe((name:string) => {    
+        // this.openDialog();    
+        this.graphTsToolConfig();
+      });    
+    } 
+    // this.openDialog();
+    
+    // this.getJSONData('assets/TsToolGraphConfigFiles/diversion-graph-template.json').subscribe((graphTemplateObject: Object) => {
+
+    //   var TSID_Location;
+    //   var graphFilePath;
+    //   var featureProperties: any;
+    //   featureProperties = 
+    //   {
+    //     abbrev: "LACDITCO",
+    //     county: "LARIMER",
+    //     dataSource: "Cooperative SDR Program of CDWR & NCWCD",
+    //     dataSourceAbbrev: "NWSDR",
+    //     division: 1,
+    //     flagA: "",
+    //     flagB: "U",
+    //     gnisId: "00205018",
+    //     latitude: 40.656563,
+    //     longitude: -105.185363,
+    //     measDateTime: "2020-06-02T13:00:00.0000000-06:00",
+    //     measValue: 348.21,
+    //     moreInformation: "https://dwr.state.co.us/Tools/Stations/LACDITCO",
+    //     parameter: "DISCHRG",
+    //     stage: null,
+    //     stationName: "LARIMER COUNTY DITCH",
+    //     stationPorEnd: "2020-06-02T00:00:00.0000000-06:00",
+    //     stationPorStart: "2015-11-06T00:00:00.0000000-07:00",
+    //     stationStatus: "Active",
+    //     stationType: "Diversion Structure",
+    //     streamMile: 53.32,
+    //     structureType: "Ditch",
+    //     thirdParty: "False",
+    //     units: "CFS",
+    //     usgsStationId: "",
+    //     waterDistrict: 3,
+    //     waterSource: "CACHE LA POUDRE RIVER",
+    //     wdid: "0300911"
+    //   }
+  
+    //   graphTemplateObject = this.replaceProperties(graphTemplateObject, featureProperties);
+    //   var dialog = this.dialog;
+                                                              
+    //   if (graphTemplateObject['product']['subProducts'][0]['data'][0]['properties'].TSID) {
+    //     let TSID: string = graphTemplateObject['product']['subProducts'][0]['data'][0]['properties'].TSID;
+    //     // Split on the ~ and set the actual file path we want to use so our dialog-content component
+    //     // can determine what kind of file was given.
+    //     TSID_Location = TSID.split('~')[0];
+    //     // If the TSID has one tilde (~), set the path using the correct index compared to if the 
+    //     // TSID contains two tildes.
+    //     if (TSID.split('~').length === 2) {
+    //       graphFilePath = TSID.split("~")[1];
+    //     } else if (TSID.split('~').length === 3) {
+    //       graphFilePath = TSID.split("~")[2];
+    //     }
+    //   } else console.error('The TSID has not been set in the graph template file');
+    
+    //   console.log("ShowGraph call");
+    // showGraph(dialog, graphTemplateObject, graphFilePath, TSID_Location);
+    
+    // /**
+    //   * Creates the Dialog object to show the graph in and passes the info needed for it.
+    //   * @param dialog The dialog object needed to create the Dialog popup
+    //   * @param graphTemplateObject The template config object of the current graph being shown
+    //   * @param graphFilePath The file path to the current graph that needs to be read
+    //   */
+    //   function showGraph(dialog: any, graphTemplateObject: any, graphFilePath: string, TSID_Location: string): void {
+    //    console.log("Inside showGraph function:")
+    //     // Create and use a MatDialogConfig object to pass the data we need for the graph that will be shown
+    //     const dialogConfig = new MatDialogConfig();
+    //     dialogConfig.data = {
+    //       graphTemplate: graphTemplateObject,
+    //       graphFilePath: graphFilePath,
+    //       TSID_Location: TSID_Location
+    //     }
+    //   const dialogRef = dialog.open(DialogContent, dialogConfig);
+    //     console.log("Open Dialog call");
+    //   }
+    //   });
   }
+
 
   /**
    * Handle Http operation that failed, and let the app continue.
@@ -60,6 +141,10 @@ export class PlotlyTstoolGraphComponent implements OnInit {
       return of(result as T);
     };
   }
+
+
+
+  
   /**
              * While the end of the value string from the graph template file hasn't ended yet, look for the '${' start
              * that we need and build the property, adding it to the propertyArray when we've detected the end of the
@@ -197,13 +282,38 @@ export class PlotlyTstoolGraphComponent implements OnInit {
           graphFilePath = TSID.split("~")[2];
         }
       } else console.error('The TSID has not been set in the graph template file');
-    
+      
+      console.log("graphTemplate object", graphTemplateObject);
+
       globalGraphtemplateObject = graphTemplateObject;
+    // showGraph(dialog, graphTemplateObject, graphFilePath, TSID_Location);
     
+    // /**
+    //   * Creates the Dialog object to show the graph in and passes the info needed for it.
+    //   * @param dialog The dialog object needed to create the Dialog popup
+    //   * @param graphTemplateObject The template config object of the current graph being shown
+    //   * @param graphFilePath The file path to the current graph that needs to be read
+    //   */
+    //   function showGraph(dialog: any, graphTemplateObject: any, graphFilePath: string, TSID_Location: string): void {
+    //   //  console.log("Inside showGraph function:")
+    //     // Create and use a MatDialogConfig object to pass the data we need for the graph that will be shown
+    //     const dialogConfig = new MatDialogConfig();
+    //     dialogConfig.data = {
+    //       graphTemplate: graphTemplateObject,
+    //       graphFilePath: graphFilePath,
+    //       TSID_Location: TSID_Location
+    //     }
+    //   const dialogRef = dialog.open(DialogContent, dialogConfig);
+    //     // console.log("Open Dialog call");
+    //   }
+
+    this.openDialog();
       });
+      
   }
   
   openDialog(){
+    console.log("GLOBAL in open dialog graphTemplate object", globalGraphtemplateObject);
     this.showGraph(this.dialog, globalGraphtemplateObject, graphFilePath, TSID_Location);
   }
   
@@ -221,37 +331,126 @@ export class PlotlyTstoolGraphComponent implements OnInit {
       dialogConfig.data = {
         graphTemplate: graphTemplateObject,
         graphFilePath: graphFilePath,
-        TSID_Location: TSID_Location
+        TSID_Location: TSID_Location,
+        chartPackage: 'plotly'
       }
-    const dialogRef = dialog.open(DialogContent, dialogConfig);
+     
+      
+    const dialogRef = dialog.open(DialogContent,{data: dialogConfig, panelClass: 'custom-dialog-container'} );
       // console.log("Open Dialog call");
     }
+
+  // getJSONData('assets/TsToolGraphConfigFiles/diversion-graph-template.json').subscribe((graphTemplateObject: Object) => {
+
+  //   var TSID_Location;
+  //   var graphFilePath;
+  //   var featureProperties: any;
+  //   featureProperties = 
+  //   {
+  //     abbrev: "LACDITCO",
+  //     county: "LARIMER",
+  //     dataSource: "Cooperative SDR Program of CDWR & NCWCD",
+  //     dataSourceAbbrev: "NWSDR",
+  //     division: 1,
+  //     flagA: "",
+  //     flagB: "U",
+  //     gnisId: "00205018",
+  //     latitude: 40.656563,
+  //     longitude: -105.185363,
+  //     measDateTime: "2020-06-02T13:00:00.0000000-06:00",
+  //     measValue: 348.21,
+  //     moreInformation: "https://dwr.state.co.us/Tools/Stations/LACDITCO",
+  //     parameter: "DISCHRG",
+  //     stage: null,
+  //     stationName: "LARIMER COUNTY DITCH",
+  //     stationPorEnd: "2020-06-02T00:00:00.0000000-06:00",
+  //     stationPorStart: "2015-11-06T00:00:00.0000000-07:00",
+  //     stationStatus: "Active",
+  //     stationType: "Diversion Structure",
+  //     streamMile: 53.32,
+  //     structureType: "Ditch",
+  //     thirdParty: "False",
+  //     units: "CFS",
+  //     usgsStationId: "",
+  //     waterDistrict: 3,
+  //     waterSource: "CACHE LA POUDRE RIVER",
+  //     wdid: "0300911"
+  //   }
+
+  //   graphTemplateObject = this.replaceProperties(graphTemplateObject, featureProperties);
+  //   var dialog = this.dialog;
+                                                            
+  //   if (graphTemplateObject['product']['subProducts'][0]['data'][0]['properties'].TSID) {
+  //     let TSID: string = graphTemplateObject['product']['subProducts'][0]['data'][0]['properties'].TSID;
+  //     // Split on the ~ and set the actual file path we want to use so our dialog-content component
+  //     // can determine what kind of file was given.
+  //     TSID_Location = TSID.split('~')[0];
+  //     // If the TSID has one tilde (~), set the path using the correct index compared to if the 
+  //     // TSID contains two tildes.
+  //     if (TSID.split('~').length === 2) {
+  //       graphFilePath = TSID.split("~")[1];
+  //     } else if (TSID.split('~').length === 3) {
+  //       graphFilePath = TSID.split("~")[2];
+  //     }
+  //   } else console.error('The TSID has not been set in the graph template file');
+  
+  // showGraph(dialog, graphTemplateObject, graphFilePath, TSID_Location);
+  
+  
+  
+  // /**
+  //   * Creates the Dialog object to show the graph in and passes the info needed for it.
+  //   * @param dialog The dialog object needed to create the Dialog popup
+  //   * @param graphTemplateObject The template config object of the current graph being shown
+  //   * @param graphFilePath The file path to the current graph that needs to be read
+  //   */
+  //   function showGraph(dialog: any, graphTemplateObject: any, graphFilePath: string, TSID_Location: string): void {
+  //     // Create and use a MatDialogConfig object to pass the data we need for the graph that will be shown
+  //     const dialogConfig = new MatDialogConfig();
+  //     dialogConfig.data = {
+  //       graphTemplate: graphTemplateObject,
+  //       graphFilePath: graphFilePath,
+  //       TSID_Location: TSID_Location
+  //     }
+  //   const dialogRef = dialog.open(DialogContent, dialogConfig);
+  //   }
+  // }
+  
 
 }
 
 // ----------------------------------------------------------------------------------------------------
   @Component({
     selector: 'dialog-content',
-    
     templateUrl: './dialog-content.html'
   })
   export class DialogContent {
   
+    public chartPackage: string;
     mainTitleString: string;
     graphTemplateObject: any;
     graphFilePath: string;
+    showText = false;
+    showGraph = false;
     TSID_Location: string;
-    chartTemplateObject: any;
+    text:any;
 
   
-    constructor(public dialogRef: MatDialogRef<DialogContent>,public http: HttpClient,public dialog: MatDialog,
+    constructor(public dialogRef: MatDialogRef<DialogContent>,
+                public http: HttpClient,public dialog: MatDialog,
                 public router: Router,
-                // public mapService: MapService,
-                @Inject(MAT_DIALOG_DATA) public templateGraph: any) {
-  
-                  this.graphTemplateObject = templateGraph.graphTemplate;
-                  this.graphFilePath = templateGraph.graphFilePath;
-                  this.TSID_Location = templateGraph.TSID_Location;
+                @Inject(MAT_DIALOG_DATA) public dataObject: any) {
+
+                  if (dataObject.data.text) {
+                    this.showText = true;
+                    this.text = dataObject.data.text;
+                  } else {                  
+                    this.showGraph = true;
+                    this.chartPackage = dataObject.data.chartPackage;
+                    this.graphTemplateObject = dataObject.data.graphTemplate;
+                    this.graphFilePath = dataObject.data.graphFilePath;
+                    this.TSID_Location = dataObject.data.TSID_Location;
+                  }
                  }
   
     /**
@@ -260,69 +459,20 @@ export class PlotlyTstoolGraphComponent implements OnInit {
      * being created. 
      * @param config An array of PopulateGraph instances (objects?)
      */
-    createGraph(config: PopulateGraph[]): void {
-  
-      console.log( config);
-      
-      
+    createChartJSGraph(config: PopulateGraph[]): void {
+
+      // Create the graph labels array for the x axis
+      var mainGraphLabels = this.createChartMainGraphLabels(config);
+
       // Typescript does not support dynamic invocation, so instead of creating ctx
       // on one line, we can cast the html element to a canvas element. Then we can
       // create the ctx variable by using getContext() on the canvas variable.
       var canvas = <HTMLCanvasElement> document.getElementById('myChart');
-     const element = document.getElementById("chart") as HTMLDivElement;
-     console.log ("Plotly Element: ", element);
-      console.log("Canvas: ", canvas);
       var ctx = canvas.getContext('2d');
   
       // TODO: jpkeahey 2020.06.03 - Maybe use a *ngFor loop in the DialogContent
       // template file to create as many charts as needed. As well as a for loop
       // here obviously for going through subProducts?
-      // plotly
-      var x_array = []
-      var y_array = [];
-      // console.log("Dataset length: ", config[0].datasetData.length);
-
-      for( let i = 0; i < config[0].datasetData.length; i++){
-        // console.log(i , config[0].datasetData[i]['x']);
-        let ogdate: string;
-        ogdate = config[0].datasetData[0]['x']; 
-        x_array.push( moment(new Date(ogdate)).format('YYYY-MM'));
-        y_array.push(config[0].datasetData[i]['y']);
-      }
-      console.log("X Array: ", x_array);
-      console.log("y Array: ", y_array);
-
-
-      console.log("Converting X values: ")
-
-      //  moment(config[0].datasetData[0]['x']).format('YYYY MM');
-
-      // console.log("Original x Value: ", config[0].datasetData[0]['x']);
-
-      // let ogdate: string;
-      // ogdate = config[0].datasetData[0]['x'];
-      // console.log("After conversion: ",  moment(new Date(ogdate)).format('MM YYYY'));
-      // console.log("prover order conversion: ",  moment(new Date(ogdate)).format('YYYY-MM'));
-
-      // console.log("Y Array: ", y_array);
-      // for ( let i = 0; i < )
-
-      // TODO: need to change date format of why array
-      var data = {
-        type: 'Scatter',
-        mode: 'lines+markers',
-        name: config[0].legendLabel,
-        x: x_array,
-        y: y_array
-      }
-
-      Plotly.plot(element,[data]);
-
-      // console.log("Dataset length: ", config[0].datasetData.length);
-      // console.log("Dataset: x only: ", config[0].datasetData[0]['x']);
-      // console.log("Dataset: y only: ", config[0].datasetData[0]['y']);
-      
-
       var myChart = new Chart(ctx, {
         type: validate(config[0].chartType, 'GraphType'),
         data: {
@@ -330,7 +480,7 @@ export class PlotlyTstoolGraphComponent implements OnInit {
           datasets: [
             {
               label: config[0].legendLabel,
-              data: config[0].datasetData,                                            // Y-axis data
+              data: config[0].chartJSDatasetData,                                            // Y-axis data
               backgroundColor: 'rgba(33, 145, 81, 0)',              // The graph fill color, with a = 'alpha' = 0 being 0 opacity
               borderColor: validate(config[0].datasetBackgroundColor, 'borderColor'), // Color of the border or line of the graph
               borderWidth: 1,
@@ -404,7 +554,7 @@ export class PlotlyTstoolGraphComponent implements OnInit {
           // Push a dataset object straight into the datasets property in the current graph.
           myChart.data.datasets.push({
             label: config[i].legendLabel,
-            data: config[i].datasetData,
+            data: config[i].chartJSDatasetData,
             type: validate(config[i].chartType, 'GraphType'),
             backgroundColor: 'rgba(33, 145, 81, 0)',
             borderColor: validate(config[i].datasetBackgroundColor, 'borderColor'),
@@ -447,6 +597,82 @@ export class PlotlyTstoolGraphComponent implements OnInit {
       }
     }
   
+
+  /**
+   * Determine the full length of days to create on the chart to be shown
+   * @param config The array of PopulateGraph instances created from the createTSChartJSGraph function. Contains configuration
+   * metadata and data about each time series graph that needs to be created
+   */
+  private createChartMainGraphLabels(config: PopulateGraph[]): string[] {
+
+    var labelStartDate = '3000-01';
+    var labelEndDate = '1000-01';
+    var mainGraphLabels: string[] = [];
+
+    // If the files read were StateMod files, go through them all and determine the absolute first and last dates
+    if (config[0].graphFileType === 'stm') {
+      
+      for (let instance of config) {
+        if (new Date(instance.startDate) < new Date(labelStartDate)) {
+          labelStartDate = instance.startDate;
+        }
+        if (new Date(instance.endDate) > new Date(labelEndDate)) {
+          labelEndDate = instance.endDate;
+        }
+      }
+      // Create the array and populate with dates in between the two dates given
+      // TODO: jpkeahey 2020.07.02 - This only uses months right now, and nothing else
+      mainGraphLabels = this.getDates(labelStartDate, labelEndDate, 'months');
+    } else if (config[0].graphFileType === 'csv') {
+      mainGraphLabels = config[0].dataLabels;
+    }
+    return mainGraphLabels;
+  }
+
+   /**
+   * Takes the results given from Papa Parse and creates a PopulateGraph instance by assigning its members. It then adds the
+   * PopulateGraph instance to an array, in case in the future more than one CSV files need to be shown on a graph
+   * @param results The results object returned asynchronously from Papa Parse
+   */
+  private createCSVChartJSGraph(results: any): void {
+
+    var graphType: string = '';
+    var templateYAxisTitle: string = '';
+    var backgroundColor: string = '';
+    var legendLabel = '';
+    var chartConfig: Object = this.graphTemplateObject;
+    var configArray: PopulateGraph[] = [];
+
+    let x_axis = Object.keys(results[0])[0];
+    let y_axis = Object.keys(results[0])[1];
+    // Populate the arrays needed for the x- and y-axes
+    var x_axisLabels: string[] = [];
+    var y_axisData: number[] = [];
+    for (let resultObj of results) {      
+      x_axisLabels.push(resultObj[x_axis]);
+      y_axisData.push(parseFloat(resultObj[y_axis]));
+    }
+    // Populate various other chart properties. They will be checked for validity in createGraph()
+    graphType = chartConfig['product']['subProducts'][0]['properties'].GraphType.toLowerCase();
+    templateYAxisTitle = chartConfig['product']['subProducts'][0]['properties'].LeftYAxisTitleString;
+    backgroundColor = chartConfig['product']['subProducts'][0]['data'][0]['properties'].Color;
+    
+    var config: PopulateGraph = {
+      legendLabel: legendLabel,
+      chartType: graphType,
+      dataLabels: x_axisLabels,
+      chartJSDatasetData: y_axisData,
+      datasetBackgroundColor: backgroundColor,
+      graphFileType: 'csv',
+      xAxesTicksMin: x_axisLabels[0],
+      xAxesTicksMax: x_axisLabels[x_axisLabels.length - 1],
+      yAxesLabelString: templateYAxisTitle
+    }
+
+    configArray.push(config);
+    this.createChartJSGraph(configArray);
+  }
+
     /**
      * Sets up properties, and creates the configuration object for the Chart.js graph
      * @param timeSeries The Time Series object retrieved asynchronously from the StateMod file
@@ -458,7 +684,9 @@ export class PlotlyTstoolGraphComponent implements OnInit {
       var backgroundColor: string = '';
       var legendLabel: string;
       var chartConfig: Object = this.graphTemplateObject;
-      var configArray = new Array<PopulateGraph>();
+      var configArray: PopulateGraph[] = [];
+      var chartJSGraph: boolean;
+
   
       for (let i = 0; i < timeSeries.length; i++) {
         // Set up the parts of the graph that won't need to be set more than once, such as the LeftYAxisTitleString
@@ -466,8 +694,9 @@ export class PlotlyTstoolGraphComponent implements OnInit {
           templateYAxisTitle = chartConfig['product']['subProducts'][0]['properties'].LeftYAxisTitleString;
         }
         
-        var x_axisLabels: string[] = new Array<string>();
-        var y_axisData: number[] = new Array<number>();
+      var x_axisLabels: string[] = [];
+      var chartJS_yAxisData: number[] = [];
+      var plotly_yAxisData: number[] = [];
         
         if (timeSeries[i] instanceof MonthTS) {      
           x_axisLabels = this.getDates(timeSeries[i].getDate1().getYear() + "-" +
@@ -484,6 +713,11 @@ export class PlotlyTstoolGraphComponent implements OnInit {
           }
         }
   
+        var start = timeSeries[i].getDate1().getYear() + "-" + this.zeroPad(timeSeries[i].getDate1().getMonth(), 2);      
+        var end = timeSeries[i].getDate2().getYear() + "-" + this.zeroPad(timeSeries[i].getDate2().getMonth(), 2);
+        var type = '';
+        if (timeSeries[i] instanceof MonthTS) type = 'months';
+
         let startDate: DateTime = timeSeries[i].getDate1();
         let endDate: DateTime = timeSeries[i].getDate2();
         // The DateTime iterator for the the while loop
@@ -503,10 +737,12 @@ export class PlotlyTstoolGraphComponent implements OnInit {
           // If it's missing, replace value with NaN and push onto the array. If not just push the value onto the array.
           if (timeSeries[i].isDataMissing(value)) {
             dataObject.y = NaN;
+            plotly_yAxisData.push(NaN);
           } else {
             dataObject.y = value;
+            plotly_yAxisData.push(value);
           }
-          y_axisData.push(dataObject);
+          chartJS_yAxisData.push(dataObject);
           // Update the interval and labelIndex now that the dataObject has been pushed onto the y_axisData array.
           iter.addInterval(timeSeries[i].getDataIntervalBase(), timeSeries[i].getDataIntervalMult());
           labelIndex++;
@@ -517,10 +753,12 @@ export class PlotlyTstoolGraphComponent implements OnInit {
             dataObject.x = x_axisLabels[labelIndex];
             if (timeSeries[i].isDataMissing(value)) {
               dataObject.y = NaN;
+              plotly_yAxisData.push(NaN);
             } else {
               dataObject.y = value;
+              plotly_yAxisData.push(value);
             }
-            y_axisData.push(dataObject);
+            chartJS_yAxisData.push(dataObject);
           }
   
         } while (iter.getMonth() !== endDate.getMonth() || iter.getYear() !== endDate.getYear())      
@@ -534,26 +772,112 @@ export class PlotlyTstoolGraphComponent implements OnInit {
         var config: PopulateGraph = {
           legendLabel: legendLabel,
           chartType: graphType,
-          dataLabels: x_axisLabels,
-          datasetData: y_axisData,
+          dateType: type,
+          chartJSDatasetData: chartJS_yAxisData,
+          plotlyDatasetData: plotly_yAxisData,
           datasetBackgroundColor: backgroundColor,
+          graphFileType: 'stm',
+          startDate: start,
+          endDate: end,
           xAxesTicksMin: x_axisLabels[0],
           xAxesTicksMax: x_axisLabels[x_axisLabels.length - 1],
-          yAxesLabelString: templateYAxisTitle,
-          panRangeMin: x_axisLabels[0],
-          panRangeMax: x_axisLabels[x_axisLabels.length - 1],
-          zoomRangeMin: x_axisLabels[0],
-          zoomRangeMax: x_axisLabels[x_axisLabels.length - 1]
+          yAxesLabelString: templateYAxisTitle
         }
   
         configArray.push(config);
       }
-      this.createGraph(configArray);
+      // this.createGraph(configArray);
+        // Determine whether a chartJS graph or Plotly graph needs to be made
+        if (!this.chartPackage) {
+          chartJSGraph = true;
+        } else if (this.chartPackage.toUpperCase() === 'PLOTLY') {
+          chartJSGraph = false;
+        } else {
+          chartJSGraph = true;
+        }
+
+        if (chartJSGraph) {
+          this.createChartJSGraph(configArray);
+        } else {
+          this.createPlotlyGraph(configArray);
+        }
       
     }
+    
+    private createPlotlyGraph(config: PopulateGraph[]): void {
+
+      var finalData: {x: number[], y: number[], type: string}[] = [];
+      var data: any;
+      var mainGraphLabels = this.createChartMainGraphLabels(config);
+      var colorwayArray: string[] = [];
+      console.log(config);
+      
+      for (let i = 0; i < config.length; i++) {
+        data = {};
+        
+        data.line = {
+          width: 1
+        };
+        data.name = config[i].legendLabel;
+        data.marker = {
+          size: 4
+        };
+        data.mode = this.setPlotlyGraphMode(config[i].chartType);
+        data.type =  this.setPlotlyGraphType(config[i].chartType);
+        data.x = mainGraphLabels;
+        data.y = config[i].plotlyDatasetData;
   
-    // Returns an array of dates between the two dates given, per day
-    // https://gist.github.com/miguelmota/7905510
+        colorwayArray.push(config[i].datasetBackgroundColor);
+        finalData.push(data);
+      }
+  
+      var layout = {
+        // An array of strings describing the color to display the graph as for each time series
+        colorway: colorwayArray,
+        height: 600,
+        // Create the legend inside the graph and display it in the upper right
+        legend: {
+          x: 1,
+          xanchor: 'right',
+          y: 1
+        },
+        showlegend: true,
+        width: 1000,
+        xaxis: {
+          // Maximum amount of ticks on the x-axis
+          nticks: 8,
+          tickangle: 0
+        },
+        yaxis: {
+          // 'r' removes the k from the thousands place for large numbers
+          tickformat: 'r',
+          title: config[0].yAxesLabelString
+        }
+      }
+  
+      var plotlyConfig = {
+        responsive: true,
+        scrollZoom: true
+      };
+      console.log(finalData);
+      
+      const element = document.getElementById("plotlyDiv") as HTMLDivElement;
+      console.log("ELEMENT", element);
+      // setTimeout(() =>{
+      //   Plotly.react(element, finalData, layout, plotlyConfig);
+
+      // })
+      Plotly.react(element, finalData, layout, plotlyConfig);
+
+      
+    }
+     /**
+     * Returns an array of dates between the start and end dates, either per day or month. Skeleton code obtained from
+     * https://gist.github.com/miguelmota/7905510
+     * @param startDate Date to be the first index in the returned array of dates
+     * @param endDate Date to be the last index in the returned array of dates
+     * @param interval String describing the interval of how far apart each date should be
+     */
     private getDates(startDate: any, endDate: any, interval: string): any[] {
   
       var dates = [];
@@ -574,9 +898,7 @@ export class PlotlyTstoolGraphComponent implements OnInit {
           }        
           return dates;
         case 'months':
-          console.log("Current Date: ", currentDate);
           currentDate = moment(startDate);
-          console.log("Current date after moment: ", currentDate);
           var stopDate = moment(endDate);        
           while (currentDate <= stopDate) {
               dates.push( moment(currentDate).format('MMM YYYY') )
@@ -585,7 +907,6 @@ export class PlotlyTstoolGraphComponent implements OnInit {
           return dates;
       }
       
-      // console.log("Dates Array: ", dates);
     };
   
     /**
@@ -593,7 +914,7 @@ export class PlotlyTstoolGraphComponent implements OnInit {
      * for graph creation.
      */
     public setChartTemplateObject(graphTemplate){
-      this.chartTemplateObject = graphTemplate;
+      this.graphTemplateObject = graphTemplate;
     }
     public setGraphFilePath(filePath){
       this.graphFilePath = filePath;
@@ -602,7 +923,7 @@ export class PlotlyTstoolGraphComponent implements OnInit {
       this.TSID_Location = TSIDLocation;
     }
     public getChartTemplateObject(){
-      return this.chartTemplateObject;
+      return this.graphTemplateObject;
     }
     public getGraphFilePath(){
       return this.graphFilePath;
@@ -621,20 +942,46 @@ export class PlotlyTstoolGraphComponent implements OnInit {
       };
     }
     ngOnInit(): void {
-          
-      this.setChartTemplateObject(this.templateGraph.graphTemplate);
-      this.setGraphFilePath(this.graphFilePath);
-      this.setTSIDLocation(this.TSID_Location);
-      // this.mapService.setChartTemplateObject(this.templateGraph.graphTemplate);
-      // this.mapService.setGraphFilePath(this.graphFilePath);
-      // this.mapService.setTSIDLocation(this.TSID_Location);
-      // Set the mainTitleString to be used by the map template file to display as the TSID location (for now)
-      this.mainTitleString = this.templateGraph.graphTemplate['product']['properties'].MainTitleString;
+
+      if (this.showGraph) {
+        this.setChartTemplateObject(this.graphTemplateObject);
+        this.setGraphFilePath(this.graphFilePath);
+        this.setTSIDLocation(this.TSID_Location);
+        // Set the mainTitleString to be used by the map template file to display as the TSID location (for now)
+        this.mainTitleString = this.graphTemplateObject['product']['properties'].MainTitleString;
+    
+        // if (this.graphFilePath.includes('.csv'))
+        //   this.parseCSVFile();
+        // else 
+        if (this.graphFilePath.includes('.stm'))
+          this.parseStateModFile();
   
-      // if (this.graphFilePath.includes('.csv'))
-      //   this.parseCSVFile();
-      // else if (this.graphFilePath.includes('.stm'))
-        this.parseStateModFile();
+      } else if (this.showText) {
+        // TODO: jpkeahey 2020.07.13 - Get a header to display?
+        // try {
+        //   let line = this.text.split('\n')[2];
+        //   line = line.trim().split("\\s{2,}");
+        //   console.log(line);
+        // } catch (e) {
+        //   console.log(e);
+          
+        // }
+        
+        
+      }
+
+      // this.setChartTemplateObject(this.graphTemplateObject);
+      // this.setGraphFilePath(this.graphFilePath);
+      // this.setTSIDLocation(this.TSID_Location);
+      
+      // // Set the mainTitleString to be used by the map template file to display as the TSID location (for now)
+      // this.mainTitleString = this.templateGraph.graphTemplate['product']['properties'].MainTitleString;
+  
+      // //didnt need this originally
+      // // if (this.graphFilePath.includes('.csv'))
+      // //   this.parseCSVFile();
+      // // else if (this.graphFilePath.includes('.stm'))
+      //   this.parseStateModFile();
     }
   
   
@@ -711,6 +1058,29 @@ export class PlotlyTstoolGraphComponent implements OnInit {
       }
       
     }
+
+      /**
+     * @returns the plotly specific type so that plotly knows what type of graph to create
+     * @param chartType The chart type string obtained from the chart template file
+     */
+    private setPlotlyGraphType(chartType: string): string {
+      switch(chartType.toUpperCase()) {
+        case 'LINE':
+          return 'scatter';
+        default:
+          return 'scatter';
+      }
+    }
+
+    private setPlotlyGraphMode(chartType: string): string {
+      switch(chartType.toUpperCase()) {
+        case 'LINE':
+          return 'lines+markers';
+        default:
+          return 'lines+markers';
+      }
+    }
+
   
     /**
      * Helper function that left pads a number by a given amount of places, e.g. num = 1, places = 2, returns 01
@@ -730,16 +1100,19 @@ export class PlotlyTstoolGraphComponent implements OnInit {
   interface PopulateGraph {
     legendLabel: string;
     chartType: string;
+    dateType?: string;
     dataLabels?: string[];
-    datasetData: number[];
+    chartJSDatasetData?: number[];
+    plotlyDatasetData?: number[];
     datasetBackgroundColor?: string;
+    graphFileType: string;
+    startDate?: string;
+    endDate?: string;
     xAxesTicksMin: string;
     xAxesTicksMax: string;
     yAxesLabelString: string;
-    panRangeMin: string;
-    panRangeMax: string;
-    zoomRangeMin: string;
-    zoomRangeMax: string;
+
+
   }
 
 
@@ -3850,3 +4223,8 @@ export class TS {
   
   
   
+
+
+
+
+

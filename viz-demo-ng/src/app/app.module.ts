@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { HashLocationStrategy, LocationStrategy  } from '@angular/common';
+import { CommonModule } from '@angular/common';
 
 import { ChartsModule } from 'ng2-charts';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -11,6 +13,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { ShowdownModule } from 'ngx-showdown';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+
 
 
 
@@ -57,10 +61,13 @@ import { PlotlyTstoolGraphComponent } from './tstool-graph-config/plotly-tstool-
     MatCardModule,
     MatFormFieldModule,
     HttpClientModule,
-    ShowdownModule
+    ShowdownModule,
+    CommonModule,
+    DragDropModule
+
 
   ],
-  providers: [EventEmitterService],
+  providers: [EventEmitterService, {provide : LocationStrategy , useClass: HashLocationStrategy}],
   bootstrap: [AppComponent],
   
 })

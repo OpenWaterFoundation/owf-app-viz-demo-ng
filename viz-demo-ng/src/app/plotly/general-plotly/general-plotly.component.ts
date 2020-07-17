@@ -20,26 +20,18 @@ export class GeneralPlotlyComponent implements OnInit {
   constructor(public dialog: MatDialog, private eventEmitterService: EventEmitterService, private router: Router ) {}
   // Step 3: Subscrived the "invoceFirstComponentFunction" event emitter serves and called firstFunction method
   ngOnInit() { 
-    this.convertMarkdownToHTML('assets/README.md', "markdown-div");
-    console.log("General Plotly Component Created");
+    
+    this.openDialog();
+   
     if (this.eventEmitterService.subsVar==undefined) {  
       this.eventEmitterService.subsVar = this.eventEmitterService.    
-      invokeFirstComponentFunction.subscribe((name:string) => {    
+      invokeComponentFunction.subscribe((name:string) => {    
         this.openDialog();    
       });    
     }    
   }    
   
-  convertMarkdownToHTML(inputFile, outputDiv) {
-    console.log("Input file :", inputFile);
-    $.get(inputFile, (textString) => {
-        var converter = new showdown.Converter({tables: true, strikethrough: true});
-        document.getElementById(outputDiv).innerHTML = converter.makeHtml(textString);
-    }).fail(()=> {
-      console.error("The markdown file '" + inputFile + "' could not be read");
-      this.router.navigateByUrl('not-found');
-    })
-  }
+  
 
   openDialog(): void {
     console.log("Entered openDialog Function")
@@ -62,10 +54,18 @@ export class GeneralPlotlyComponent implements OnInit {
   templateUrl: 'modal-content.html',
 })
 export class DialogOverviewExampleDialog implements OnInit  {
+  constructor(
+    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>
+   ) {}
 
   ngOnInit() {
     this.basicChart();
   }
+
+  /**
+  * Closes the Mat Dialog popup when the Close button is clicked.
+  */
+ onClose(): void { this.dialogRef.close(); }
 
   basicChart(){
     const element = document.getElementById("chart") as HTMLDivElement;
@@ -119,9 +119,7 @@ export class DialogOverviewExampleDialog implements OnInit  {
   }
 
 
-  constructor(
-    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>
-   ) {}
+  
 
  
 

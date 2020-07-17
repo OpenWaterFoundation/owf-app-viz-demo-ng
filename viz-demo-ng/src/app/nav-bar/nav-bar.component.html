@@ -16,7 +16,7 @@
           <a class="nav-link disabled" href="#">Disabled</a>
         </li> -->
         <li class="nav-item">
-          <a class="nav-link"routerLink = "showdown-content" routerLinkActive="active">ShodownJS</a>
+          <a class="nav-link"routerLink = "showdown-content" routerLinkActive="active">ShowdownJS</a>
         </li>
         <li ngbDropdown class="nav-item dropdown">
           <a ngbDropdownToggle class="nav-link dropdown-toggle"  id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">ChartJS</a>
@@ -32,10 +32,11 @@
             >PlotlyJS</a>
             <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown01">
               <!-- <a class="dropdown-item" >  Chart Ex: Popup from navigation</a> -->
-              <a class="dropdown-item" routerLink = "general-plotly-chart" routerLinkActive="active" (click)="firstComponentFunction()"> 2D Line Chart-Monthly Time Series Data</a>
-              <a class="dropdown-item" routerLink = "snodas-plotly-chart" routerLinkActive="active"> SNODAS Line Chart Demo: Daily TS Data</a>
-              <a class="dropdown-item"routerLink = "plotly-heatmap" routerLinkActive="active">Basic HeatMap Demo</a>
-              <a class="dropdown-item"routerLink = "plotly-tstool-graph" routerLinkActive="active">TSTool Graph Configuration Demo: Monthly Data </a>
+              <!-- (click)="firstComponentFunction() -->
+              <a class="dropdown-item" routerLink = "general-plotly-chart" routerLinkActive="active" (click)="genericPlotlyDemoFunction()"> Generic 2D Line Chart Demo-Monthly TS Data</a>
+              <a class="dropdown-item" routerLink = "snodas-plotly-chart" routerLinkActive="active" (click)="SnodasPlotlyDemoFunction()"> SNODAS Line Chart Demo: Daily TS Data</a>
+              <a class="dropdown-item"routerLink = "plotly-heatmap" routerLinkActive="active" (click)="HeatMapPlotlyDemoFunction()">Basic HeatMap Demo</a>
+              <a class="dropdown-item"routerLink = "plotly-tstool-graph" routerLinkActive="active" (click)="TSToolConfigPlotlyDemoFunction()">TSTool Graph Configuration Demo: Monthly Data </a>
               <!-- routerLink = "general-plotly-chart" routerLinkActive="active" -->
             </div>
           </li>

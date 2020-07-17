@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { EventEmitterService } from '../../event-emitter.service';    
 
 
 declare var Plotly: any;
@@ -11,10 +12,17 @@ declare var Plotly: any;
 })
 export class HeatmapComponent implements OnInit {
 
-  constructor(public dialog: MatDialog,) { }
+  constructor(public dialog: MatDialog, private eventEmitterService: EventEmitterService) { }
 
   ngOnInit(): void {
     this.openDialog();
+    if (this.eventEmitterService.subsVar==undefined) { 
+      console.log("Step3: HeatMap Function call openDialog") 
+      this.eventEmitterService.subsVar = this.eventEmitterService.    
+      invokeHeatMapComponentFunction.subscribe((name:string) => {    
+        this.openDialog();    
+      });    
+    }    
   }
 
   openDialog(): void {
@@ -123,9 +131,17 @@ export class HeatmapComponent implements OnInit {
 })
 
 export class HeatmapDialog implements OnInit{
+
+  constructor( public dialogRef: MatDialogRef<HeatmapDialog>) { }
   ngOnInit() {
     this.basicHeatmap();
   }
+
+  /**
+  * Closes the Mat Dialog popup when the Close button is clicked.
+  */
+ onClose(): void { this.dialogRef.close(); }
+
   basicHeatmap(){
     const element = document.getElementById("chart") as HTMLDivElement;
     console.log('Element: ', element);

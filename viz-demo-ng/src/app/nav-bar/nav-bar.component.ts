@@ -17,11 +17,23 @@ export class NavBarComponent implements OnInit {
   constructor( private eventEmitterService: EventEmitterService ) { }
 
   //Step 1: first (plotly) component function call
-  firstComponentFunction(){  
+  genericPlotlyDemoFunction(){  
+  // firstComponentFunction(){  
     console.log('Inside firstComponentFunction call: ')  
-    this.eventEmitterService.onFirstComponentButtonClick();    
+    // this.eventEmitterService.onFirstComponentButtonClick();   
+    this.eventEmitterService.genericPlotlyChartClick();  
+  }
+  SnodasPlotlyDemoFunction(){  
+    console.log("Step 1: Event emitter SNODAS");  
+    this.eventEmitterService.SnodasPlotlyChartClick();  
   }
 
+  HeatMapPlotlyDemoFunction(){    
+    this.eventEmitterService.HeatMapPlotlyChartClick();  
+  }
+  TSToolConfigPlotlyDemoFunction(){    
+    this.eventEmitterService.TSToolConfigPlotlyChartClick();  
+  }
   ngOnInit(): void {
   }
 

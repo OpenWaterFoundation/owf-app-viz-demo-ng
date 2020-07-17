@@ -20,6 +20,12 @@ export class LineChartComponent implements OnInit {
 
   constructor(private modalService: NgbModal, private papa: Papa) { }
 
+  ngOnInit(): void {
+    let content;
+    this.open(content, 'Volume_Graph');
+  }
+
+
    // chart variables
    isDataAvaliable:boolean = false;
    public chartType;
@@ -308,8 +314,6 @@ export class LineChartComponent implements OnInit {
 
   // constructor() { }
 
-  ngOnInit(): void {
-  }
 
 
 

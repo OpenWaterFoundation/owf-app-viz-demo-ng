@@ -4,6 +4,8 @@ import { Papa } from 'ngx-papaparse';
 import * as $ from "jquery";
 import { NativeDateAdapter } from '@angular/material/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig} from '@angular/material/dialog';
+import { EventEmitterService } from './../event-emitter.service';    
+
 
 
 declare var Plotly: any;
@@ -14,11 +16,20 @@ var TypeofData;
   styleUrls: ['./plotly.component.css']
 })
 export class PlotlyComponent implements OnInit{
-  constructor(public dialog: MatDialog ) {}
+  constructor(public dialog: MatDialog, private eventEmitterService: EventEmitterService ) {}
   ngOnInit() {
     this.openDialog('Volume_Graph');
+
+    if (this.eventEmitterService.subsVar==undefined) {  
+      this.eventEmitterService.subsVar = this.eventEmitterService.    
+      invokeSnodasComponentFunction.subscribe((name:string) => {  
+        console.log("Step3: Snodas Function call openDialog()");   
+        this.openDialog('Volume_Graph');    
+      });    
+    }  
   }
 
+  
   openDialog(DataSpecification): void {
     TypeofData = DataSpecification;
     
@@ -28,11 +39,16 @@ export class PlotlyComponent implements OnInit{
       width: '1000px',
     });
 
+    
+ 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
      
     });
   }
+
+ 
+ 
 }
 
 
@@ -42,6 +58,9 @@ export class PlotlyComponent implements OnInit{
 })
 
 export class SnodasPlotlyDialog implements OnInit{
+
+  constructor(private modalService: NgbModal,private papa: Papa,
+    public dialogRef: MatDialogRef<SnodasPlotlyDialog>) { }
 
   // console.log('Inside SnodasPlotlyDialog component');
 
@@ -60,6 +79,11 @@ export class SnodasPlotlyDialog implements OnInit{
     this.plotlychart(this.typeOfChart);
   }
 
+    /**
+  * Closes the Mat Dialog popup when the Close button is clicked.
+  */
+  onClose(): void { this.dialogRef.close(); }
+
   public plotlychart(TypeOfData){
     console.log('Inside SnodasPlotlyDialog component');
     let _this = this;
@@ -73,7 +97,7 @@ export class SnodasPlotlyDialog implements OnInit{
         file = 'assets/SnowpackStatisticsByBasin/SnowpackStatisticsByBasin_UpstreamTotal_'+_this.chartBasinID+'.csv';
         break;
       case 'Volume_Graph':
-        console.log("Entered Volume Graph case");
+        // console.log("Entered Volume Graph case");
         _this.typeOfSnodasChart = 'SWE Volume Graph';
         file = 'assets/SnowpackCSVByBasin/'+ this.chartBasinID+'-SWE-Volume.csv';
         break;
@@ -215,8 +239,7 @@ export class SnodasPlotlyDialog implements OnInit{
 
   }
 
-  constructor(private modalService: NgbModal,private papa: Papa,
-    public dialogRef: MatDialogRef<SnodasPlotlyDialog>) { }
+
 
  
 
