@@ -55,12 +55,13 @@ export class EventEmitterService {
     // this.invokegenericPlotlyDemoFunction.emit();    
 
   }    
-  SnodasChartjsChartClick() { 
+  SnodasChartJSClick() { 
     console.log("Step 2 Snodas chartjs--> should invokeSnodasComponent function")   
     this.invokeChartjsSnodasComponentFunction.emit();    
     // this.invokegenericPlotlyDemoFunction.emit();    
 
   } 
+
   TSToolConfigChartJSClick() { 
     console.log("Step 2 Plotly TSTool--> should invokeTSToolComponent function")   
     this.invokeChartjsTSToolComponentFunction.emit();    

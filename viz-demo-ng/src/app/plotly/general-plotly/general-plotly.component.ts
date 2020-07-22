@@ -3,6 +3,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 import { EventEmitterService } from '../../event-emitter.service';    
 import { ActivatedRoute, Router } from '@angular/router';
 import * as $ from "jquery";
+import { take } from 'rxjs/operators';
 
 
 declare var Plotly: any;
@@ -17,7 +18,7 @@ const showdown = require('showdown');
 })
 export class GeneralPlotlyComponent implements OnInit {
 
-  constructor(public dialog: MatDialog, private eventEmitterService: EventEmitterService, private router: Router ) {}
+  constructor(public dialog: MatDialog, private eventEmitterService: EventEmitterService, private router: Router, private route: ActivatedRoute ) {}
   // Step 3: Subscrived the "invoceFirstComponentFunction" event emitter serves and called firstFunction method
   ngOnInit() { 
     
@@ -25,7 +26,7 @@ export class GeneralPlotlyComponent implements OnInit {
    
     if (this.eventEmitterService.subsVar==undefined) {  
       this.eventEmitterService.subsVar = this.eventEmitterService.    
-      invokeComponentFunction.subscribe((name:string) => {    
+      invokeComponentFunction .pipe(take(1)).subscribe(() => {    
         this.openDialog();    
       });    
     }    
@@ -43,8 +44,15 @@ export class GeneralPlotlyComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-     
     });
+
+    
+
+    // dialogRef.afterClosed()
+    //           .pipe(take(1))
+    //           .subscribe(() => {
+    //             this.router.navigate(['.'], { relativeTo: this.route })
+    //           });
   }
  
 

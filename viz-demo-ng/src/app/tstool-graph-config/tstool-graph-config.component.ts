@@ -47,11 +47,11 @@ this.graphTsToolConfig();
 
 if (this.eventEmitterService.subsVar==undefined) {  
   this.eventEmitterService.subsVar = this.eventEmitterService.    
-  invokeTSToolComponentFunction.subscribe((name:string) => {  
+  invokeChartjsTSToolComponentFunction.subscribe((name:string) => {  
     console.log("Step3: Snodas Function call openDialog()");   
     this.graphTsToolConfig();    
   });    
-}  
+}   
    
 }
 

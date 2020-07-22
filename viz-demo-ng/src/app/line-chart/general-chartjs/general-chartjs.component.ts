@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-
+import { EventEmitterService } from '../../event-emitter.service';    
 
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Color, BaseChartDirective, Label } from 'ng2-charts';
@@ -30,10 +30,17 @@ import { ChartsModule } from 'ng2-charts'; // <- HERE
 })
 export class GeneralChartjsComponent implements OnInit {
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, private eventEmitterService: EventEmitterService) { }
 
   ngOnInit(): void {
     this.openDialog();
+
+    if (this.eventEmitterService.subsVar==undefined) {  
+      this.eventEmitterService.subsVar = this.eventEmitterService.    
+      invokeChartjsGenericComponentFunction.subscribe((name:string) => {    
+        this.openDialog();  
+      });    
+    }  
   }
 
   openDialog(): void {

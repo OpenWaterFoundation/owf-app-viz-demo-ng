@@ -34,10 +34,22 @@ export class NavBarComponent implements OnInit {
   TSToolConfigPlotlyDemoFunction(){    
     this.eventEmitterService.TSToolConfigPlotlyChartClick();  
   }
+
+  genericChartjsDemoFunction(){  
+    // firstComponentFunction(){  
+      console.log('Inside firstComponentFunction call: ')  
+      // this.eventEmitterService.onFirstComponentButtonClick();   
+      this.eventEmitterService.genericChartJSClick();  
+    }
   SnodasChartjsDemoFunction(){  
     console.log("Step 1: Event emitter SNODAS");  
-    this.eventEmitterService.SnodasChartjsChartClick();  
+    this.eventEmitterService.SnodasChartJSClick();  
   }
+
+  TSToolConfigChartjsDemoFunction(){    
+    this.eventEmitterService.TSToolConfigChartJSClick();  
+  }
+  
   ngOnInit(): void {
   }
 
