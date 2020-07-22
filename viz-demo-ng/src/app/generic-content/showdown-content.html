@@ -1,5 +1,52 @@
 <main role="main" class="container">
 
+    <h1>Angular Showdown Demonstration</h1>
+    <br>
+    <p>ngx-showdown is an Angular integration of Showdown. Showdown is a JavaScript Markdown to HTML converter,
+         based on the original works by John Gruber. Showdown can be used client side (in the browser) or server 
+         side (with NodeJs).</p>
+    <br>
+
+   <h3>Markdown Input</h3> 
+    <!-- Markdown Editor Using Showdown:  
+            https://github.com/showdownjs/showdown/wiki/Tutorial:-Markdown-editor-using-Showdown-->
+    <textarea id="sourceTA" rows="10" cols="82">
+        Showdown Tutorial
+        =================
+        
+        This is a showdown tutorial. 
+        
+        Showdown supports a number of cool features, namely:
+        
+          - headers 
+          - lists
+          - and other stuff too
+          
+        It is also possible to include code:
+        
+            var foo = 'bar';
+            
+            var baz = {
+              markdown: 'is great',
+              showdown: 'is awesome'
+            }
+        
+        Don't forget to check the [extensions wiki][1].
+        
+        [1]: https://github.com/showdownjs/showdown/wiki/extensions
+        </textarea>
+        <br>
+        <br>
+        <button id="runBtn" onClick="run()">Convert</button>
+        <br>
+        <br>
+        <h3>Showdown Preview</h3>
+        <div id="showdownbox">
+            <showdown [value]="text" ngPreserveWhitespaces></showdown>
+        </div>
+         <br>
+
+         <h2>**README content to be removed**</h2>
     <showdown src='assets/app-content/content-pages/showdown.md'></showdown>
 
  </main>  

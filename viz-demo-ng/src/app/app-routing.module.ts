@@ -13,17 +13,22 @@ import { PlotlyTstoolGraphComponent } from './tstool-graph-config/plotly-tstool-
 
 
 const routes: Routes = [
-  {path: 'snodas-chartjs', component: LineChartComponent},
-  {path: 'general-chartjs-ex', component: GeneralChartjsComponent},
-  {path: 'general-plotly-chart', component: GeneralPlotlyComponent},
-  {path: 'snodas-plotly-chart', component: PlotlyComponent},
-  {path: 'plotly-heatmap', component: HeatmapComponent},
-  {path: 'home', component: GenericContentComponent},
+
   {path: 'angular-visualization-demos', component: GenericContentComponent},
-  {path: 'tstool-graph-config', component: TstoolGraphConfigComponent},
-  {path: 'plotly-tstool-graph', component: PlotlyTstoolGraphComponent},
-  {path: 'ng-visualization-resources', component: LinksComponent},
-  {path: 'showdown-content', component: NGXShowdownComponent},
+  {path: 'home', component: GenericContentComponent},
+  {path: 'resources', component: LinksComponent},
+  {path: 'showdown-demo', component: NGXShowdownComponent},
+
+  {path: 'chartjs/generic-month-line-demo', component: GeneralChartjsComponent},
+  {path: 'chartjs/snodas-day-line-demo', component: LineChartComponent},
+  {path: 'chartjs/tstool-month-line-demo', component: TstoolGraphConfigComponent},
+
+  
+  {path: 'plotly/generic-month-line-demo', component: GeneralPlotlyComponent},
+  {path: 'plotly/snodas-day-line-demo', component: PlotlyComponent},
+  {path: 'plotly/heatmap-demo', component: HeatmapComponent},
+  {path: 'plotly/tstool-month-line-demo', component: PlotlyTstoolGraphComponent},
+  
   { path: '**', component: GenericContentComponent },
 
 

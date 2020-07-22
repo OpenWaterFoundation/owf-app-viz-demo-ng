@@ -1,11 +1,27 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
-import { ChartsModule } from 'ng2-charts';
+
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Color, BaseChartDirective, Label } from 'ng2-charts';
 import * as pluginAnnotations from 'chartjs-plugin-annotation';
+import { Chart }            from 'chart.js';
 
+import { NgModule } from '@angular/core';
+// import { IonicPageModule } from 'ionic-angular';
+// import { GeneralChartjsComponent } from './general-chartjs.component';
+import { ChartsModule } from 'ng2-charts'; // <- HERE
+
+
+// @NgModule({
+//   declarations: [
+//     // gen-chartjs-dialog, 
+//   ],
+//   imports: [
+//     // IonicPageModule.forChild(GenChartJSDialog),
+//     ChartsModule // <- HERE
+//   ],
+// })
 
 @Component({
   selector: 'app-general-chartjs',
@@ -173,6 +189,18 @@ export class GenChartJSDialog {
   //   this.lineChartLabels[2] = ['1st Line', '2nd Line'];
   //   // this.chart.update();
   // }
+  
+
+  // create the ctx variable by using getContext on the canvas variable
+  // var ctx = canvas.getContext('2d');
+  // var genChart = new Chart(ctx, {
+
+  // });
+
+
+
+
+  
   
   public lineChartOptions = {
     scaleShowVerticalLines: false,

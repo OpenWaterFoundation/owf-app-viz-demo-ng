@@ -11,6 +11,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular-devkit/schematics-cli": "^0.1000.3",
     "@angular/animations": "~9.1.9",
     "@angular/cdk": "^9.2.4",
     "@angular/common": "^9.1.12",
@@ -23,6 +24,7 @@
     "@angular/platform-browser-dynamic": "~9.1.9",
     "@angular/router": "~9.1.9",
     "@ng-bootstrap/ng-bootstrap": "^6.1.0",
+    "@types/offscreencanvas": "^2019.6.2",
     "bootstrap": "^4.5.0",
     "chart.js": "^2.9.3",
     "chartjs-plugin-annotation": "^0.5.7",

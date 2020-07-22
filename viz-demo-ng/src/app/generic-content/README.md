@@ -36,9 +36,11 @@ import { ShowdownModule } from 'ngx-showdown';
 export class AppModule {}
 ```
 
+__________________
 
 
-Once this has been done, simply use a Showdown tag within the component
+
+Once this has been done simply use a Showdown tag within the component
 
 ```
 	<showdown> <showdown>

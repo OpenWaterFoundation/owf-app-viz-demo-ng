@@ -28,7 +28,8 @@ export class LinksComponent implements OnInit {
 }
 @Component({
   selector: 'showdown-content',
-  templateUrl: './showdown-content.html'
+  templateUrl: './showdown-content.html',
+  styleUrls: ['./link-content.css']
   
 })
 export class NGXShowdownComponent implements OnInit {
@@ -38,4 +39,33 @@ export class NGXShowdownComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  text: string = `
+   # Showdown Tutorial
+  
+
+  This is a showdown tutorial. 
+  
+  Showdown supports a number of cool features, namely:
+  
+    - headers 
+    - lists
+    - and other stuff too
+    
+  It is also possible to include code:
+  
+      var foo = 'bar';
+      
+      var baz = {
+        markdown: 'is great',
+        showdown: 'is awesome'
+      }
+  
+  Don't forget to check the [extensions wiki][1].
+  
+  [1]: https://github.com/showdownjs/showdown/wiki/extensions`;
+
+  // function run() {
+  //   var text = document.getElementById('sourceTA').value,
+  //       target = document.getElementById('targetDiv')
+  // }
 }

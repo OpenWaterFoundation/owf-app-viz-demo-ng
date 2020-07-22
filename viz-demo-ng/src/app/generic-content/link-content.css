@@ -2,3 +2,8 @@
 .images {
     float: left;
   }
+  #showdownbox {
+    border: 1px dashed #333333;
+    width: 680px;
+    height: 400px;
+  }

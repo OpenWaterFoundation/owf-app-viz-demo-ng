@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { EventEmitterService } from './../event-emitter.service';    
+
 
 import 'chartjs-plugin-zoom';
 
@@ -18,11 +20,17 @@ import { Papa } from 'ngx-papaparse';
 })
 export class LineChartComponent implements OnInit {
 
-  constructor(private modalService: NgbModal, private papa: Papa) { }
+  constructor(private modalService: NgbModal, private papa: Papa,private eventEmitterService: EventEmitterService) { }
 
   ngOnInit(): void {
     let content;
-    this.open(content, 'Volume_Graph');
+    // this.open(content, 'Volume_Graph');
+    if (this.eventEmitterService.subsVar==undefined) {  
+      this.eventEmitterService.subsVar = this.eventEmitterService.    
+      invokeChartjsSnodasComponentFunction.subscribe((name:string) => {    
+        this.open(content, 'Volume_Graph');   
+      });    
+    }    
   }
 
 

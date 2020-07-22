@@ -25,7 +25,7 @@ import { from, fromEventPattern } from 'rxjs';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { LineChartComponent } from './line-chart/line-chart.component';
 import { PlotlyComponent } from './plotly/plotly.component';
-import { GeneralChartjsComponent } from './line-chart/general-chartjs/general-chartjs.component';
+import { GeneralChartjsComponent, GenChartJSDialog } from './line-chart/general-chartjs/general-chartjs.component';
 import { GenericContentComponent, LinksComponent, NGXShowdownComponent } from './generic-content/generic-content.component';
 import { GeneralPlotlyComponent } from './plotly/general-plotly/general-plotly.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -46,7 +46,9 @@ import { PlotlyTstoolGraphComponent } from './tstool-graph-config/plotly-tstool-
     HeatmapComponent,
     TstoolGraphConfigComponent,
     PlotlyTstoolGraphComponent,
-    LinksComponent, NGXShowdownComponent
+    LinksComponent, NGXShowdownComponent,
+    GenChartJSDialog
+    
   ],
   imports: [
     BrowserModule,

@@ -11,8 +11,11 @@ export class EventEmitterService {
   invokeComponentFunction = new EventEmitter();    
   invokeSnodasComponentFunction = new EventEmitter();    
   invokeHeatMapComponentFunction = new EventEmitter();    
-  invokeTSToolComponentFunction = new EventEmitter();    
+  invokeTSToolComponentFunction = new EventEmitter(); 
 
+  invokeChartjsGenericComponentFunction = new EventEmitter(); 
+  invokeChartjsSnodasComponentFunction = new EventEmitter();    
+  invokeChartjsTSToolComponentFunction = new EventEmitter(); 
 
 
   subsVar: Subscription;    
@@ -42,6 +45,25 @@ export class EventEmitterService {
   TSToolConfigPlotlyChartClick() { 
     console.log("Step 2 Plotly TSTool--> should invokeTSToolComponent function")   
     this.invokeTSToolComponentFunction.emit();    
+    // this.invokegenericPlotlyDemoFunction.emit();    
+
+  } 
+  
+  genericChartJSClick() { 
+    console.log("Inside the onFirtComponentButtonClick function in EventEmitter service")   
+    this.invokeChartjsGenericComponentFunction.emit();    
+    // this.invokegenericPlotlyDemoFunction.emit();    
+
+  }    
+  SnodasChartjsChartClick() { 
+    console.log("Step 2 Snodas chartjs--> should invokeSnodasComponent function")   
+    this.invokeChartjsSnodasComponentFunction.emit();    
+    // this.invokegenericPlotlyDemoFunction.emit();    
+
+  } 
+  TSToolConfigChartJSClick() { 
+    console.log("Step 2 Plotly TSTool--> should invokeTSToolComponent function")   
+    this.invokeChartjsTSToolComponentFunction.emit();    
     // this.invokegenericPlotlyDemoFunction.emit();    
 
   }    
