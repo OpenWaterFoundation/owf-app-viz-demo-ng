@@ -266,7 +266,9 @@ export class Heatmap2Component implements OnInit {
 
 export class Heatmap2Dialog implements OnInit{
 
-  constructor(private papa: Papa) { }
+  constructor(private papa: Papa, public dialogRef: MatDialogRef<Heatmap2Dialog>) { }
+
+  onClose(): void { this.dialogRef.close(); }
 
   ngOnInit() {
     this.basicHeatmap();
