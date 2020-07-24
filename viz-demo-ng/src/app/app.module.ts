@@ -30,7 +30,7 @@ import { GenericContentComponent, LinksComponent, NGXShowdownComponent } from '.
 import { GeneralPlotlyComponent } from './plotly/general-plotly/general-plotly.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EventEmitterService } from './event-emitter.service';
-import { HeatmapComponent } from './plotly/heatmap/heatmap.component';
+import { HeatmapComponent, HeatmapDialog, Heatmap2Component, Heatmap2Dialog } from './plotly/heatmap/heatmap.component';
 import { TstoolGraphConfigComponent } from './tstool-graph-config/tstool-graph-config.component';
 import { PlotlyTstoolGraphComponent } from './tstool-graph-config/plotly-tstool-graph/plotly-tstool-graph.component';
 
@@ -48,7 +48,8 @@ import { PlotlyTstoolGraphComponent } from './tstool-graph-config/plotly-tstool-
     PlotlyTstoolGraphComponent,
     LinksComponent, NGXShowdownComponent,
     GenChartJSDialog,
-    SnodasChartJSDialog
+    SnodasChartJSDialog,
+    HeatmapDialog, Heatmap2Component, Heatmap2Dialog
     
   ],
   imports: [
