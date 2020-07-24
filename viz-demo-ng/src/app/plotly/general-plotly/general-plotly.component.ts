@@ -26,7 +26,7 @@ export class GeneralPlotlyComponent implements OnInit {
    
     if (this.eventEmitterService.subsVar==undefined) {  
       this.eventEmitterService.subsVar = this.eventEmitterService.    
-      invokeComponentFunction .pipe(take(1)).subscribe(() => {    
+      invokeComponentFunction.subscribe(() => {    
         this.openDialog();    
       });    
     }    

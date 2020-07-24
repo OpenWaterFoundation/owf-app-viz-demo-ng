@@ -1,6 +1,6 @@
 # SNODAS Line Chart Demo: Daily TS Data
 
-This example builds a SNODAS Volume Graph utilizing monthly time series data.
+This example takes in data from a csv format  and builds a SNODAS Volume Graph utilizing monthly time series data.
 
 The SNODAS Volume Graph example uses daily data from the [National Operational Hydrologic Remote Sensing Center (NOHRSC)](https://www.nohrsc.noaa.gov/interactive/html/map.html) which are processed daily to calculate Snow Water Equivalent (SWE) and Snow Coverage statistics for water supply basins in Colorado.
 

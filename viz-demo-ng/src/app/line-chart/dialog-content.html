@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>Basic ChartJS graph within a Modal</h1>
+<div mat-dialog-content>
+    
+    <div style="display:block">
+        <div style="display: block; max-width: 990px; margin-left: auto; margin-right: auto; background-color: white; padding: 20px;">
+            <canvas class="chart2" baseChart id="chart"
+                [datasets]="chartData"
+                [labels]="chartLabels"
+                [options]="chartOptions"
+                [legend]="chartLegend"
+                [chartType]="chartType"></canvas>
+        </div>
+    </div>
+    
+</div>

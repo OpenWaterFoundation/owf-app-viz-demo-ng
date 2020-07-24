@@ -23,7 +23,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { from, fromEventPattern } from 'rxjs';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
-import { LineChartComponent } from './line-chart/line-chart.component';
+import { LineChartComponent, SnodasChartJSDialog } from './line-chart/line-chart.component';
 import { PlotlyComponent } from './plotly/plotly.component';
 import { GeneralChartjsComponent, GenChartJSDialog } from './line-chart/general-chartjs/general-chartjs.component';
 import { GenericContentComponent, LinksComponent, NGXShowdownComponent } from './generic-content/generic-content.component';
@@ -47,7 +47,8 @@ import { PlotlyTstoolGraphComponent } from './tstool-graph-config/plotly-tstool-
     TstoolGraphConfigComponent,
     PlotlyTstoolGraphComponent,
     LinksComponent, NGXShowdownComponent,
-    GenChartJSDialog
+    GenChartJSDialog,
+    SnodasChartJSDialog
     
   ],
   imports: [

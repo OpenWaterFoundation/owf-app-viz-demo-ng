@@ -851,7 +851,8 @@ export class PlotlyTstoolGraphComponent implements OnInit {
         yaxis: {
           // 'r' removes the k from the thousands place for large numbers
           tickformat: 'r',
-          title: config[0].yAxesLabelString
+          title: config[0].yAxesLabelString,
+          fixedrange: true
         }
       }
   
