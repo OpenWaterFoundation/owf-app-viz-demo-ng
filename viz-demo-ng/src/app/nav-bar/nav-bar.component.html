@@ -15,15 +15,21 @@
         <!-- <li class="nav-item">
           <a class="nav-link disabled" href="#">Disabled</a>
         </li> -->
-        <li class="nav-item">
-          <a class="nav-link"routerLink = "showdown-demo" routerLinkActive="active">Showdown</a>
+      
+        <li ngbDropdown class="nav-item dropdown">
+          <a ngbDropdownToggle class="nav-link dropdown-toggle"  id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Showdown</a>
+          <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown01">
+            <a class="dropdown-item"routerLink = "showdown/demo-file" routerLinkActive="active" >Showdown in Angular: Demo file</a>
+            <a class="dropdown-item" routerLink = "showdown/table-formatting" routerLinkActive="active"> Showdown Table formatting</a>
+            <!-- <a class="dropdown-item" href="#">Something else here</a> -->
+          </div>
         </li>
         <li ngbDropdown class="nav-item dropdown">
           <a ngbDropdownToggle class="nav-link dropdown-toggle"  id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">ChartJS</a>
           <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown01">
-            <a class="dropdown-item" routerLink="chartjs/generic-month-line-demo" routerLinkActive="active" (click)= "genericChartjsDemoFunction()">Generic ChartJS Demo</a>
-            <a class="dropdown-item" routerLink = "chartjs/snodas-day-line-demo" routerLinkActive="active"  (click)="SnodasChartjsDemoFunction()">SNODAS Line Chart Demo: Daily TS Data</a>
-            <a class="dropdown-item"routerLink = "chartjs/tstool-month-line-demo" routerLinkActive="active"  (click)="TSToolConfigChartjsDemoFunction()">TSTool Graph Configuration Demo: Monthly TS Data </a>
+            <a class="dropdown-item" routerLink="chartjs/generic-month-line" routerLinkActive="active" (click)= "genericChartjsDemoFunction()">Generic Line Chart</a>
+            <a class="dropdown-item" routerLink = "chartjs/snodas-day-line" routerLinkActive="active"  (click)="SnodasChartjsDemoFunction()">SNODAS Line Chart: Daily TS Data</a>
+            <a class="dropdown-item"routerLink = "chartjs/tstool-month-line" routerLinkActive="active"  (click)="TSToolConfigChartjsDemoFunction()">TSTool Graph Configuration: Monthly TS Data </a>
             <!-- <a class="dropdown-item" href="#">Something else here</a> -->
           </div>
         </li>
@@ -33,11 +39,11 @@
             <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown01">
               <!-- <a class="dropdown-item" >  Chart Ex: Popup from navigation</a> -->
               <!-- (click)="firstComponentFunction() -->
-              <a class="dropdown-item" routerLink = "plotly/generic-month-line-demo" routerLinkActive="active" (click)="genericPlotlyDemoFunction()"> Generic 2D Line Chart Demo-Monthly TS Data</a>
-              <a class="dropdown-item" routerLink = "plotly/snodas-day-line-demo" routerLinkActive="active" (click)="SnodasPlotlyDemoFunction()"> SNODAS Line Chart Demo: Daily TS Data</a>
-              <a class="dropdown-item"routerLink = "plotly/tstool-month-line-demo" routerLinkActive="active" (click)="TSToolConfigPlotlyDemoFunction()">TSTool Graph Configuration Demo: Monthly Data </a>
-              <a class="dropdown-item"routerLink = "plotly/heatmap-demo" routerLinkActive="active" (click)="HeatMapPlotlyDemoFunction()">Basic HeatMap Demo</a>
-              <a class="dropdown-item"routerLink = "plotly/heatmap-ts-demo" routerLinkActive="active">HeatMap Demo: CSV Daily Streamflow </a>
+              <a class="dropdown-item" routerLink = "plotly/generic-month-line" routerLinkActive="active" (click)="genericPlotlyDemoFunction()"> Generic 2D Line Chart: Monthly TS Data</a>
+              <a class="dropdown-item" routerLink = "plotly/snodas-day-line" routerLinkActive="active" (click)="SnodasPlotlyDemoFunction()"> SNODAS Line Chart: Daily TS Data</a>
+              <a class="dropdown-item"routerLink = "plotly/tstool-month-line" routerLinkActive="active" (click)="TSToolConfigPlotlyDemoFunction()">TSTool Graph Configuration: Monthly Data </a>
+              <a class="dropdown-item"routerLink = "plotly/heatmap-generic" routerLinkActive="active" (click)="HeatMapPlotlyDemoFunction()">Basic HeatMap</a>
+              <a class="dropdown-item"routerLink = "plotly/heatmap-ts" routerLinkActive="active">HeatMap: CSV Daily Streamflow </a>
 
               <!-- routerLink = "general-plotly-chart" routerLinkActive="active" -->
             </div>

@@ -337,6 +337,10 @@ export class PlotlyTstoolGraphComponent implements OnInit {
      
       
     const dialogRef = dialog.open(DialogContent,{data: dialogConfig, panelClass: 'custom-dialog-container'} );
+
+
+
+
       // console.log("Open Dialog call");
     }
 
