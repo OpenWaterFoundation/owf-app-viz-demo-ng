@@ -1,9 +1,68 @@
-Tables :
+# **Markdown tables not formatted correctly:**
+
+It may be that a simple markdown table appears unformatted altogether as such:
+
+``` 
+| a | b | c | | ----- | :---: | ----: | | 123 | 456 | 789 | | ABC | DEF | GHI |
+```
+
+A solution for this consists of importing Showdown with certain options configured.
+`imports: [ ShowdownModule.forRoot({emoji: true, noHeaderId: true, flavor: 'github'}) ]`
+
+The **solution above does format markdown as a table but renders without style**. No styling is applied by default with Showdown so that it doesn't interfere with other styling libraries such as Bootstrap.
+
+Because Showdown generates simple HTML, the best practices for styling appearances will be through CSS. The generated Markdown can be wrapped with an id and style.
+
+The style can also be specified by incorporating straight into the Markdown file using a `` tag.
+The following CSS can be placed within the markdown source or within respected css file to resolve table formatting.
+
+```
+<style> 
+    table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    display: block;
+  }
+  
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #ededed
+  }
+</style>```
+```
+
+In order to control of specific elements, an extension is needed to create "new syntax" for the file.
+
+Additionally to **format code blocks** as seen in Markdown, add the following CSS:
+
+```
+  pre {
+    padding: 16px;
+    overflow: auto;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: #f6f8fa;
+    border-radius: 3px;
+}
+```
+
+Generic Table Example :
 --------
+
 | a    |  b   |    c |
 | ---- | :--: | ---: |
 | 123  | 456  |  789 |
 | ABC  | DEF  |  GHI |
+
+_______________________________
+
+# InfoMapper Markdown File Example: 
 
 
 

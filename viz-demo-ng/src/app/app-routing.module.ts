@@ -9,6 +9,7 @@ import { HeatmapComponent, HeatmapDialog, Heatmap2Component, Heatmap2Dialog } fr
 import { TstoolGraphConfigComponent } from './tstool-graph-config/tstool-graph-config.component';
 import { PlotlyTstoolGraphComponent } from './tstool-graph-config/plotly-tstool-graph/plotly-tstool-graph.component';
 import { ShowdownNgDemoComponent } from './generic-content/showdown-ng-demo/showdown-ng-demo.component';
+import { PlotlyTsPointLineComponent } from './plotly/plotly-ts-point-line/plotly-ts-point-line.component';
 
 
 
@@ -32,6 +33,7 @@ const routes: Routes = [
   {path: 'plotly/generic-month-line', component: GeneralPlotlyComponent},
   {path: 'plotly/snodas-day-line', component: PlotlyComponent},
   {path: 'plotly/tstool-month-line', component: PlotlyTstoolGraphComponent},
+  {path: "plotly/tstool-year-point-line", component: PlotlyTsPointLineComponent},
   {path: 'plotly/heatmap-generic', component: HeatmapComponent},
   {path: 'plotly/heatmap-ts', component: Heatmap2Component},
 

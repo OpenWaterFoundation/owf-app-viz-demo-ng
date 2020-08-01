@@ -34,6 +34,7 @@ import { HeatmapComponent, HeatmapDialog, Heatmap2Component, Heatmap2Dialog } fr
 import { TstoolGraphConfigComponent } from './tstool-graph-config/tstool-graph-config.component';
 import { PlotlyTstoolGraphComponent } from './tstool-graph-config/plotly-tstool-graph/plotly-tstool-graph.component';
 import { ShowdownNgDemoComponent, ShowdownTableDialog } from './generic-content/showdown-ng-demo/showdown-ng-demo.component';
+import { PlotlyTsPointLineComponent } from './plotly/plotly-ts-point-line/plotly-ts-point-line.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { ShowdownNgDemoComponent, ShowdownTableDialog } from './generic-content/
     GenChartJSDialog,
     SnodasChartJSDialog,
     HeatmapDialog, Heatmap2Component, Heatmap2Dialog, ShowdownNgDemoComponent,
-    ShowdownTableDialog
+    ShowdownTableDialog,
+    PlotlyTsPointLineComponent
     
   ],
   imports: [
