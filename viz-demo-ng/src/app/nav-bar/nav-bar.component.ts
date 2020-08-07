@@ -34,6 +34,9 @@ export class NavBarComponent implements OnInit {
   TSToolConfigPlotlyDemoFunction(){    
     this.eventEmitterService.TSToolConfigPlotlyChartClick();  
   }
+  TSToolPointLineFunction(){    
+    this.eventEmitterService.TSToolPointLineClick();  
+  }
 
   genericChartjsDemoFunction(){  
     // firstComponentFunction(){  
@@ -50,6 +53,15 @@ export class NavBarComponent implements OnInit {
     this.eventEmitterService.TSToolConfigChartJSClick();  
   }
   
+  showdownTableFunction(){    
+    console.log("Step 1: Event emitter Showdown Table"); 
+    this.eventEmitterService.showdownTableClick();  
+  }
+
+  showdownImgFunction(){
+    console.log("Step 1: Event emitter Showdown Img"); 
+    this.eventEmitterService.showdownImgClick();
+  }
   ngOnInit(): void {
   }
 

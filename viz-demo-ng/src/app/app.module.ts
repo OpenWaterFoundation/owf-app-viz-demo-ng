@@ -33,7 +33,7 @@ import { EventEmitterService } from './event-emitter.service';
 import { HeatmapComponent, HeatmapDialog, Heatmap2Component, Heatmap2Dialog } from './plotly/heatmap/heatmap.component';
 import { TstoolGraphConfigComponent } from './tstool-graph-config/tstool-graph-config.component';
 import { PlotlyTstoolGraphComponent } from './tstool-graph-config/plotly-tstool-graph/plotly-tstool-graph.component';
-import { ShowdownNgDemoComponent, ShowdownTableDialog } from './generic-content/showdown-ng-demo/showdown-ng-demo.component';
+import { ShowdownNgDemoComponent, ShowdownTableDialog,ShowdownIMGComponent, ShowdownIMGDialog } from './generic-content/showdown-ng-demo/showdown-ng-demo.component';
 import { PlotlyTsPointLineComponent } from './plotly/plotly-ts-point-line/plotly-ts-point-line.component';
 
 @NgModule({
@@ -52,8 +52,9 @@ import { PlotlyTsPointLineComponent } from './plotly/plotly-ts-point-line/plotly
     GenChartJSDialog,
     SnodasChartJSDialog,
     HeatmapDialog, Heatmap2Component, Heatmap2Dialog, ShowdownNgDemoComponent,
-    ShowdownTableDialog,
-    PlotlyTsPointLineComponent
+    ShowdownTableDialog, ShowdownNgDemoComponent, ShowdownIMGComponent, ShowdownIMGDialog,
+    PlotlyTsPointLineComponent,
+
     
   ],
   imports: [
@@ -69,7 +70,7 @@ import { PlotlyTsPointLineComponent } from './plotly/plotly-ts-point-line/plotly
     MatCardModule,
     MatFormFieldModule,
     HttpClientModule,
-    ShowdownModule.forRoot({emoji: true, noHeaderId: true, flavor: 'github'}),
+    ShowdownModule.forRoot({emoji: true, noHeaderId: true, openLinksInNewWindow: true, flavor: 'github'}),
     CommonModule,
     DragDropModule
 

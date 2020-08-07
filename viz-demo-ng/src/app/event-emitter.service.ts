@@ -12,10 +12,19 @@ export class EventEmitterService {
   invokeSnodasComponentFunction = new EventEmitter();    
   invokeHeatMapComponentFunction = new EventEmitter();    
   invokeTSToolComponentFunction = new EventEmitter(); 
+  invokeTSToolPointLineComponentFunction = new EventEmitter(); 
+
 
   invokeChartjsGenericComponentFunction = new EventEmitter(); 
   invokeChartjsSnodasComponentFunction = new EventEmitter();    
   invokeChartjsTSToolComponentFunction = new EventEmitter(); 
+  
+
+
+  invokeShowdownTableComponentFunction = new EventEmitter(); 
+  invokeShowdownImgComponentFunction = new EventEmitter(); 
+
+
 
 
   subsVar: Subscription;    
@@ -67,5 +76,23 @@ export class EventEmitterService {
     this.invokeChartjsTSToolComponentFunction.emit();    
     // this.invokegenericPlotlyDemoFunction.emit();    
 
-  }    
+  }   
+  TSToolPointLineClick() { 
+    console.log("Step 2 Plotly TSTool--> should invokeTSToolComponent function")   
+    this.invokeTSToolPointLineComponentFunction.emit();    
+    // this.invokegenericPlotlyDemoFunction.emit();    
+
+  } 
+  showdownTableClick(){
+    console.log("Step 2 ShowdownTable--> should invokeTSToolComponent function")   
+
+    this.invokeShowdownTableComponentFunction.emit();
+  }
+
+  showdownImgClick(){
+    console.log("Step 2 Showdown Img--> should invokeTSToolComponent function")   
+
+    this.invokeShowdownImgComponentFunction.emit();
+  }
+  
 }

@@ -20,7 +20,8 @@
           <a ngbDropdownToggle class="nav-link dropdown-toggle"  id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Showdown</a>
           <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown01">
             <a class="dropdown-item"routerLink = "showdown/demo-file" routerLinkActive="active" >Showdown in Angular: Demo file</a>
-            <a class="dropdown-item" routerLink = "showdown/table-formatting" routerLinkActive="active"> Showdown Table formatting</a>
+            <a class="dropdown-item" routerLink = "showdown/table-formatting" routerLinkActive="active" (click)= "showdownTableFunction()"> Showdown Table formatting</a>
+            <a class="dropdown-item" routerLink = "showdown/img-integration" routerLinkActive="active" (click)= "showdownImgFunction()"> Showdown Image Integration</a>
             <!-- <a class="dropdown-item" href="#">Something else here</a> -->
           </div>
         </li>
@@ -42,7 +43,7 @@
               <a class="dropdown-item" routerLink = "plotly/generic-month-line" routerLinkActive="active" (click)="genericPlotlyDemoFunction()"> Generic 2D Line Chart: Monthly TS Data</a>
               <a class="dropdown-item" routerLink = "plotly/snodas-day-line" routerLinkActive="active" (click)="SnodasPlotlyDemoFunction()"> SNODAS Line Chart: Daily TS Data</a>
               <a class="dropdown-item"routerLink = "plotly/tstool-month-line" routerLinkActive="active" (click)="TSToolConfigPlotlyDemoFunction()">TSTool Graph Configuration: Monthly Data </a>
-              <a class="dropdown-item"routerLink = "plotly/tstool-year-point-line" routerLinkActive="active" >TSTool Graph Configuration: Point and line graph </a>
+              <a class="dropdown-item"routerLink = "plotly/tstool-year-point-line" routerLinkActive="active" (click)="TSToolPointLineFunction()">TSTool Graph Configuration: Point and line graph </a>
               <a class="dropdown-item"routerLink = "plotly/heatmap-generic" routerLinkActive="active" (click)="HeatMapPlotlyDemoFunction()">Basic HeatMap</a>
               <a class="dropdown-item"routerLink = "plotly/heatmap-ts" routerLinkActive="active">HeatMap: CSV Daily Streamflow </a>
 

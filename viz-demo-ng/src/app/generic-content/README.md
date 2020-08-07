@@ -31,12 +31,22 @@ import { NgModule } from '@angular/core';
 import { ShowdownModule } from 'ngx-showdown';
  
 @NgModule({
-  imports: [ShowdownModule.forRoot({emoji: true, noHeaderId: true, flavor: 'github'})  ]
+  imports: [ShowdownModule.forRoot({emoji: true, noHeaderId: true, openLinksInNewWindow: true, flavor: 'github'})  ]
 })
 export class AppModule {}
 ```
 
 __________________
+
+Options explanation: 
+
+- **noHeaderId**: (boolean) [default false] Disable the automatic generation of header ids. Setting to true overrides **prefixHeaderId**
+- **emoji**: (boolean) [default false] Enable emoji support. Ex: `this is a :smile: emoji` For more info on available emojis, see https://github.com/showdownjs/showdown/wiki/Emojis **(since v.1.8.0)**
+- **openLinksInNewWindow**: (boolean) [default false] Open all links in new windows (by adding the attribute `target="_blank"` to `` tags) **(since v1.7.0)**
+- **flavor: 'github'** : Flavors or presets, set the correct options automatically so that showdown behaves like popular Markdown flavors. Current flavors available include:
+  - original - original markdown flavor as in [John Gruber's spec](https://daringfireball.net/projects/markdown/)
+  - vanilla - showdown base flavor (as from v1.3.1)
+  - github - GFM (GitHub Flavored Markdown)
 
 
 
@@ -60,7 +70,11 @@ This example displays the 'Showdown' page content.
 
 ## Troubleshoot
 
-#### **Markdown tables not formatted correctly:**
+
+
+## Tables
+
+#### Markdown tables not formatted correctly:**
 
 It may be that a simple markdown table appears unformatted altogether as such:
 
@@ -114,7 +128,7 @@ Additionally to **format code blocks** as seen in Markdown, add the following CS
 }
 ```
 
-
+## Images
 
 #### **Not able to support Markdown Images**
 
@@ -152,3 +166,12 @@ or in reference style:
 [id]: url/to/image =250x250`
 ```
 
+#### **parseImgDimensions**: 
+
+(boolean) [default false] Enable support for setting image dimensions from within markdown syntax. Examples:
+
+```
+![foo](foo.jpg =100x80)     simple, assumes units are in px
+![bar](bar.jpg =100x*)      sets the height to "auto"
+![baz](baz.jpg =80%x5em)  Image with width of 80% and height of 5em
+```
