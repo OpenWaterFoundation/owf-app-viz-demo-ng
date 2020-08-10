@@ -13,7 +13,7 @@ import { TimeUtil }         from '../../../assets/TsToolGraphConfigFiles/TimeUti
 // import * as Chart from 'chart.js';
 import { Chart } from 'chart.js';
 import { forkJoin, Observable, of} from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, take } from 'rxjs/operators';
 
 import { type } from 'jquery';
 import { EventEmitterService } from '../../event-emitter.service';    
@@ -264,9 +264,16 @@ export class PlotlyTsPointLineComponent implements OnInit {
       }
      
       
-    const dialogRef = dialog.open(TSDialogContent,{data: dialogConfig, panelClass: 'custom-dialog-container'} );
+    const dialogRef = dialog.open(TSDialogContent,{
+      height: '650px',
+      width: '1050px',
+      data: dialogConfig, panelClass: 'custom-dialog-container'} );
 
-
+    dialogRef.afterClosed()
+    .pipe(take(1))
+    .subscribe((result=>{
+      console.log('dialog was closed')
+    }));
 
 
       // console.log("Open Dialog call");
@@ -929,8 +936,6 @@ export class PlotlyTsPointLineComponent implements OnInit {
 
     populateTableData(results: any): void {
 
-      // var x_axisLabels: string[] = [];
-      // var y_axisData: number[] = [];
       
       let x_axis = Object.keys(results[0])[0];
       let y_axis = Object.keys(results[0])[1];
@@ -982,11 +987,6 @@ export class PlotlyTsPointLineComponent implements OnInit {
                   dataArray = result.data;
                   this.populateTableData(result.data);
                   // console.log("result.data: " ,result.data);
-                  // console.log("!!!!!!!!!!!!!!!!!!!!!dataArray!!!!!!!!!: ", dataArray);
-                  // let x_axis = Object.keys(result[0])[0];
-                  // let y_axis = Object.keys(result[0])[1];;
-                  // console.log(y_axis);
-
                   
                 }
               });  
@@ -994,17 +994,15 @@ export class PlotlyTsPointLineComponent implements OnInit {
             }
           }
       }
-      console.log( "x-axislables teehee: ", x_axisLabels);
-      console.log( "y-axislables teehee: ", y_axisData);
+      // console.log( "x-axislables teehee: ", x_axisLabels);
+      // console.log( "y-axislables teehee: ", y_axisData);
+
+      
+
 
       var values = [x_axisLabels, y_axisData];
 
-      // var values = [
-      //   ['Salaries', 'Office', 'Merchandise', 'Legal', '<b>TOTAL</b>'],
-      //   [1200000, 20000, 80000, 2000, 12120000],
-      //   [1300000, 20000, 70000, 2000, 130902000],
-      //   [1300000, 20000, 120000, 2000, 131222000],
-      //   [1400000, 20000, 90000, 2000, 14102000]]
+   
   
       var data = [{
         type: 'table',
