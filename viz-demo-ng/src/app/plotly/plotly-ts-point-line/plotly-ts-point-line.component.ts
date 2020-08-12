@@ -884,7 +884,7 @@ export class PlotlyTsPointLineComponent implements OnInit {
     }
     ngOnInit(): void {
 
-      this.basicDataTable();
+      // this.basicDataTable();
       if (this.showGraph) {
         this.setChartTemplateObject(this.graphTemplateObject);
         this.setGraphFilePath(this.graphFilePath);
@@ -948,153 +948,34 @@ export class PlotlyTsPointLineComponent implements OnInit {
 
     }
 
-    basicDataTable(){
-      var templateObject = this.getChartTemplateObject();
+    // basicDataTable(){
+    //   var templateObject = this.getChartTemplateObject();
 
-      if (templateObject['product']['subProducts'][0]['data'].length > 1) {
+    //   if (templateObject['product']['subProducts'][0]['data'].length > 1) {
       
-          // Create an array to hold our Observables of each file read
-          var dataArray = [];
-          var filePath: string;
-          var TSIDLocation: string;
-          for (let data of templateObject['product']['subProducts'][0]['data']) { 
-            // Obtain the TSID location for the readTimeSeries method
-            TSIDLocation = data.properties.TSID.split('~')[0];
-            // Depending on whether it's a full TSID used in the graph template file, determine what the file path of the StateMod
-            // file is. (TSIDLocation~/path/to/filename.stm OR TSIDLocation~StateMod~/path/to/filename.stm)
+    //       // Create an array to hold our Observables of each file read
+    //       var dataArray = [];
+    //       var filePath: string;
+    //       var TSIDLocation: string;
+    //       for (let data of templateObject['product']['subProducts'][0]['data']) { 
+    //         // Obtain the TSID location for the readTimeSeries method
+    //         TSIDLocation = data.properties.TSID.split('~')[0];
+    //         // Depending on whether it's a full TSID used in the graph template file, determine what the file path of the StateMod
+    //         // file is. (TSIDLocation~/path/to/filename.stm OR TSIDLocation~StateMod~/path/to/filename.stm)
 
-            // console.log("TSIDLocation", TSIDLocation);
-            // console.log("data.properties.TSID.split('~')", data.properties.TSID.split('~'));
-            // console.log("data.properties.TSID.split('~').length", data.properties.TSID.split('~').length);
+    //         // console.log("TSIDLocation", TSIDLocation);
+    //         // console.log("data.properties.TSID.split('~')", data.properties.TSID.split('~'));
+    //         // console.log("data.properties.TSID.split('~').length", data.properties.TSID.split('~').length);
 
-            if (data.properties.TSID.split('~').length === 2) {
-              filePath = data.properties.TSID.split('~')[1];
-            } 
-            else if (data.properties.TSID.split('~').length === 3) {
-              filePath = data.properties.TSID.split('~')[2];
-              console.log("filepath: ", filePath)
+    //         if (data.properties.TSID.split('~').length === 2) {
+    //           filePath = data.properties.TSID.split('~')[1];
+    //         } 
+    //         else if (data.properties.TSID.split('~').length === 3) {
+    //           filePath = data.properties.TSID.split('~')[2];
+    //           console.log("filepath: ", filePath)
              
   
-              Papa.parse(this.buildPath('csvPath', [filePath]),
-              {
-                delimiter: ",",
-                download: true,
-                comments: "#",
-                skipEmptyLines: true,
-                header: true,
-                complete: (result: any, file: any) => {
-                  this.createCSVConfig(result.data);
-                  dataArray = result.data;
-                  this.populateTableData(result.data);
-                  // console.log("result.data: " ,result.data);
-                  
-                }
-              });  
-              
-            }
-          }
-      }
-      // console.log( "x-axislables teehee: ", x_axisLabels);
-      // console.log( "y-axislables teehee: ", y_axisData);
-
-      
-
-
-      var values = [x_axisLabels, y_axisData];
-
-   
-  
-      var data = [{
-        type: 'table',
-        header: {
-          values: [["<b>Year</b>"], ["<b>Population</b>"]],
-          align: "center",
-          line: {width: 1, color: 'black'},
-          fill: {color: "grey"},
-          font: {family: "Arial", size: 12, color: "white"}
-        },
-        cells: {
-          values: values,
-          align: "center",
-          line: {color: "black", width: 1},
-          font: {family: "Arial", size: 11, color: ["black"]}
-        }
-      }]
-      
-      Plotly.newPlot('plotlyTableDiv', data);
-  
-  
-    }
-    /**
-   * Calls Papa Parse to asynchronously read in a CSV file.
-   */
-  parseCSVFile(): void {
-    console.log("inside Parse CSV function");
-
-    var templateObject = this.getChartTemplateObject();
-    console.log("teplateobject in parseCSV:", templateObject);
-
-    console.log("getGraphFilePath", this.getGraphFilePath());
-    console.log("templateObject data length: ", templateObject['product']['subProducts'][0]['data'].length);
-    if (templateObject['product']['subProducts'][0]['data'].length === 1){
-      Papa.parse(this.buildPath('csvPath', [this.getGraphFilePath()]),
-      {
-        delimiter: ",",
-        download: true,
-        comments: "#",
-        skipEmptyLines: true,
-        header: true,
-        complete: (result: any, file: any) => {
-          this.createCSVConfig(result.data);
-        }
-      });
-
-    }
-
-    else if (templateObject['product']['subProducts'][0]['data'].length > 1) {
-      console.log("More than one trace");
-      console.log("buildPath: ", this.buildPath);
-      
-        // Create an array to hold our Observables of each file read
-        var dataArray: any[] = [];
-        var filePath: string;
-        var TSIDLocation: string;
-        for (let data of templateObject['product']['subProducts'][0]['data']) { 
-          // Obtain the TSID location for the readTimeSeries method
-          TSIDLocation = data.properties.TSID.split('~')[0];
-          // Depending on whether it's a full TSID used in the graph template file, determine what the file path of the StateMod
-          // file is. (TSIDLocation~/path/to/filename.stm OR TSIDLocation~StateMod~/path/to/filename.stm)
-          console.log("TSIDLocation", TSIDLocation);
-          console.log("data.properties.TSID.split('~')", data.properties.TSID.split('~'));
-
-          console.log("data.properties.TSID.split('~').length", data.properties.TSID.split('~').length);
-
-
-          if (data.properties.TSID.split('~').length === 2) {
-            filePath = data.properties.TSID.split('~')[1];
-          } else if (data.properties.TSID.split('~').length === 3) {
-            filePath = data.properties.TSID.split('~')[2];
-            console.log("filepath: ", filePath)
-
-            Papa.parse(this.buildPath('csvPath', [filePath]),
-            {
-              delimiter: ",",
-              download: true,
-              comments: "#",
-              skipEmptyLines: true,
-              header: true,
-              complete: (result: any, file: any) => {
-                this.createCSVConfig(result.data);
-                console.log("result.data: " ,result.data);
-                dataArray = result.data;
-                console.log("dataArray: ", dataArray)
-              }
-            });           
-          }
-        }
-    }
-
-    // Papa.parse(this.buildPath('csvPath', [this.getGraphFilePath()]),
+    //           Papa.parse(this.buildPath('csvPath', [filePath]),
     //           {
     //             delimiter: ",",
     //             download: true,
@@ -1102,9 +983,166 @@ export class PlotlyTsPointLineComponent implements OnInit {
     //             skipEmptyLines: true,
     //             header: true,
     //             complete: (result: any, file: any) => {
-    //               this.createCSVConfig(result.data);
+    //               // this.createCSVConfig(result.data);
+    //               dataArray = result.data;
+    //               this.populateTableData(result.data);
+    //               // console.log("result.data: " ,result.data);
+                  
     //             }
-    //           });
+    //           });  
+              
+    //         }
+    //       }
+    //   }
+    //   // console.log( "x-axislables teehee: ", x_axisLabels);
+    //   // console.log( "y-axislables teehee: ", y_axisData);
+
+      
+
+
+    //   var values = [x_axisLabels, y_axisData];
+
+   
+  
+    //   var data = [{
+    //     type: 'table',
+    //     header: {
+    //       values: [["<b>Year</b>"], ["<b>Population</b>"]],
+    //       align: "center",
+    //       line: {width: 1, color: 'black'},
+    //       fill: {color: "grey"},
+    //       font: {family: "Arial", size: 12, color: "white"}
+    //     },
+    //     cells: {
+    //       values: values,
+    //       align: "center",
+    //       line: {color: "black", width: 1},
+    //       font: {family: "Arial", size: 11, color: ["black"]}
+    //     }
+    //   }]
+      
+    //   Plotly.newPlot('plotlyTableDiv', data);
+  
+  
+    // }
+    /**
+   * Calls Papa Parse to asynchronously read in a CSV file.
+   */
+  // parseCSVFile(): void {
+  //   console.log("inside Parse CSV function");
+
+  //   var templateObject = this.getChartTemplateObject();
+  //   console.log("teplateobject in parseCSV:", templateObject);
+
+  //   console.log("getGraphFilePath", this.getGraphFilePath());
+  //   console.log("templateObject data length: ", templateObject['product']['subProducts'][0]['data'].length);
+  //   if (templateObject['product']['subProducts'][0]['data'].length === 1){
+  //     Papa.parse(this.buildPath('csvPath', [this.getGraphFilePath()]),
+  //     {
+  //       delimiter: ",",
+  //       download: true,
+  //       comments: "#",
+  //       skipEmptyLines: true,
+  //       header: true,
+  //       complete: (result: any, file: any) => {
+  //         // this.createCSVConfig(result.data);
+  //       }
+  //     });
+
+  //   }
+
+  //   else if (templateObject['product']['subProducts'][0]['data'].length > 1) {
+  //     console.log("MORE THAN ONE TRACE");
+  //     console.log("buildPath: ", this.buildPath);
+      
+  //       // Create an array to hold our Observables of each file read
+  //       var dataArray: any[] = [];
+  //       var dataArray2: any[] = [];
+  //       var filePath: string;
+  //       var TSIDLocation: string;
+  //       for (let data of templateObject['product']['subProducts'][0]['data']) { 
+  //         // Obtain the TSID location for the readTimeSeries method
+  //         TSIDLocation = data.properties.TSID.split('~')[0];
+  //         // Depending on whether it's a full TSID used in the graph template file, determine what the file path of the StateMod
+  //         // file is. (TSIDLocation~/path/to/filename.stm OR TSIDLocation~StateMod~/path/to/filename.stm)
+          
+  //         // console.log("TSIDLocation", TSIDLocation);
+  //         // console.log("data.properties.TSID.split('~')", data.properties.TSID.split('~'));
+
+  //         // console.log("data.properties.TSID.split('~').length", data.properties.TSID.split('~').length);
+
+
+  //         if (data.properties.TSID.split('~').length === 2) {
+  //           filePath = data.properties.TSID.split('~')[1];
+  //         } else if (data.properties.TSID.split('~').length === 3) {
+  //           filePath = data.properties.TSID.split('~')[2];
+  //           // console.log("filepath: ", filePath)
+
+  //           Papa.parse(this.buildPath('csvPath', [filePath]),
+  //           {
+  //             delimiter: ",",
+  //             download: true,
+  //             comments: "#",
+  //             skipEmptyLines: true,
+  //             header: true,
+  //             complete: (result: any, file: any) => {
+  //               // this.createCSVConfig(result.data);
+  //               console.log("result.data: " ,result.data);
+  //               dataArray = result.data;
+  //               dataArray2.push(result.data);
+                
+  //               // console.log(" the dataArray: ", dataArray)
+  //             }
+  //           });    
+  //         }
+         
+  //       }
+        
+  //   }
+  //     console.log("DataArray2:", dataArray2);
+  //     // console.log("DataArray2 [].length:", dataArray2[0].length);
+
+  //     this.createCSVConfig(dataArray2);
+    
+  // }
+  parseCSVFile(): void {
+
+    var templateObject: Object = this.getChartTemplateObject();
+    // The array of each data object in the graph config file
+    var dataArray: any[] = templateObject['product']['subProducts'][0]['data'];
+    // This array will hold all results returned from Papa Parse, whether one CSV is used, or multiple
+    var allResults: any[] = [];
+    // The file path string to the TS File
+    var filePath: string;
+
+    // Go through each data object in the templateObject from the graph config file
+    for (let data of dataArray) {
+
+      // Depending on whether it's a full TSID used in the graph template file, determine what the file path of the StateMod
+      // file is. (TSIDLocation~/path/to/filename.stm OR TSIDLocation~StateMod~/path/to/filename.stm)
+      if (data.properties.TSID.split('~').length === 2) {
+        filePath = data.properties.TSID.split('~')[1];
+      } else if (data.properties.TSID.split('~').length === 3) {
+        filePath = data.properties.TSID.split('~')[2];
+      }
+
+      Papa.parse(this.buildPath('csvPath', [filePath]), {
+        delimiter: ",",
+        download: true,
+        comments: "#",
+        skipEmptyLines: true,
+        header: true,
+        complete: (result: any, file: any) => {
+          allResults.push(result);
+
+          if (allResults.length === dataArray.length) {
+            this.createCSVConfig(allResults);
+          }
+        }
+      });
+
+    }
+    
   }
   
   /**
@@ -1181,38 +1219,48 @@ export class PlotlyTsPointLineComponent implements OnInit {
    * PopulateGraph instance to an array, in case in the future more than one CSV files need to be shown on a graph
    * @param results The results object returned asynchronously from Papa Parse
    */
-  private createCSVConfig(results: any): void {
+  private createCSVConfig(results: any[]): void {
 
     var chartConfig: Object = this.graphTemplateObject;
     var configArray: PopulateGraph[] = [];
+    var templateYAxisTitle: string;
     var chartJSGraph: boolean;
 
-    let x_axis = Object.keys(results[0])[0];
-    let y_axis = Object.keys(results[0])[1];
-    // Populate the arrays needed for the x- and y-axes
-    var x_axisLabels: string[] = [];
-    var y_axisData: number[] = [];
-    for (let resultObj of results) {      
-      x_axisLabels.push(resultObj[x_axis]);
-      y_axisData.push(parseFloat(resultObj[y_axis]));
-    }
-    // Populate various other chart properties. They will be checked for validity in createGraph()
-    var graphType = chartConfig['product']['subProducts'][0]['properties'].GraphType.toLowerCase();
-    var templateYAxisTitle = chartConfig['product']['subProducts'][0]['properties'].LeftYAxisTitleString;
-    var backgroundColor = chartConfig['product']['subProducts'][0]['data'][0]['properties'].Color;
-    var legendLabel = chartConfig['product']['subProducts'][0]['data'][0]['properties'].TSID.split('~')[0];
-    // Create the PopulateGraph instance that will be passed to create either the Chart.js or Plotly.js graph
-    var config: PopulateGraph = {
-      legendLabel: legendLabel,
-      chartType: graphType,
-      dataLabels: x_axisLabels,
-      datasetData: y_axisData,
-      datasetBackgroundColor: backgroundColor,
-      graphFileType: 'csv',
-      yAxesLabelString: templateYAxisTitle
-    }
+    for (let rIndex = 0; rIndex < results.length; rIndex++) {
 
-    configArray.push(config);
+      // Set up the parts of the graph that won't need to be set more than once, such as the LeftYAxisTitleString
+      if (rIndex === 0) {
+        templateYAxisTitle = chartConfig['product']['subProducts'][0]['properties'].LeftYAxisTitleString;
+      }
+      // These two are the string representing the keys in the current result.
+      // They will be used to populate the x- and y-axis arrays
+      let x_axis = Object.keys(results[rIndex].data[0])[0];
+      let y_axis = Object.keys(results[rIndex].data[0])[1];
+
+      // Populate the arrays needed for the x- and y-axes
+      var x_axisLabels: string[] = [];
+      var y_axisData: number[] = [];
+      for (let resultObj of results[rIndex].data) {
+        x_axisLabels.push(resultObj[x_axis]);
+        y_axisData.push(parseFloat(resultObj[y_axis]));
+      }
+      // Populate various other chart properties. They will be checked for validity in createGraph()
+      var graphType = chartConfig['product']['subProducts'][0]['data'][rIndex]['properties'].GraphType.toLowerCase();
+      var backgroundColor = chartConfig['product']['subProducts'][0]['data'][rIndex]['properties'].Color;
+      var legendLabel = chartConfig['product']['subProducts'][0]['data'][rIndex]['properties'].TSID.split('~')[0];
+      // Create the PopulateGraph instance that will be passed to create either the Chart.js or Plotly.js graph
+      var config: PopulateGraph = {
+        legendLabel: legendLabel,
+        chartType: graphType,
+        dataLabels: x_axisLabels,
+        datasetData: y_axisData,
+        datasetBackgroundColor: backgroundColor,
+        graphFileType: 'csv',
+        yAxesLabelString: templateYAxisTitle
+      }
+      // Push the config instance into the configArray to be sent to createXXXGraph()
+      configArray.push(config);
+    }    
 
     // Determine whether a chartJS graph or Plotly graph needs to be made
     // NOTE: Plotly is the default charting package
@@ -1230,6 +1278,69 @@ export class PlotlyTsPointLineComponent implements OnInit {
       this.createPlotlyGraph(configArray, true);
     }
   }
+
+
+
+
+  // private createCSVConfig(results: any): void {
+  //   console.log("inside create CSV config function");
+  //   // results.length = 3;
+   
+  //   // console.log(" IN createCSVConfig results: ", results, "Length: ", results.length);
+  //   // // console.log("Results[0].length: ", results[0].length);
+  //   // console.log("type of results", typeof results);
+  //   // console.log("results[0]", results[0]);
+  //   // console.log("results[1]", results[1]);
+  //   // let attempt1 = Object.keys(results[0])[0];
+  //   // console.log("results length using object keys", attempt1);
+  //   var chartConfig: Object = this.graphTemplateObject;
+  //   var configArray: PopulateGraph[] = [];
+  //   var chartJSGraph: boolean;
+
+  //   let x_axis = Object.keys(results[0])[0];
+  //   let y_axis = Object.keys(results[0])[1];
+
+  //   // Populate the arrays needed for the x- and y-axes
+  //   var x_axisLabels: string[] = [];
+  //   var y_axisData: number[] = [];
+  //   for (let resultObj of results) {      
+  //     x_axisLabels.push(resultObj[x_axis]);
+  //     y_axisData.push(parseFloat(resultObj[y_axis]));
+  //   }
+  //   // Populate various other chart properties. They will be checked for validity in createGraph()
+  //   var graphType = chartConfig['product']['subProducts'][0]['properties'].GraphType.toLowerCase();
+  //   var templateYAxisTitle = chartConfig['product']['subProducts'][0]['properties'].LeftYAxisTitleString;
+  //   var backgroundColor = chartConfig['product']['subProducts'][0]['data'][0]['properties'].Color;
+  //   var legendLabel = chartConfig['product']['subProducts'][0]['data'][0]['properties'].TSID.split('~')[0];
+  //   // Create the PopulateGraph instance that will be passed to create either the Chart.js or Plotly.js graph
+  //   var config: PopulateGraph = {
+  //     legendLabel: legendLabel,
+  //     chartType: graphType,
+  //     dataLabels: x_axisLabels,
+  //     datasetData: y_axisData,
+  //     datasetBackgroundColor: backgroundColor,
+  //     graphFileType: 'csv',
+  //     yAxesLabelString: templateYAxisTitle
+  //   }
+
+  //   configArray.push(config);
+
+  //   // Determine whether a chartJS graph or Plotly graph needs to be made
+  //   // NOTE: Plotly is the default charting package
+  //   if (!this.chartPackage) {
+  //     chartJSGraph = false;
+  //   } else if (this.chartPackage.toUpperCase() === 'PLOTLY') {
+  //     chartJSGraph = false;
+  //   } else {
+  //     chartJSGraph = true;
+  //   }
+
+  //   if (chartJSGraph) {
+  //     this.createChartJSGraph(configArray);
+  //   } else {      
+  //     this.createPlotlyGraph(configArray, true);
+  //   }
+  // }
 
   
     public getPlainText(path: string, type?: string): Observable<any> {  
@@ -1292,6 +1403,8 @@ export class PlotlyTsPointLineComponent implements OnInit {
           null,
           true));
         }
+
+        console.log("dataArray", dataArray)
         // Now that the array has all the Observables needed, forkJoin and subscribe to them all. Their results will now be
         // returned as an Array with each index corresponding to the order in which they were pushed onto the array.
         forkJoin(dataArray).subscribe((resultsArray: any) => {
