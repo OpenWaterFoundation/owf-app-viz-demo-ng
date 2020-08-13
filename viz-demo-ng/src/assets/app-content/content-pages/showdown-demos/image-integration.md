@@ -65,7 +65,7 @@ Trails are often located near water because streams and rivers have done the wor
 
 The [Red Mountain Open Space](https://www.larimer.org/naturalresources/parks/red-mountain) near the Wyoming Boarder has trails through the Boxelder Creek drainage. Flooding in the Boxelder Creek basin has caused loss of property and life in in developed areas such as Fort Collins and surrounding communities, resulting in establishment of the [Boxelder Stormwwater Authority](https://www.boxelderauthority.org/), which collects fees in order to construct and manage stormwater infrastructure. The potential for and impacts of flooding may not be obvious in downstream areas; however, a hike in Red Mountain Open Space points out the impacts of flooding in that area and potential of high flows to cause damage downstream.
 
-[![ruby-wash](https://github.com/OpenWaterFoundation/owf-infomapper-poudre/raw/master/workflow/BasinEntities/Recreation-Trails/layers/trails-fortcollins-doc/ruby-wash.jpg)](https://github.com/OpenWaterFoundation/owf-infomapper-poudre/blob/master/workflow/BasinEntities/Recreation-Trails/layers/trails-fortcollins-doc/ruby-wash.jpg) 
+![boxelder-creek.jpg](http://poudre.openwaterfoundation.org/0.2.1/assets/app/data-maps/BasinEntities/Recreation-Trails/layers/trails-fortcollins-doc/boxelder-creek.jpg)
 
 **Ruby Wash** (image from [AllTrails](https://www.alltrails.com/parks/us/colorado/red-mountain-open-space))
 

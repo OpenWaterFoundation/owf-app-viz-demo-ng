@@ -129,3 +129,77 @@ export class ShowdownIMGDialog implements OnInit{
 
   
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@Component({
+  selector: 'showdown-options-demo',
+  templateUrl: './showdown-ng-demo.component.html',
+  // styleUrls: ['./showdown-ng-demo.component.css']
+})
+export class ShowdownOptionsComponent implements OnInit {
+
+  constructor(public dialog: MatDialog, private eventEmitterService: EventEmitterService) { }
+
+
+  ngOnInit(): void {
+    this.openDialog();
+    if (this.eventEmitterService.subsVar==undefined) {  
+      this.eventEmitterService.subsVar = this.eventEmitterService.    
+      invokeShowdownOptionsComponentFunction.subscribe(() => {
+        console.log("Step 3: Showdown options --> openDialog call");
+    
+        this.openDialog(); 
+      });    
+    }    
+  }
+
+  
+  openDialog(): void {
+    console.log("Entered openDialog Function")
+    const dialogRef = this.dialog.open(ShowdownOptionsDialog, {
+      height: '650px',
+      width: '1000px',
+     
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+     
+    });
+  }
+
+
+}
+
+@Component({
+  selector:'showdown-options-dialog',
+  templateUrl: 'showdown-options-content.html'
+})
+
+export class ShowdownOptionsDialog implements OnInit{
+
+  constructor( public dialogRef: MatDialogRef<ShowdownOptionsDialog>) { }
+  ngOnInit() {
+  }
+
+  /**
+  * Closes the Mat Dialog popup when the Close button is clicked.
+  */
+ onClose(): void { this.dialogRef.close(); }
+
+  
+}

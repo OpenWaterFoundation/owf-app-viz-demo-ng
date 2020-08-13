@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>Showdown within a Dialog: Options </h1>
+<div mat-dialog-content>
+ 
+  
+    <showdown  src='assets/app-content/content-pages/showdown-demos/options-integration.md'></showdown>
+
+    <br>
+    <h1 style="color:green;">Markdown source, simpleLineBreaks activated: </h1>
+    <br>
+    <showdown  [options] = "{ simpleLineBreaks: true }" src='assets/app-content/content-pages/showdown-demos/trails-fortcollins.md'></showdown>
+
+    <h1 style="color:red;">Markdown source, simpleLineBreaks deactivated: </h1>
+    <br>
+    <showdown   src='assets/app-content/content-pages/showdown-demos/trails-fortcollins.md'></showdown>
+
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button (click)="onClose()">
+      Close
+    </button>
+  </div>

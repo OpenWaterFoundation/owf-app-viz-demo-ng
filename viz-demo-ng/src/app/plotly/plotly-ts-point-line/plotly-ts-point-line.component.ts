@@ -80,7 +80,7 @@ export class PlotlyTsPointLineComponent implements OnInit {
              * @param featureProperties 
              */
   obtainPropertiesFromLine(key: any, value: string, featureProperties: Object): string {
-    console.log( "Inside ObtainPropertiesFromLine function");
+    // console.log( "Inside ObtainPropertiesFromLine function");
       var propertyString = '';
       var valueLength = 0;
       var formattedValue = '';
@@ -932,7 +932,7 @@ export class PlotlyTsPointLineComponent implements OnInit {
      */
     onClose(): void { this.dialogRef.close(); }
     
-    
+      
 
     populateTableData(results: any): void {
 
@@ -948,83 +948,155 @@ export class PlotlyTsPointLineComponent implements OnInit {
 
     }
 
-    // basicDataTable(){
-    //   var templateObject = this.getChartTemplateObject();
-
-    //   if (templateObject['product']['subProducts'][0]['data'].length > 1) {
-      
-    //       // Create an array to hold our Observables of each file read
-    //       var dataArray = [];
-    //       var filePath: string;
-    //       var TSIDLocation: string;
-    //       for (let data of templateObject['product']['subProducts'][0]['data']) { 
-    //         // Obtain the TSID location for the readTimeSeries method
-    //         TSIDLocation = data.properties.TSID.split('~')[0];
-    //         // Depending on whether it's a full TSID used in the graph template file, determine what the file path of the StateMod
-    //         // file is. (TSIDLocation~/path/to/filename.stm OR TSIDLocation~StateMod~/path/to/filename.stm)
-
-    //         // console.log("TSIDLocation", TSIDLocation);
-    //         // console.log("data.properties.TSID.split('~')", data.properties.TSID.split('~'));
-    //         // console.log("data.properties.TSID.split('~').length", data.properties.TSID.split('~').length);
-
-    //         if (data.properties.TSID.split('~').length === 2) {
-    //           filePath = data.properties.TSID.split('~')[1];
-    //         } 
-    //         else if (data.properties.TSID.split('~').length === 3) {
-    //           filePath = data.properties.TSID.split('~')[2];
-    //           console.log("filepath: ", filePath)
-             
+    private buildMultTables(results: any): void {
+      console.log("Inside buildMultTables function");
+      var chartConfig: Object = this.graphTemplateObject;
+      var configArray: PopulateGraph[] = [];
+      var templateYAxisTitle: string;
+      var chartJSGraph: boolean;
+      var element = "plotlyTableDiv";
   
-    //           Papa.parse(this.buildPath('csvPath', [filePath]),
-    //           {
-    //             delimiter: ",",
-    //             download: true,
-    //             comments: "#",
-    //             skipEmptyLines: true,
-    //             header: true,
-    //             complete: (result: any, file: any) => {
-    //               // this.createCSVConfig(result.data);
-    //               dataArray = result.data;
-    //               this.populateTableData(result.data);
-    //               // console.log("result.data: " ,result.data);
-                  
-    //             }
-    //           });  
-              
-    //         }
-    //       }
-    //   }
-    //   // console.log( "x-axislables teehee: ", x_axisLabels);
-    //   // console.log( "y-axislables teehee: ", y_axisData);
+      for (let rIndex = 0; rIndex < results.length; rIndex++) {
+        
+        element = element + rIndex;
+        console.log("element in loop: ", element);
 
-      
+        // These two are the string representing the keys in the current result.
+        // They will be used to populate the x- and y-axis arrays
+        let x_axis = Object.keys(results[rIndex].data[0])[0];
+        let y_axis = Object.keys(results[rIndex].data[0])[1];
 
+        let xValues;
+        let yValues;
+  
+        // Populate the arrays needed for the x- and y-axes
+        var x_axisLabels: string[] = [];
+        var y_axisData: number[] = [];
+        for (let resultObj of results[rIndex].data) {
+          x_axisLabels.push(resultObj[x_axis]);
+          y_axisData.push(parseFloat(resultObj[y_axis]));
 
-    //   var values = [x_axisLabels, y_axisData];
+          xValues = resultObj[x_axis];
+          yValues = parseFloat(resultObj[y_axis]);
+          var values = [xValues, yValues];
 
    
   
-    //   var data = [{
-    //     type: 'table',
-    //     header: {
-    //       values: [["<b>Year</b>"], ["<b>Population</b>"]],
-    //       align: "center",
-    //       line: {width: 1, color: 'black'},
-    //       fill: {color: "grey"},
-    //       font: {family: "Arial", size: 12, color: "white"}
-    //     },
-    //     cells: {
-    //       values: values,
-    //       align: "center",
-    //       line: {color: "black", width: 1},
-    //       font: {family: "Arial", size: 11, color: ["black"]}
-    //     }
-    //   }]
+          var data = [{
+            type: 'table',
+            header: {
+              values: [["<b>Year</b>"], ["<b>Population</b>"]],
+              align: "center",
+              line: {width: 1, color: 'black'},
+              fill: {color: "grey"},
+              font: {family: "Arial", size: 12, color: "white"}
+            },
+            cells: {
+              values: values,
+              align: "center",
+              line: {color: "black", width: 1},
+              font: {family: "Arial", size: 11, color: ["black"]}
+            }
+          }]
+          
+          Plotly.newPlot(element, data);
+
+        }
+
+        element = "plotlyTableDiv";
+    
+      }   
+        //  element = "plotlyTableDiv";
+
+    }
+
+  
+
+
+
+    basicDataTable(){
+      var templateObject = this.getChartTemplateObject();
+      // This array will hold all results returned from Papa Parse, whether one CSV is used, or multiple
+      var allResults: any[] = [];
+
+      if (templateObject['product']['subProducts'][0]['data'].length > 1) {
       
-    //   Plotly.newPlot('plotlyTableDiv', data);
+          // Create an array to hold our Observables of each file read
+          var dataArray = [];
+          var filePath: string;
+          var TSIDLocation: string;
+          for (let data of templateObject['product']['subProducts'][0]['data']) { 
+            // Obtain the TSID location for the readTimeSeries method
+            TSIDLocation = data.properties.TSID.split('~')[0];
+            // Depending on whether it's a full TSID used in the graph template file, determine what the file path of the StateMod
+            // file is. (TSIDLocation~/path/to/filename.stm OR TSIDLocation~StateMod~/path/to/filename.stm)
+
+            // console.log("TSIDLocation", TSIDLocation);
+            // console.log("data.properties.TSID.split('~')", data.properties.TSID.split('~'));
+            // console.log("data.properties.TSID.split('~').length", data.properties.TSID.split('~').length);
+
+            if (data.properties.TSID.split('~').length === 2) {
+              filePath = data.properties.TSID.split('~')[1];
+            } 
+            else if (data.properties.TSID.split('~').length === 3) {
+              filePath = data.properties.TSID.split('~')[2];
+              console.log("filepath: ", filePath)
+             
+  
+              Papa.parse(this.buildPath('csvPath', [filePath]),
+              {
+                delimiter: ",",
+                download: true,
+                comments: "#",
+                skipEmptyLines: true,
+                header: true,
+                complete: (result: any, file: any) => {
+                  // this.createCSVConfig(result.data);
+          
+                  allResults.push(result);
+                  // this.populateTableData(result.data);
+                  // console.log("result.data: " ,result.data);
+                  if (allResults.length === dataArray.length) {
+                    console.log("allresults length before passing to create csv config: ", allResults.length);
+                    console.log("about to call build all tables functions");
+                    this.buildMultTables(allResults);
+                  }
+                  
+                }
+              });  
+              
+            }
+          }
+      }
+      
+      // console.log("allresults array length: ", allResults.length);
+
+     
+      // var values = [x_axisLabels, y_axisData];
+
+   
+  
+      // var data = [{
+      //   type: 'table',
+      //   header: {
+      //     values: [["<b>Year</b>"], ["<b>Population</b>"]],
+      //     align: "center",
+      //     line: {width: 1, color: 'black'},
+      //     fill: {color: "grey"},
+      //     font: {family: "Arial", size: 12, color: "white"}
+      //   },
+      //   cells: {
+      //     values: values,
+      //     align: "center",
+      //     line: {color: "black", width: 1},
+      //     font: {family: "Arial", size: 11, color: ["black"]}
+      //   }
+      // }]
+      
+      // Plotly.newPlot('plotlyTableDiv1', data);
   
   
-    // }
+    }
     /**
    * Calls Papa Parse to asynchronously read in a CSV file.
    */
@@ -1105,6 +1177,7 @@ export class PlotlyTsPointLineComponent implements OnInit {
   //     this.createCSVConfig(dataArray2);
     
   // }
+
   parseCSVFile(): void {
 
     var templateObject: Object = this.getChartTemplateObject();
@@ -1134,9 +1207,12 @@ export class PlotlyTsPointLineComponent implements OnInit {
         header: true,
         complete: (result: any, file: any) => {
           allResults.push(result);
-
+            console.log("allresults length should be at most 2: ", allResults.length, "dataArray length: ", dataArray.length);
+          
           if (allResults.length === dataArray.length) {
+            console.log("allresults length before passing to create csv config: ", allResults.length);
             this.createCSVConfig(allResults);
+            this.buildMultTables(allResults);
           }
         }
       });

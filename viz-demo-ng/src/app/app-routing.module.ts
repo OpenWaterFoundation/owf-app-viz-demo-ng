@@ -8,7 +8,7 @@ import { GeneralPlotlyComponent } from './plotly/general-plotly/general-plotly.c
 import { HeatmapComponent, HeatmapDialog, Heatmap2Component, Heatmap2Dialog } from './plotly/heatmap/heatmap.component';
 import { TstoolGraphConfigComponent } from './tstool-graph-config/tstool-graph-config.component';
 import { PlotlyTstoolGraphComponent } from './tstool-graph-config/plotly-tstool-graph/plotly-tstool-graph.component';
-import { ShowdownNgDemoComponent, ShowdownIMGComponent } from './generic-content/showdown-ng-demo/showdown-ng-demo.component';
+import { ShowdownNgDemoComponent, ShowdownIMGComponent, ShowdownOptionsComponent } from './generic-content/showdown-ng-demo/showdown-ng-demo.component';
 import { PlotlyTsPointLineComponent } from './plotly/plotly-ts-point-line/plotly-ts-point-line.component';
 
 
@@ -23,6 +23,8 @@ const routes: Routes = [
   {path: 'showdown/demo-file', component: NGXShowdownComponent},
   {path: 'showdown/table-formatting', component: ShowdownNgDemoComponent},
   {path: 'showdown/img-integration', component: ShowdownIMGComponent},
+  {path: 'showdown/options', component: ShowdownOptionsComponent},
+
 
 
   {path: 'chartjs/generic-month-line', component: GeneralChartjsComponent},

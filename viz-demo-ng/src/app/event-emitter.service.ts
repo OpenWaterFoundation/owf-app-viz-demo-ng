@@ -23,6 +23,7 @@ export class EventEmitterService {
 
   invokeShowdownTableComponentFunction = new EventEmitter(); 
   invokeShowdownImgComponentFunction = new EventEmitter(); 
+  invokeShowdownOptionsComponentFunction = new EventEmitter(); 
 
 
 
@@ -95,4 +96,8 @@ export class EventEmitterService {
     this.invokeShowdownImgComponentFunction.emit();
   }
   
+  showdownOptionsClick(){
+    console.log("Step 2 Showdown options--> should invokeShowdownOptionsComponentFunction function")   
+    this.invokeShowdownOptionsComponentFunction.emit();
+  }
 }

@@ -62,6 +62,12 @@ export class NavBarComponent implements OnInit {
     console.log("Step 1: Event emitter Showdown Img"); 
     this.eventEmitterService.showdownImgClick();
   }
+
+  showdownOptionsFunction(){
+    console.log("Step 1: Event emitter Showdown Img"); 
+    this.eventEmitterService.showdownOptionsClick();
+  }
+
   ngOnInit(): void {
   }
 
