@@ -29,7 +29,7 @@ The potential for and impacts of flooding may not be obvious in downstream areas
 however, a hike in Red Mountain Open Space
 points out the impacts of flooding in that area and potential of high flows to cause damage downstream.
 
-![boxelder-creek.jpg](assets/app/data-maps/BasinEntities/Recreation-Trails/layers/trails-fortcollins-doc/boxelder-creek.jpg)
+![boxelder-creek.jpg](assets/img/boxelder-creek.jpg)
 
 **Boxelder Creek Upstream of Flood Control Dam** (photo by Steve Malers, 2020)
 

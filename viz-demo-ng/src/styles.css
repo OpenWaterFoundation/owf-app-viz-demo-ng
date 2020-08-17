@@ -36,3 +36,5 @@ table {
     background-color: #f6f8fa;
     border-radius: 3px;
 }
+
+.nav-link  {cursor: pointer;}
