@@ -10,6 +10,7 @@ import { TstoolGraphConfigComponent } from './tstool-graph-config/tstool-graph-c
 import { PlotlyTstoolGraphComponent } from './tstool-graph-config/plotly-tstool-graph/plotly-tstool-graph.component';
 import { ShowdownNgDemoComponent, ShowdownIMGComponent, ShowdownOptionsComponent } from './generic-content/showdown-ng-demo/showdown-ng-demo.component';
 import { PlotlyTsPointLineComponent } from './plotly/plotly-ts-point-line/plotly-ts-point-line.component';
+import { HighchartsComponent } from './highcharts/highcharts.component';
 
 
 
@@ -39,6 +40,7 @@ const routes: Routes = [
   {path: 'plotly/heatmap-generic', component: HeatmapComponent},
   {path: 'plotly/heatmap-ts', component: Heatmap2Component},
 
+  {path: 'highcharts/generic', component: HighchartsComponent},
   
   { path: '**', component: GenericContentComponent },
 

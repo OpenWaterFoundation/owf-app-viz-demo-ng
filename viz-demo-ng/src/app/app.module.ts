@@ -36,6 +36,7 @@ import { PlotlyTstoolGraphComponent } from './tstool-graph-config/plotly-tstool-
 import { ShowdownNgDemoComponent, ShowdownTableDialog,ShowdownIMGComponent, ShowdownIMGDialog,
    ShowdownOptionsComponent, ShowdownOptionsDialog } from './generic-content/showdown-ng-demo/showdown-ng-demo.component';
 import { PlotlyTsPointLineComponent } from './plotly/plotly-ts-point-line/plotly-ts-point-line.component';
+import { HighchartsComponent } from './highcharts/highcharts.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { PlotlyTsPointLineComponent } from './plotly/plotly-ts-point-line/plotly
     ShowdownTableDialog, ShowdownNgDemoComponent, ShowdownIMGComponent, ShowdownIMGDialog,
     ShowdownOptionsComponent, ShowdownOptionsDialog,
     PlotlyTsPointLineComponent,
+    HighchartsComponent,
 
     
   ],
