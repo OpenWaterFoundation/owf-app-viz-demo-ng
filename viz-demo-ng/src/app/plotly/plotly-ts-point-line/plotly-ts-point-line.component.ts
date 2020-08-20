@@ -29,7 +29,8 @@ var y_axisData: number[] = [];
 
 @Component({
   selector: 'app-plotly-ts-point-line',
-  templateUrl: './plotly-ts-point-line.component.html',
+  // templateUrl: './plotly-ts-point-line.component.html',
+  templateUrl: '../../generic-content/generic-content.component.html',
   styleUrls: ['./plotly-ts-point-line.component.css']
 })
 export class PlotlyTsPointLineComponent implements OnInit {

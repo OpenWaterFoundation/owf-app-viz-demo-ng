@@ -15,7 +15,8 @@ noData(Highcharts);
 
 @Component({
   selector: 'app-highcharts',
-  templateUrl: './highcharts.component.html',
+  // templateUrl: './highcharts.component.html',
+  templateUrl: './../generic-content/generic-content.component.html',
   styleUrls: ['./highcharts.component.css']
 })
 export class HighchartsComponent implements OnInit {

@@ -13,7 +13,8 @@ const showdown = require('showdown');
 
 @Component({
   selector: 'app-general-plotly',
-  templateUrl: './general-plotly.component.html',
+  // templateUrl: './general-plotly.component.html',
+  templateUrl: '../../generic-content/generic-content.component.html',
   styleUrls: ['./general-plotly.component.css']
 })
 export class GeneralPlotlyComponent implements OnInit {

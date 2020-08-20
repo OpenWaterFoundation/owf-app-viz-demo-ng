@@ -33,7 +33,8 @@ var globalGraphtemplateObject: object;
 
 @Component({
 selector: 'app-tstool-graph-config',
-templateUrl: './tstool-graph-config.component.html',
+// templateUrl: './tstool-graph-config.component.html',
+templateUrl: './../generic-content/generic-content.component.html',
 styleUrls: ['./tstool-graph-config.component.css']
 })
 export class TstoolGraphConfigComponent implements OnInit {

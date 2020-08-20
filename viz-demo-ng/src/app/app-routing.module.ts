@@ -11,6 +11,7 @@ import { PlotlyTstoolGraphComponent } from './tstool-graph-config/plotly-tstool-
 import { ShowdownNgDemoComponent, ShowdownIMGComponent, ShowdownOptionsComponent } from './generic-content/showdown-ng-demo/showdown-ng-demo.component';
 import { PlotlyTsPointLineComponent } from './plotly/plotly-ts-point-line/plotly-ts-point-line.component';
 import { HighchartsComponent } from './highcharts/highcharts.component';
+import { SnodasComponent } from './highcharts/snodas/snodas.component';
 
 
 
@@ -41,6 +42,8 @@ const routes: Routes = [
   {path: 'plotly/heatmap-ts', component: Heatmap2Component},
 
   {path: 'highcharts/generic', component: HighchartsComponent},
+  {path: 'highcharts/snodas-day-line', component: SnodasComponent},
+
   
   { path: '**', component: GenericContentComponent },
 

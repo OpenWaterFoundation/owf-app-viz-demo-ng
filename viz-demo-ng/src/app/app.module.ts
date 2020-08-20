@@ -37,6 +37,7 @@ import { ShowdownNgDemoComponent, ShowdownTableDialog,ShowdownIMGComponent, Show
    ShowdownOptionsComponent, ShowdownOptionsDialog } from './generic-content/showdown-ng-demo/showdown-ng-demo.component';
 import { PlotlyTsPointLineComponent } from './plotly/plotly-ts-point-line/plotly-ts-point-line.component';
 import { HighchartsComponent } from './highcharts/highcharts.component';
+import { SnodasComponent } from './highcharts/snodas/snodas.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { HighchartsComponent } from './highcharts/highcharts.component';
     ShowdownOptionsComponent, ShowdownOptionsDialog,
     PlotlyTsPointLineComponent,
     HighchartsComponent,
+    SnodasComponent,
 
     
   ],

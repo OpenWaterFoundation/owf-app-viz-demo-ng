@@ -26,7 +26,8 @@ declare var Plotly: any;
 
 @Component({
   selector: 'app-plotly-tstool-graph',
-  templateUrl: './plotly-tstool-graph.component.html',
+  // templateUrl: './plotly-tstool-graph.component.html',
+  templateUrl: '../../generic-content/generic-content.component.html',
   styleUrls: ['./plotly-tstool-graph.component.css']
 })
 export class PlotlyTstoolGraphComponent implements OnInit {
