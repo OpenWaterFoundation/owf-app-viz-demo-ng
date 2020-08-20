@@ -17,7 +17,8 @@ import { Papa } from 'ngx-papaparse';
 
 @Component({
   selector: 'app-line-chart',
-  templateUrl: './line-chart.component.html',
+  // templateUrl: './line-chart.component.html',
+  templateUrl: './../generic-content/generic-content.component.html',
   styleUrls: ['./line-chart.component.css']
 })
 export class LineChartComponent implements OnInit {

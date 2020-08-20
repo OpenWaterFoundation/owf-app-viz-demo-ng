@@ -25,7 +25,8 @@ import { ChartsModule } from 'ng2-charts'; // <- HERE
 
 @Component({
   selector: 'app-general-chartjs',
-  templateUrl: './general-chartjs.component.html',
+  // templateUrl: './general-chartjs.component.html',
+  templateUrl: '../../generic-content/generic-content.component.html',
   styleUrls: ['./general-chartjs.component.css']
 })
 export class GeneralChartjsComponent implements OnInit {

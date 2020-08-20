@@ -9,7 +9,8 @@ declare var Plotly: any;
 
 @Component({
   selector: 'app-heatmap',
-  templateUrl: './heatmap.component.html',
+  // templateUrl: './heatmap.component.html',
+  templateUrl: '../../generic-content/generic-content.component.html',
   styleUrls: ['./heatmap.component.css']
 })
 export class HeatmapComponent implements OnInit {
@@ -130,6 +131,7 @@ export class HeatmapComponent implements OnInit {
 @Component({
   selector:'heatmap-dialog',
   templateUrl: 'heatmap-dialog-content.html'
+  
 })
 
 export class HeatmapDialog implements OnInit{
@@ -231,8 +233,9 @@ export class HeatmapDialog implements OnInit{
 
 @Component({
   selector: 'app-heatmap2',
-  templateUrl: './heatmap2.component.html'
- 
+  // templateUrl: './heatmap2.component.html'
+  // templateUrl: './heatmap.component.html'
+  templateUrl: '../../generic-content/generic-content.component.html'
  
 })
 export class Heatmap2Component implements OnInit {
@@ -262,6 +265,7 @@ export class Heatmap2Component implements OnInit {
 @Component({
   selector:'map2-dialog',
   templateUrl: 'heatmap2-dialog.html'
+  
 })
 
 export class Heatmap2Dialog implements OnInit{

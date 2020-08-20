@@ -12,7 +12,8 @@ declare var Plotly: any;
 var TypeofData; 
 @Component({
   selector: 'app-plotly',
-  templateUrl: './plotly.component.html',
+  // templateUrl: './plotly.component.html',
+  templateUrl: './../generic-content/generic-content.component.html',
   styleUrls: ['./plotly.component.css']
 })
 export class PlotlyComponent implements OnInit{

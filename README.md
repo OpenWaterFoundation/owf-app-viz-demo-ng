@@ -102,7 +102,46 @@ The web application provides menus, which display context-specific maps, as foll
 |                                                         |                                                              |                                                              |
 |                                                         |                                                              |                                                              |
 
+## Libraries Used 
 
+This application [Open Water Foundation](https://openwaterfoundation.org/) tests different visualizations for time series and data in Angular. Specific examples focus on popular and feature-rich charting libraries that are used in Open Water Foundation applications which utilize these graphing libraries such as Chart.js and Plotly.js for water data visualizations.
+
+### Chart.JS
+
+**Chart.js** is a community maintained free open-source JavaScript library for data visualization, which supports 8 different chart types by using the HTML `` element.
+
+This library is responsive, and allows for mixed chart types (ex. a line chart with a bar graph on top of it), as well as different axis types (date time, logarithmic, and even custom scales), and even supports animations.
+
+**Library Documentation:**
+
+- [**Chart.JS**](https://www.chartjs.org/)
+
+**Open Water Foundation demonstration of chart.js library:** [OpenWaterFoundation/owf-lib-chart-js](https://github.com/OpenWaterFoundation/owf-lib-viz-chart-js)
+
+_____________________
+
+### Plotly.JS
+
+**Plotly.js** is a high-level, declarative charting library, free and open-source. Plotly.js ships with over 40 chart types, including 3D charts, statistical graphs, and SVG . This library abstracts the types of statistical and scientific charts that you would find in packages like matplotlib, ggplot2, or MATLAB.
+
+**Library Documentation:**
+
+- [**Plotly.JS**](https://plotly.com/javascript/)
+
+**Open Water Foundation demonstration of chart.js library:** [OpenWaterFoundation/owf-lib-viz-plotly-js](https://github.com/OpenWaterFoundation/owf-lib-viz-plotly-js)
+
+______________________
+
+### Angular Showdown
+
+**ngx-showdown** is an Angular integration of [Showdown](http://showdownjs.com/). **Showdown** is a JavaScript Markdown to HTML converter, based on the original works by John Gruber. Showdown can be used client side (in the browser) or server side (with NodeJs).
+
+**Library Documentation:**
+
+- [**Angular Showdown: ngx-showdown**](https://yisraelx.github.io/ngx-showdown/docs/pipes/ShowdownPipe.html)
+- [**Showdown: showdown**](https://github.com/showdownjs/showdown)
+
+**Open Water Foundation demonstration of Showdown library:** [OpenWaterFoundation/owf-lib-showdown-js](https://github.com/OpenWaterFoundation/owf-lib-showdown-js)
 
 ## Getting Started 
 
