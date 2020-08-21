@@ -109,7 +109,7 @@ export class HighchartsSnodasDialog {
    var chartData;
    $.get(file, async function(data) {
      /* waitForParsedData waits for papaparse to parse the csv file */
-     // console.log("Inside Get function");
+     console.log("Inside Get function, data: ", data);
      const waitForParsedData = async (file) => {
        let parsePromise = function (file) {
            return new Promise(function (complete, error) {
@@ -189,25 +189,42 @@ export class HighchartsSnodasDialog {
              }
            }
          }
+
+         let datesArrayHC= [];
          // console.log("LineData Array: ", lineData);
          // console.log("nameLabels Array: ", nameLabelsArray);
+         datesArray.shift();
+
+         datesArray.forEach(function(point){
+          //  console.log("in foreach point1: ", point);
+           point = new Date(point).getTime();
+          //  console.log("point2:", point);
+           datesArrayHC.push(point);
+         });
+
          console.log("DatesArray: ", datesArray);
+         console.log("DatesArrayHC: ", datesArrayHC);
+
          min_time = labelsArray[0];
          max_time = labelsArray[labelsArray.length - 1];
          _this.chartData = [];
          for(let i = 0; i < nameLabelsArray.length; i++){
+          let dataMerge = datesArrayHC.map(function(x, j){
+            return [x, lineData[i][j]];
+          });
+          console.log("DataMerge:", dataMerge);
+          console.log("LineData[i][0], ", lineData[i][0]);
            _this.chartData.push({
-            //  type: "Scatter",
-            //  mode: "lines+markers",
-             name: nameLabelsArray[i],
-             x: datesArray,
-             y: lineData[i]
+             name: nameLabelsArray[i], 
+             data: dataMerge
+            //  x: datesArrayHC,
+            //  y: lineData[i]
         
            })
          }
          
          this.plotChartData = _this.chartData;
-         console.log("ChartData: ", _this.chartData);
+         console.log("ChartData!: ", _this.chartData);
          const element = document.getElementById("chart") as HTMLDivElement;
          console.log("Element: ", element);
      
@@ -230,77 +247,7 @@ export class HighchartsSnodasDialog {
         //  Plotly.plot( element, this.plotChartData, layout);
          console.log("Chart is ploted")
 
-
-      //   var options = {
-      //     title: {
-      //       text: 'SNODAS Volume Graph'
-      //   },
-      
-      //   subtitle: {
-      //       text: 'Source: openwaterfoundation.org/'
-      //   },
-      
-      //   yAxis: {
-      //       title: {
-      //           text: 'SWE Acre-foot'
-      //       }
-      //   },
-      
-      //   xAxis: {
-      //       accessibility: {
-      //           rangeDescription: 'Range: 2010 to 2017'
-      //       }
-      //   },
-      
-      //   legend: {
-      //       layout: 'vertical',
-      //       align: 'right',
-      //       verticalAlign: 'middle'
-      //   },
-      
-      //   plotOptions: {
-      //       series: {
-      //           label: {
-      //               connectorAllowed: false
-      //           },
-      //           pointStart: 2010
-      //       }
-      //   },
-      
-      //   // series: [{
-      //   //     name: 'Installation',
-      //   //     data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
-      //   // }, {
-      //   //     name: 'Manufacturing',
-      //   //     data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
-      //   // }, {
-      //   //     name: 'Sales & Distribution',
-      //   //     data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
-      //   // }, {
-      //   //     name: 'Project Development',
-      //   //     data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
-      //   // }, {
-      //   //     name: 'Other',
-      //   //     data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
-      //   // }],
-      
-      //   data: this.plotChartData,
-
-      //   responsive: {
-      //       rules: [{
-      //           condition: {
-      //               maxWidth: 500
-      //           },
-      //           chartOptions: {
-      //               legend: {
-      //                   layout: 'horizontal',
-      //                   align: 'center',
-      //                   verticalAlign: 'bottom'
-      //               }
-      //           }
-      //       }]
-      //   }
-      // }
+// _________________________________
 
       Highcharts.chart('container', {
         title: {
@@ -318,9 +265,10 @@ export class HighchartsSnodasDialog {
       },
     
       xAxis: {
-          accessibility: {
-              rangeDescription: 'Range: 2010 to 2017'
-          }
+        type: 'datetime',
+          // accessibility: {
+          //     rangeDescription: 'Range: 2010 to 2017'
+          // }
       },
     
       legend: {
@@ -374,10 +322,50 @@ export class HighchartsSnodasDialog {
     });
 
 
+// _______________________________________________________
 
 
+$.get('assets/SnowpackCSVByBasin/'+ this.chartBasinID+'-SWE-Volume.csv', function(csv) {
+  console.log("data: csv: ", csv);
 
+  
+});
 
+// Highcharts.stockChart('container', {
+//   chart: {
+//       zoomType: 'x',  // describes what axis to zoom in on when a user decides to zoom on certain data
+//   },
+//   title: {
+//       text: 'Precipitation' // title of chart
+//   },
+//   xAxis: {
+//       type: 'datetime', // datatype of x axis (YYYY-MM-DD, MM-DD-YYYY, etc.)
+//       title: {
+//           text: 'Date'    // x axis title
+//       },
+//       gridLineWidth: 1    // line width of grid
+//   },
+//   yAxis: {
+//       title: {
+//           text: 'inches'  // y axis title
+//       }
+//   },
+//   tooltip: { // control what the tooltip displays when a user hovers over a data point
+//       pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b>',
+//       valueDecimals: 2, // how many decimals to show
+//       split: true
+//   },
+//   legend: {
+//       enabled: true   // show legend
+//   },
+//   data: {
+//       csv: csv    // data to be plotted
+//   },
+//   navigator: {
+//       adapToUpdatedData: true,
+//       enabled: true
+//   },
+// });
 
 
 
