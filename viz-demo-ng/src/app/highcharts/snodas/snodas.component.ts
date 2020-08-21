@@ -286,23 +286,6 @@ export class HighchartsSnodasDialog {
       //     }
       // },
     
-      // series: [{
-      //     name: 'Installation',
-      //     data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
-      // }, {
-      //     name: 'Manufacturing',
-      //     data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
-      // }, {
-      //     name: 'Sales & Distribution',
-      //     data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
-      // }, {
-      //     name: 'Project Development',
-      //     data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
-      // }, {
-      //     name: 'Other',
-      //     data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
-      // }],
-    
       series: this.plotChartData,
 
       responsive: {
@@ -320,53 +303,6 @@ export class HighchartsSnodasDialog {
           }]
       }
     });
-
-
-// _______________________________________________________
-
-
-$.get('assets/SnowpackCSVByBasin/'+ this.chartBasinID+'-SWE-Volume.csv', function(csv) {
-  console.log("data: csv: ", csv);
-
-  
-});
-
-// Highcharts.stockChart('container', {
-//   chart: {
-//       zoomType: 'x',  // describes what axis to zoom in on when a user decides to zoom on certain data
-//   },
-//   title: {
-//       text: 'Precipitation' // title of chart
-//   },
-//   xAxis: {
-//       type: 'datetime', // datatype of x axis (YYYY-MM-DD, MM-DD-YYYY, etc.)
-//       title: {
-//           text: 'Date'    // x axis title
-//       },
-//       gridLineWidth: 1    // line width of grid
-//   },
-//   yAxis: {
-//       title: {
-//           text: 'inches'  // y axis title
-//       }
-//   },
-//   tooltip: { // control what the tooltip displays when a user hovers over a data point
-//       pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b>',
-//       valueDecimals: 2, // how many decimals to show
-//       split: true
-//   },
-//   legend: {
-//       enabled: true   // show legend
-//   },
-//   data: {
-//       csv: csv    // data to be plotted
-//   },
-//   navigator: {
-//       adapToUpdatedData: true,
-//       enabled: true
-//   },
-// });
-
 
 
          break;

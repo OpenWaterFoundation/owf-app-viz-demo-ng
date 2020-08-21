@@ -38,6 +38,7 @@ import { ShowdownNgDemoComponent, ShowdownTableDialog,ShowdownIMGComponent, Show
 import { PlotlyTsPointLineComponent } from './plotly/plotly-ts-point-line/plotly-ts-point-line.component';
 import { HighchartsComponent } from './highcharts/highcharts.component';
 import { SnodasComponent } from './highcharts/snodas/snodas.component';
+// import { TstoolConfigComponent } from './highcharts/tstool-config/tstool-config.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { SnodasComponent } from './highcharts/snodas/snodas.component';
     PlotlyTsPointLineComponent,
     HighchartsComponent,
     SnodasComponent,
+    // TstoolConfigComponent
 
     
   ],
