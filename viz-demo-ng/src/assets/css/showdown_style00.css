@@ -1,0 +1,30 @@
+/* Showdown table styling */
+.showdown_table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    display: block;
+  }
+  
+  .showdown_td, .showdown_th {
+    border: 1px solid  #dddddd;
+    /* #d9dbda; */
+    text-align: left;
+    padding: 8px;
+  }
+  
+  .showdown_tr:nth-child(even) {
+    background-color: #ebebeb;
+  }
+
+  .showdown-container{
+    font: 12px/1.5 Helvetica Neue,Arial,Helvetica,sans-serif; 
+  }
+  .showdown_pre {
+    padding: 16px;
+    overflow: auto;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: #f6f8fa;
+    border-radius: 3px;
+}

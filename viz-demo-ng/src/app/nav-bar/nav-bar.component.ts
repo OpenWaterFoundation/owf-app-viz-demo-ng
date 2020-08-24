@@ -68,6 +68,12 @@ export class NavBarComponent implements OnInit {
     this.eventEmitterService.showdownOptionsClick();
   }
 
+  showdownCSSFunction(){
+    console.log("Step 1: Event emitter Showdown CSS"); 
+    this.eventEmitterService.showdownCSSClick();
+  }
+
+
   ngOnInit(): void {
   }
 

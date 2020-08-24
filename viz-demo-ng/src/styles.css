@@ -1,5 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~bootstrap/dist/css/bootstrap.css';
+@import 'assets/css/showdown_style00.css';
+/* @import 'assets/css/showdown_style01.css'; */
+
 
 /* body {
     padding-top: 80px;
@@ -11,7 +14,9 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 /* Showdown table styling */
-table {
+
+
+/* table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
@@ -20,21 +25,22 @@ table {
   
   td, th {
     border: 1px solid  #dddddd;
-    /* #d9dbda; */
+    
     text-align: left;
     padding: 8px;
-  }
-  
+  } */
+/*   
   tr:nth-child(even) {
     background-color: #ebebeb;
-  }
-  pre {
+  } */
+  /* .showdown_pre {
     padding: 16px;
     overflow: auto;
     font-size: 85%;
     line-height: 1.45;
     background-color: #f6f8fa;
     border-radius: 3px;
-}
+} */
+
 
 .nav-link  {cursor: pointer;}

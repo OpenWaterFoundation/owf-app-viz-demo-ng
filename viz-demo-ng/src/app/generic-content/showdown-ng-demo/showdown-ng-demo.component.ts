@@ -203,3 +203,64 @@ export class ShowdownOptionsDialog implements OnInit{
 
   
 }
+@Component({
+  selector: 'showdown-customCSS-demo',
+  templateUrl: './showdown-ng-demo.component.html',
+  // styleUrls: ['./showdown-ng-demo.component.css']
+  // styleUrls: ['./showdown_style01.css']
+})
+export class ShowdownCustomCSSComponent implements OnInit {
+
+  constructor(public dialog: MatDialog, private eventEmitterService: EventEmitterService) { }
+
+
+  ngOnInit(): void {
+    this.openDialog();
+    if (this.eventEmitterService.subsVar==undefined) {  
+      this.eventEmitterService.subsVar = this.eventEmitterService.    
+      invokeShowdownCSSComponentFunction.subscribe(() => {
+        console.log("Step 3: Showdown CSS --> openDialog call");
+    
+        this.openDialog(); 
+      });    
+    }    
+  }
+
+  
+  openDialog(): void {
+    console.log("Entered openDialog Function")
+    const dialogRef = this.dialog.open(ShowdownCustomCSSDialog, {
+      height: '650px',
+      width: '1000px',
+     
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+     
+    });
+  }
+
+
+}
+
+
+@Component({
+  selector:'showdown-customCSS-dialog',
+  templateUrl: 'showdown-customCSS-content.html',
+  styleUrls: ['./showdown_style01.css']
+})
+
+export class ShowdownCustomCSSDialog implements OnInit{
+
+  constructor( public dialogRef: MatDialogRef<ShowdownCustomCSSDialog>) { }
+  ngOnInit() {
+  }
+
+  /**
+  * Closes the Mat Dialog popup when the Close button is clicked.
+  */
+ onClose(): void { this.dialogRef.close(); }
+
+  
+}

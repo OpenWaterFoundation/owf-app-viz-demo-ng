@@ -1,0 +1,33 @@
+.showdown_table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    display: block;
+  }
+  
+  .showdown_td, .showdown_th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  .showdown_tr:nth-child(even) {
+    background-color: #00ff00;
+  }
+
+  
+.showdown_h1 {
+  font-weight: bold;
+  color: #cc0099;
+  font-size: 62px;
+}
+
+.showdown_h2 {
+  font-weight: bold;
+  color: #3399ff;
+  font-size: 24px;
+}
+
+.showdown_p {
+    font: 12px/1.5 Helvetica Neue,Arial,Helvetica,sans-serif; 
+}

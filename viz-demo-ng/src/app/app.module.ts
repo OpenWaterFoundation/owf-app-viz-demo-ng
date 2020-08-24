@@ -34,11 +34,40 @@ import { HeatmapComponent, HeatmapDialog, Heatmap2Component, Heatmap2Dialog } fr
 import { TstoolGraphConfigComponent } from './tstool-graph-config/tstool-graph-config.component';
 import { PlotlyTstoolGraphComponent } from './tstool-graph-config/plotly-tstool-graph/plotly-tstool-graph.component';
 import { ShowdownNgDemoComponent, ShowdownTableDialog,ShowdownIMGComponent, ShowdownIMGDialog,
-   ShowdownOptionsComponent, ShowdownOptionsDialog } from './generic-content/showdown-ng-demo/showdown-ng-demo.component';
+   ShowdownOptionsComponent, ShowdownOptionsDialog, ShowdownCustomCSSComponent, ShowdownCustomCSSDialog } from './generic-content/showdown-ng-demo/showdown-ng-demo.component';
 import { PlotlyTsPointLineComponent } from './plotly/plotly-ts-point-line/plotly-ts-point-line.component';
 import { HighchartsComponent } from './highcharts/highcharts.component';
 import { SnodasComponent } from './highcharts/snodas/snodas.component';
 // import { TstoolConfigComponent } from './highcharts/tstool-config/tstool-config.component';
+declare var require: any
+const showdown = require('showdown');
+
+const classMap = {
+  h1: 'showdown_h1',
+  h2: 'showdown_h2',
+  ul: 'ui list',
+  li: 'ui item',
+  table: 'showdown_table',
+  td: 'showdown_td',
+  th: 'showdown_th',
+  tr: 'showdown_tr',
+  // p: 'showdown_p',
+  pre: 'showdown_pre'
+}
+
+const bindings = Object.keys(classMap)
+  .map(key => ({
+    type: 'output',
+    regex: new RegExp(`<${key}(.*)>`, 'g'),
+    replace: `<${key} class="${classMap[key]}" $1>`
+  }));
+
+const conv = new showdown.Converter({
+  extensions: [bindings]
+});
+
+
+
 
 @NgModule({
   declarations: [
@@ -62,6 +91,8 @@ import { SnodasComponent } from './highcharts/snodas/snodas.component';
     HighchartsComponent,
     SnodasComponent,
     // TstoolConfigComponent
+    ShowdownCustomCSSComponent,
+    ShowdownCustomCSSDialog
 
     
   ],
@@ -78,9 +109,10 @@ import { SnodasComponent } from './highcharts/snodas/snodas.component';
     MatCardModule,
     MatFormFieldModule,
     HttpClientModule,
-    ShowdownModule.forRoot({emoji: true, noHeaderId: true, openLinksInNewWindow: true, smartIndentationFix: true,simpleLineBreaks: false ,  flavor: 'github'}),
+    ShowdownModule.forRoot({emoji: true, noHeaderId: true, extensions: [bindings], openLinksInNewWindow: true, smartIndentationFix: true,simpleLineBreaks: false ,  flavor: 'github'}),
     CommonModule,
     DragDropModule
+    
 
 
   ],
