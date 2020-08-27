@@ -73,6 +73,18 @@ export class NavBarComponent implements OnInit {
     this.eventEmitterService.showdownCSSClick();
   }
 
+  genericHighchartsFunction(){
+    console.log("Step 1: Event emitter generic highcharts "); 
+    this.eventEmitterService.genericHighchartsClick();
+  }
+  snodasHighchartsFunction(){
+    console.log("Step 1: Event emitter snodas highcharts"); 
+    this.eventEmitterService.snodasHighchartsClick();
+  }
+  tstoolHighchartsFunction(){
+    console.log("Step 1: Event emitter tstool highcharts"); 
+    this.eventEmitterService.tstoolHighchartsClick();
+  }
 
   ngOnInit(): void {
   }

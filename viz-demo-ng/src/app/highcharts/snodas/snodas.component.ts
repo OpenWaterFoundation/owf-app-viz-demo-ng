@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { EventEmitterService } from '../../event-emitter.service';    
+
 import * as Highcharts from 'highcharts';
 import { Papa } from 'ngx-papaparse';
 import * as $ from "jquery"
@@ -22,10 +24,16 @@ var TypeofData;
 })
 export class SnodasComponent implements OnInit {
 
-  constructor(public dialog: MatDialog,) { }
+  constructor(public dialog: MatDialog, private eventEmitterService: EventEmitterService) { }
 
   ngOnInit(): void {
     this.openDialog('Volume_Graph');
+    if (this.eventEmitterService.subsVar==undefined) {  
+      this.eventEmitterService.subsVar = this.eventEmitterService.    
+      invokeSnodasHCComponentFunction.subscribe(() => {    
+        this.openDialog('Volume_Graph');    
+      });    
+    }
   }
 
 

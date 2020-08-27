@@ -35,9 +35,10 @@ import { TstoolGraphConfigComponent } from './tstool-graph-config/tstool-graph-c
 import { PlotlyTstoolGraphComponent } from './tstool-graph-config/plotly-tstool-graph/plotly-tstool-graph.component';
 import { ShowdownNgDemoComponent, ShowdownTableDialog,ShowdownIMGComponent, ShowdownIMGDialog,
    ShowdownOptionsComponent, ShowdownOptionsDialog, ShowdownCustomCSSComponent, ShowdownCustomCSSDialog } from './generic-content/showdown-ng-demo/showdown-ng-demo.component';
-import { PlotlyTsPointLineComponent } from './plotly/plotly-ts-point-line/plotly-ts-point-line.component';
+import { PlotlyTsPointLineComponent, TSDialogContent } from './plotly/plotly-ts-point-line/plotly-ts-point-line.component';
 import { HighchartsComponent } from './highcharts/highcharts.component';
 import { SnodasComponent } from './highcharts/snodas/snodas.component';
+import { TstoolConfigComponent } from './highcharts/tstool-config/tstool-config.component';
 // import { TstoolConfigComponent } from './highcharts/tstool-config/tstool-config.component';
 declare var require: any
 const showdown = require('showdown');
@@ -92,7 +93,9 @@ const conv = new showdown.Converter({
     SnodasComponent,
     // TstoolConfigComponent
     ShowdownCustomCSSComponent,
-    ShowdownCustomCSSDialog
+    ShowdownCustomCSSDialog,
+    TstoolConfigComponent,
+    TSDialogContent
 
     
   ],

@@ -42,11 +42,9 @@ export class PlotlyTsPointLineComponent implements OnInit {
     if (this.eventEmitterService.subsVar==undefined) {  
       this.eventEmitterService.subsVar = this.eventEmitterService.    
       invokeTSToolPointLineComponentFunction.subscribe((name:string) => {    
-        // this.openDialog();    
         this.graphTsToolConfig();
       });    
     } 
-    // this.openDialog();
     
  
   }

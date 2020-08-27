@@ -95,7 +95,9 @@ The web application provides menus, which display context-specific maps, as foll
 | ***Basic HeatMap Demo***                                | [README](https://github.com/OpenWaterFoundation/owf-app-viz-demo-ng/tree/master/viz-demo-ng/src/app/plotly) | Generic PlotlyJS HeatMap graphing demonstration              |
 | **HeatMap: CSV Daily Streamflow**                       |                                                              | Heatmap demonstration using CSV data                         |
 | **Hightcharts/**                                        |                                                              |                                                              |
-| **Generic Line Chart- Yearly Data**                     |                                                              |                                                              |
+| **Generic Line Chart- Yearly Data**                     |                                                              | Generic Highcharts Demo for beginners                        |
+| **SNODAS Line Chart: Daily TS Data**                    |                                                              | Highcharts graphing demonstration using daily time series data from |
+| **TSTool Graph Configuration: Monthly Data**            |                                                              | Highcharts graphing demonstration using monthly time series data from TsTool configuration files |
 | ***Dygraphs/***                                         | ===========                                                  | ======== **In Development**========                          |
 | ***D3/***                                               | ===========                                                  | ======== **In Development**========                          |
 |                                                         |                                                              |                                                              |

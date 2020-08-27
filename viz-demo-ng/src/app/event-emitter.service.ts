@@ -20,12 +20,14 @@ export class EventEmitterService {
   invokeChartjsTSToolComponentFunction = new EventEmitter(); 
   
 
-
   invokeShowdownTableComponentFunction = new EventEmitter(); 
   invokeShowdownImgComponentFunction = new EventEmitter(); 
   invokeShowdownOptionsComponentFunction = new EventEmitter();
   invokeShowdownCSSComponentFunction = new EventEmitter(); 
 
+  invokeGenericHCComponentFunction = new EventEmitter(); 
+  invokeSnodasHCComponentFunction = new EventEmitter(); 
+  invokeTSToolHCComponentFunction = new EventEmitter(); 
 
 
 
@@ -105,6 +107,20 @@ export class EventEmitterService {
   showdownCSSClick(){
     console.log("Step 2 Showdown CSS--> should invokeShowdownOptionsComponentFunction function")   
     this.invokeShowdownCSSComponentFunction.emit();
+  }
+
+
+  genericHighchartsClick(){
+    console.log("Step 2 Showdown CSS--> should invoke generic highcharts Function function")   
+    this.invokeGenericHCComponentFunction.emit();
+  }
+  snodasHighchartsClick(){
+    console.log("Step 2 Showdown CSS--> should invoke Snodas highcharts Function function")   
+    this.invokeSnodasHCComponentFunction.emit();
+  }
+  tstoolHighchartsClick(){
+    console.log("Step 2 Showdown CSS--> should invoke TSTool HC function")   
+    this.invokeTSToolHCComponentFunction.emit();
   }
 
 }

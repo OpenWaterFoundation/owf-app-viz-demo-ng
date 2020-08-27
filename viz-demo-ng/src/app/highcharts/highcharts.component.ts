@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { EventEmitterService } from './../event-emitter.service';    
+
 import * as Highcharts from 'highcharts';
 
 declare var require: any;
@@ -21,10 +23,16 @@ noData(Highcharts);
 })
 export class HighchartsComponent implements OnInit {
 
-  constructor(public dialog: MatDialog,) { }
+  constructor(public dialog: MatDialog, private eventEmitterService: EventEmitterService) { }
 
   ngOnInit(): void {
     this.openDialog();
+    if (this.eventEmitterService.subsVar==undefined) {  
+      this.eventEmitterService.subsVar = this.eventEmitterService.    
+      invokeGenericHCComponentFunction.subscribe((name:string) => {    
+        this.openDialog();    
+      });    
+    } 
   }
 
 
