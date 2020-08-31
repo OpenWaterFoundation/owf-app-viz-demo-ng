@@ -78,8 +78,7 @@ export class EventEmitterService {
   TSToolConfigChartJSClick() { 
     console.log("Step 2 Plotly TSTool--> should invokeTSToolComponent function")   
     this.invokeChartjsTSToolComponentFunction.emit();    
-    // this.invokegenericPlotlyDemoFunction.emit();    
-
+       
   }   
   TSToolPointLineClick() { 
     console.log("Step 2 Plotly TSTool--> should invokeTSToolComponent function")   

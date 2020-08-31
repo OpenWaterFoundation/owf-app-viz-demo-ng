@@ -4,6 +4,12 @@ Open Water Foundation is utilizing Plotly.JS in order to test different visualiz
 
 **Plotly.js** is a high-level, declarative charting library, free and open-source. Plotly.js ships with over 40 chart types, including 3D charts, statistical graphs, and SVG . This library abstracts the types of statistical and scientific charts that you would find in packages like matplotlib, ggplot2, or MATLAB.
 
+**Library Documentation:**  
+
+* [**Plotly.JS**](https://plotly.com/javascript/)
+
+**Open Water Foundation demonstration of chart.js library:**  [OpenWaterFoundation/owf-lib-viz-plotly-js](https://github.com/OpenWaterFoundation/owf-lib-viz-plotly-js)
+
 ## Installation
 
 You can download the latest version of PlotlyJS from the [Getting Started guide](https://plotly.com/javascript/getting-started/) for the latest installation or upgrade instructions. Detailed installation instructions can be found on Plotly's [Getting Started](https://plotly.com/javascript/getting-started/) page.
@@ -85,7 +91,7 @@ Plotly.newPlot('myDiv', data, layout, {editable: true});
 
 ```
 
-Ploty graphs also present themselves with default modebar options along the top of the graph. By default, the `modebar` is only visible while the user is hovering over the chart. This modebar can be forced to always be visible, never be visible, and or even have some of the options removes. 
+Plotly graphs also present themselves with default modebar options along the top of the graph. By default, the `modebar` is only visible while the user is hovering over the chart. This modebar can be forced to always be visible, never be visible, and or even have some of the options removes. 
 
 To configure the chart to have the `modebar` to always be visible regardless of whether or not the user is currently hovering over the figure, set the `displayModeBar` attribute in the `config` of your figure to `true`.
 
@@ -102,8 +108,6 @@ var layout = {
 
 Plotly.newPlot('myDiv', data, layout, {displayModeBar: true})
 ```
-
-
 
 To never display the modebar:
 
@@ -164,11 +168,13 @@ Tp view the full list of configuration options refer to the [plotly.js source co
 * **Generic 2D Line Chart Demo: Monthly TS Data**
   * This  demo builds a basic 2D line chart, and intends to show you the general concepts behind  Plotly using monthly TS Data.
 * **SNODAS Line Chart Demo: Daily TS Data**
-  * This example takes in data from a csv format  and builds a SNODAS Volume Graph utilizing monthly time series data.
+  * This example takes in data from a csv format  and builds a SNODAS Volume Graph utilizing daily time series data.
 * **TSTool Graph Configuration Demo: Monthly TS Data**
-  * This demo creates a graph by mapping TSTool graph configurations using PlotlyJS and monthly TS Data.
+  * This example creates a graph by mapping TSTool graph configurations using PlotlyJS and monthly TS Data.
 * **Generic Heatmap Demo**
   * This demo depicts a basic heatmap example. Future time series  heatmap examples will be added.
+* **HeatMap: CSV Daily Streamflow**
+  * This example uses csv daily streamflow water data to create a heatmap using Plotly. 
 
 
 

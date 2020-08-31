@@ -30,3 +30,15 @@ npm install highcharts --save
 - **Title**: includes chart title.
 - **Tooltip**: has the tooltip’s customizations.
 - **Series: **  includes the data and categories of data. In this project, I am using normal and abnormal data generated from an AI (artificial intelligence data).
+
+## Example Descriptions
+
+* **Generic 2D Line Chart Demo: Monthly TS Data**
+  * This  demo builds a basic 2D line chart, and intends to show you the general concepts behind  Highcharts using monthly TS Data.
+* **SNODAS Line Chart Demo: Daily TS Data**
+  * This example takes in data from a csv format  and builds a SNODAS Volume Graph utilizing daily time series data.
+* **TSTool Graph Configuration Demo: Monthly TS Data**
+  * This example creates a graph by mapping TSTool graph configurations using Highcharts and monthly TS Data.
+* **Generic Heatmap Demo**
+  * This demo depicts a basic heatmap example. Future time series  heatmap examples will be added.
+

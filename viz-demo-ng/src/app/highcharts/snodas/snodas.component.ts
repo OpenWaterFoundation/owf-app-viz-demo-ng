@@ -45,6 +45,7 @@ export class SnodasComponent implements OnInit {
     const dialogRef = this.dialog.open(HighchartsSnodasDialog, {
       height: '650px',
       width: '1000px',
+
      
     });
 
@@ -256,6 +257,7 @@ export class HighchartsSnodasDialog {
          console.log("Chart is ploted")
 
 // _________________________________
+    // Highcharts.chart('container', {})
 
       Highcharts.chart('container', {
         title: {

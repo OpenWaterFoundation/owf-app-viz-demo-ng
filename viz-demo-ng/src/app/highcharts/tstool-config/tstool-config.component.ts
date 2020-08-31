@@ -693,11 +693,9 @@ export class TstoolConfigComponent implements OnInit {
           this.createChartJSGraph(configArray);
         } else {
           if (this.chartPackage.toUpperCase() === 'PLOTLY') {
-            console.log("Plotly condition");
             this.createPlotlyGraph(configArray, true);
           }
           if (this.chartPackage.toUpperCase() === 'HIGHCHARTS') {
-            console.log("Highcharts condition");
             this.createHighchartsGraph(configArray, true);
           }
         }
@@ -853,14 +851,11 @@ export class TstoolConfigComponent implements OnInit {
           verticalAlign: 'middle'
       },
     
-      // plotOptions: {
-      //     series: {
-      //         label: {
-      //             connectorAllowed: false
-      //         },
-      //         pointStart: 2010
-      //     }
-      // },
+      plotOptions: {
+          series: {
+             connectNulls: true
+          }
+      },
     
       series: hcFinalData,
 

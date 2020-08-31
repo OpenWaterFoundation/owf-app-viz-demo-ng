@@ -8,4 +8,11 @@
     height: 110000px; */
   }
 
+  td, th {
+    border: 1px solid  #dddddd;
+    /* #d9dbda; */
+    text-align: left;
+    padding: 8px;
+  }
   
+ 

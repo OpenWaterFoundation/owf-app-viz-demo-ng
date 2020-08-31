@@ -14,7 +14,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { ShowdownModule } from 'ngx-showdown';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-
+import { HighchartsChartModule } from 'highcharts-angular';
 
 
 
@@ -39,6 +39,7 @@ import { PlotlyTsPointLineComponent, TSDialogContent } from './plotly/plotly-ts-
 import { HighchartsComponent } from './highcharts/highcharts.component';
 import { SnodasComponent } from './highcharts/snodas/snodas.component';
 import { TstoolConfigComponent } from './highcharts/tstool-config/tstool-config.component';
+import { HeatmapHCComponent, HeatmapHCDialogComponent, HeatmapTSHCComponent, HeatmapTSHCDialogComponent } from './highcharts/heatmap/heatmap.component';
 // import { TstoolConfigComponent } from './highcharts/tstool-config/tstool-config.component';
 declare var require: any
 const showdown = require('showdown');
@@ -52,15 +53,15 @@ const classMap = {
   td: 'showdown_td',
   th: 'showdown_th',
   tr: 'showdown_tr',
-  // p: 'showdown_p',
+  p: 'showdown_p',
   pre: 'showdown_pre'
 }
 
 const bindings = Object.keys(classMap)
   .map(key => ({
     type: 'output',
-    regex: new RegExp(`<${key}(.*)>`, 'g'),
-    replace: `<${key} class="${classMap[key]}" $1>`
+    regex: new RegExp(`(<${key}>|<${key} (.*?)>)`, 'g'),
+    replace: `<${key} class="${classMap[key]}">`
   }));
 
 const conv = new showdown.Converter({
@@ -95,7 +96,11 @@ const conv = new showdown.Converter({
     ShowdownCustomCSSComponent,
     ShowdownCustomCSSDialog,
     TstoolConfigComponent,
-    TSDialogContent
+    TSDialogContent,
+    HeatmapHCComponent,
+    HeatmapHCDialogComponent,
+    HeatmapTSHCComponent,
+    HeatmapTSHCDialogComponent
 
     
   ],
@@ -114,7 +119,8 @@ const conv = new showdown.Converter({
     HttpClientModule,
     ShowdownModule.forRoot({emoji: true, noHeaderId: true, extensions: [bindings], openLinksInNewWindow: true, smartIndentationFix: true,simpleLineBreaks: false ,  flavor: 'github'}),
     CommonModule,
-    DragDropModule
+    DragDropModule,
+    HighchartsChartModule
     
 
 

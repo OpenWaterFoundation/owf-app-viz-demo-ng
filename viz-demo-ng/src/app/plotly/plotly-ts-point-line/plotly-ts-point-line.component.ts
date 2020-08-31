@@ -39,14 +39,18 @@ export class PlotlyTsPointLineComponent implements OnInit {
 
   ngOnInit(): void {
     this.graphTsToolConfig();
-    if (this.eventEmitterService.subsVar==undefined) {  
-      this.eventEmitterService.subsVar = this.eventEmitterService.    
-      invokeTSToolPointLineComponentFunction.subscribe((name:string) => {    
-        this.graphTsToolConfig();
-      });    
-    } 
+    // if (this.eventEmitterService.subsVar==undefined) {  
+    //   this.eventEmitterService.subsVar = this.eventEmitterService.    
+    //   invokeTSToolPointLineComponentFunction.subscribe((name:string) => {    
+    //     this.graphTsToolConfig();
+    //   });    
+    // } 
     
  
+  }
+
+  ngOnDestroy() {
+    console.log('ChildComponent:OnDestroy');
   }
 
 
@@ -759,7 +763,8 @@ export class PlotlyTsPointLineComponent implements OnInit {
           size: 4
         };
         data.mode = this.setPlotlyGraphMode(config[i].chartType);
-        console.log("data.mode", data.mode);
+        data.connectgaps = true;
+
         data.type =  this.setPlotlyGraphType(config[i].chartType);
         // data.x = mainGraphLabels;
         // data.y = config[i].plotlyDatasetData;
@@ -797,7 +802,8 @@ export class PlotlyTsPointLineComponent implements OnInit {
   
       var plotlyConfig = {
         responsive: true,
-        scrollZoom: true
+        scrollZoom: true,
+        // connectgaps: true
       };
       console.log(finalData);
       
