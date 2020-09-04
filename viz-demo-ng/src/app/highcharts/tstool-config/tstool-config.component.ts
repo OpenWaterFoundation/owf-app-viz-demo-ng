@@ -801,23 +801,115 @@ export class TstoolConfigComponent implements OnInit {
       var finalData: {x: number[], y: number[], type: string}[] = [];
       var data: any;
       var mainGraphLabels = this.createChartMainGraphLabels(config);
+     
       var colorwayArray: string[] = [];
       console.log("config::", config);
       var hcFinalData = [];
+
+      var traceStyle = new Object();
+      var hcChartType;
+
       for (let i = 0; i < config.length; i++) {
+
+
+        console.log("Chart type: ", config[i].chartType);
+        hcChartType = config[i].chartType;
+
+        // if (hcChartType= 'line'){
+        //   traceStyle  = {   
+        //     series: {
+        //         connectNulls: true,
+        //         // type: 'line',
+        //         marker: {
+        //           enabled: false
+        //         }
+        //         // lineWidth: 0
+        //     }
+        
+        //   }
+        // }
+        // if (hcChartType === "point"){
+        //   traceStyle  = {   
+        //     series: {
+        //         // connectNulls: true,
+        //         // marker: {
+        //         //   enabled: false
+        //         // }
+        //         lineWidth: 0
+        //     }
+        
+        //   }
+        // }
+
         var dataX = CSV ? config[i].dataLabels : config[i].plotly_xAxisLabels;
         var dataY = CSV ? config[i].datasetData : config[i].plotlyDatasetData;
+
+        console.log("dataY" , dataY);
 
         let dataMerge = dataX.map(function(x, j){
           return [x, dataY[j]];
         });
 
         console.log("DataMerge,", dataMerge);
+          let connect;
+          let markers;
+          let lineWidth;
 
+         if (hcChartType== 'line'){
+          console.log("inside line case");
+
+           connect = true;
+           markers = false;
+           lineWidth = 2;
+         
+        }
+        else if (hcChartType == "point"){
+          console.log("inside point case");
+          connect = false;
+          markers = true;
+          lineWidth = 0;
+
+          console.log( "Point connect", connect, "Poing markers", markers);
+
+  
+        
+        }
+
+        console.log("connect: ", connect, "Markers: ", markers);
+
+
+        console.log('hcFinal data dif types:', hcFinalData);
         hcFinalData.push({
           name:config[i].legendLabel,
-          data: dataMerge
-        })
+          data: dataMerge,
+          lineWidth: lineWidth,
+          connectNulls: connect,
+          marker: {
+            enabled: markers
+          }
+
+        });
+
+        // line
+        // traceStyle  = {   
+        //   series: {
+        //       connectNulls: true,
+        //       marker: {
+        //         enabled: false
+        //       }
+        //       // lineWidth: 0
+        //   }
+      
+        // }
+
+        // point
+        // traceStyle  = {   
+        //   series: {
+             
+        //       lineWidth: 0
+        //   }
+      
+        // }
 
         colorwayArray.push(config[i].datasetBackgroundColor);
         finalData.push(data);
@@ -851,11 +943,13 @@ export class TstoolConfigComponent implements OnInit {
           verticalAlign: 'middle'
       },
     
-      plotOptions: {
-          series: {
-             connectNulls: true
-          }
-      },
+      // plotOptions: {
+      //     series: {
+      //        connectNulls: true
+      //     }
+      // },
+
+      // plotOptions: traceStyle,
     
       series: hcFinalData,
 
@@ -1520,6 +1614,17 @@ export class TstoolConfigComponent implements OnInit {
           return 'scatter';
         default:
           return 'scatter';
+      }
+    }
+
+    private setHighchartsGraphType(chartType: string): string {
+      switch(chartType.toUpperCase()) {
+        case 'LINE':
+          return 'line';
+        case 'POINT':
+          return 'point';
+        default:
+          return 'line';
       }
     }
 

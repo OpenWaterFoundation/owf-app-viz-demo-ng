@@ -7,18 +7,31 @@ import Tree from 'highcharts/modules/treemap';
 import Heatmap from 'highcharts/modules/heatmap';
 
 declare var require: any;
-declare var require: any;
 let Boost = require('highcharts/modules/boost');
+let BoostCanvas = require('highcharts/modules/boost-canvas.js');
 let noData = require('highcharts/modules/no-data-to-display');
+let accessibility = require('highcharts/modules/accessibility.js');
+let exporting = require('highcharts/modules/exporting.js');
+let heatmap = require('highcharts/modules/heatmap.js');
+let data = require('highcharts/modules/data.js');
+
+
+
+
 // let More = require('highcharts/highcharts-more');
 
 More(Highcharts);
 Tree(Highcharts);
 Heatmap(Highcharts);
 Boost(Highcharts);
+BoostCanvas(Highcharts);
 noData(Highcharts);
 More(Highcharts);
 noData(Highcharts);
+accessibility(Highcharts);
+exporting(Highcharts);
+heatmap(Highcharts);
+data(Highcharts);
 
 
 @Component({
@@ -162,7 +175,7 @@ export class HeatmapTSHCDialogComponent implements OnInit {
 
   constructor( public dialogRef: MatDialogRef<HeatmapTSHCDialogComponent>) { }
   ngOnInit() {
-    
+    this.heavyHeatmap();
   }
 
   
@@ -170,6 +183,98 @@ export class HeatmapTSHCDialogComponent implements OnInit {
   * Closes the Mat Dialog popup when the Close button is clicked.
   */
   onClose(): void { this.dialogRef.close(); }
+
+  heavyHeatmap(){
+
+    console.log("data", document.getElementById('csv').innerHTML)
+    Highcharts.chart('container', {
+    
+    data: {
+      csv: document.getElementById('csv').innerHTML
+    },
+
+    chart: {
+      type: 'heatmap'
+    },
+
+    boost:{
+      useGPUTranslations: true
+    },
+
+    title: {
+        text: 'Highcharts HeatMap',
+        align: 'left',
+        x: 40
+    },
+    
+    subtitle: {
+        text: 'Tempeature variation by day and hour through 2017',
+        align: 'left',
+        x: 40
+    },
+    
+    yAxis: {
+        title: {
+            text: null
+        },
+        labels: {
+          format: '{value}:00'
+        },
+        minPadding:0,
+        maxPadding:0,
+        startOnTick: false,
+        endOnTick: false,
+        tickPositions: [ 0, 6, 12, 18, 24], 
+        tickWidth: 1, 
+        min: 0,
+        max: 23, 
+        reversed: true
+    },
+    
+    xAxis: {
+      type: 'datetime',
+      min: Date.UTC(2017, 0, 1),
+      max: Date.UTC(2017, 11, 31, 23, 59, 59), 
+      labels: {
+        align: 'left', 
+        x: 5, 
+        y: 14, 
+        format: '{value:%B}' 
+      },
+      showLastLabel: false,
+      tickLength: 16
+    },
+    
+    colorAxis: {
+      stops: [
+        [0, '#3060cf'],
+        [0.5, '#fffbbc'],
+        [0.9, '#c4463a'],
+        [1, '#c4463a']
+      ],
+      min: -15,
+        max: 25,
+        startOnTick: false,
+        endOnTick: false,
+        labels: {
+            format: '{value}℃'
+        }
+    },
+    series: [{
+      type: 'heatmap',
+      boostThreshold: 100,
+      borderWidth: 0,
+      nullColor: '#EFEFEF',
+      colsize: 24 * 36e5, // one day
+      tooltip: {
+          headerFormat: 'Temperature<br/>',
+          pointFormat: '{point.x:%e %b, %Y} {point.y}:00: <b>{point.value} ℃</b>'
+      },
+      turboThreshold: Number.MAX_VALUE // #3404, remove after 4.0.5 release
+    }]
+
+    });
+  }
 
 
   // $.ajaxSetup({
@@ -269,4 +374,97 @@ export class HeatmapTSHCDialogComponent implements OnInit {
   // Highcharts.chart('container', {});
 
 
+//   Highcharts.chart('container', {
+
+//     data: {
+//         csv: document.getElementById('csv').innerHTML
+//     },
+
+//     chart: {
+//         type: 'heatmap'
+//     },
+
+//     boost: {
+//         useGPUTranslations: true
+//     },
+
+//     title: {
+//         text: 'Highcharts heat map',
+//         align: 'left',
+//         x: 40
+//     },
+
+//     subtitle: {
+//         text: 'Temperature variation by day and hour through 2017',
+//         align: 'left',
+//         x: 40
+//     },
+
+//     xAxis: {
+//         type: 'datetime',
+//         min: Date.UTC(2017, 0, 1),
+//         max: Date.UTC(2017, 11, 31, 23, 59, 59),
+//         labels: {
+//             align: 'left',
+//             x: 5,
+//             y: 14,
+//             format: '{value:%B}' // long month
+//         },
+//         showLastLabel: false,
+//         tickLength: 16
+//     },
+
+//     yAxis: {
+//         title: {
+//             text: null
+//         },
+//         labels: {
+//             format: '{value}:00'
+//         },
+//         minPadding: 0,
+//         maxPadding: 0,
+//         startOnTick: false,
+//         endOnTick: false,
+//         tickPositions: [0, 6, 12, 18, 24],
+//         tickWidth: 1,
+//         min: 0,
+//         max: 23,
+//         reversed: true
+//     },
+
+//     colorAxis: {
+//         stops: [
+//             [0, '#3060cf'],
+//             [0.5, '#fffbbc'],
+//             [0.9, '#c4463a'],
+//             [1, '#c4463a']
+//         ],
+//         min: -15,
+//         max: 25,
+//         startOnTick: false,
+//         endOnTick: false,
+//         labels: {
+//             format: '{value}℃'
+//         }
+//     },
+
+//     series: [{
+//         boostThreshold: 100,
+//         borderWidth: 0,
+//         nullColor: '#EFEFEF',
+//         colsize: 24 * 36e5, // one day
+//         tooltip: {
+//             headerFormat: 'Temperature<br/>',
+//             pointFormat: '{point.x:%e %b, %Y} {point.y}:00: <b>{point.value} ℃</b>'
+//         },
+//         turboThreshold: Number.MAX_VALUE // #3404, remove after 4.0.5 release
+//     }]
+
+// });
+
+
+
+
 }
+
+

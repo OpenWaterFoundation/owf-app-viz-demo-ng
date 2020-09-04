@@ -60,12 +60,14 @@
             <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown01">
               <!-- <a class="dropdown-item" >  Chart Ex: Popup from navigation</a> -->
               <!-- (click)="firstComponentFunction() -->
-              <a class="dropdown-item" routerLink = "highcharts/generic" routerLinkActive="active" (click) = "genericHighchartsFunction()"> Genric Line Chart: Yearly Data</a>
+              <a class="dropdown-item" routerLink = "highcharts/generic" routerLinkActive="active" (click) = "genericHighchartsFunction()"> Generic Line Chart: Yearly Data</a>
               <a class="dropdown-item" routerLink = "highcharts/snodas-day-line" routerLinkActive="active" (click)="snodasHighchartsFunction()"> SNODAS Line Chart: Daily TS Data</a>
               <a class="dropdown-item"routerLink = "highcharts/tstool-month-line" routerLinkActive="active" (click)="tstoolHighchartsFunction()">TSTool Graph Configuration: Monthly Data </a>
               <!-- <a class="dropdown-item"routerLink = "plotly/tstool-year-point-line" routerLinkActive="active" (click)="TSToolPointLineFunction()">TSTool Graph Configuration: Point and line graph </a> -->
               <a class="dropdown-item"routerLink = "highcharts/heatmap-generic" routerLinkActive="active" >Basic HeatMap</a>
-              <a class="dropdown-item"routerLink = "highcharts/heatmap-ts" routerLinkActive="active">HeatMap: CSV Daily Streamflow </a>
+              <a class="dropdown-item"routerLink = "highcharts/heatmap-ts" routerLinkActive="active">HeatMap: Hourly Temperatures </a>
+              <!-- <a class="dropdown-item"routerLink = "highcharts/heatmap-ts" routerLinkActive="active">HeatMap: CSV Daily Streamflow </a> -->
+
 
               <!-- routerLink = "general-plotly-chart" routerLinkActive="active" -->
             </div>
@@ -84,8 +86,8 @@
             <a ngbDropdownToggle class="nav-link dropdown-toggle"  id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
             >D3</a>
             <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown01">
-              <a class="nav-link disabled" href="#" style="color: gray;">Disabled</a>
-              <a class="nav-link disabled" href="#" style="color: gray;">Disabled</a>
+              <!-- <a class="dropdown-item" routerLink = "D3/generic" routerLinkActive="active"> Generic D3</a> -->
+              <a class="dropdown-item" routerLink = "D3/generic-test" routerLinkActive="active" > Generic test</a>
               <a class="nav-link disabled" href="#" style="color: gray;">Disabled</a>
             </div>
           </li>

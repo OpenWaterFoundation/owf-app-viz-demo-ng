@@ -25,12 +25,12 @@ export class GeneralPlotlyComponent implements OnInit {
     
     this.openDialog();
    
-    if (this.eventEmitterService.subsVar==undefined) {  
-      this.eventEmitterService.subsVar = this.eventEmitterService.    
-      invokeComponentFunction.subscribe(() => {    
-        this.openDialog();    
-      });    
-    }    
+    // if (this.eventEmitterService.subsVar==undefined) {  
+    //   this.eventEmitterService.subsVar = this.eventEmitterService.    
+    //   invokeComponentFunction.subscribe(() => {    
+    //     this.openDialog();    
+    //   });    
+    // }    
   }    
   
   

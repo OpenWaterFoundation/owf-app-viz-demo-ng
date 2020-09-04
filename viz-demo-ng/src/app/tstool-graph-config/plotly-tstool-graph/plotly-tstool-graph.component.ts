@@ -38,91 +38,14 @@ export class PlotlyTstoolGraphComponent implements OnInit {
 
   ngOnInit(): void {
     this.graphTsToolConfig();
-    if (this.eventEmitterService.subsVar==undefined) {  
-      this.eventEmitterService.subsVar = this.eventEmitterService.    
-      invokeTSToolComponentFunction.subscribe((name:string) => {    
-        // this.openDialog();    
-        this.graphTsToolConfig();
-      });    
-    } 
-    // this.openDialog();
-    
-    // this.getJSONData('assets/TsToolGraphConfigFiles/diversion-graph-template.json').subscribe((graphTemplateObject: Object) => {
+    // if (this.eventEmitterService.subsVar==undefined) {  
+    //   this.eventEmitterService.subsVar = this.eventEmitterService.    
+    //   invokeTSToolComponentFunction.subscribe((name:string) => {    
+    //     // this.openDialog();    
+    //     this.graphTsToolConfig();
+    //   });    
+    // } 
 
-    //   var TSID_Location;
-    //   var graphFilePath;
-    //   var featureProperties: any;
-    //   featureProperties = 
-    //   {
-    //     abbrev: "LACDITCO",
-    //     county: "LARIMER",
-    //     dataSource: "Cooperative SDR Program of CDWR & NCWCD",
-    //     dataSourceAbbrev: "NWSDR",
-    //     division: 1,
-    //     flagA: "",
-    //     flagB: "U",
-    //     gnisId: "00205018",
-    //     latitude: 40.656563,
-    //     longitude: -105.185363,
-    //     measDateTime: "2020-06-02T13:00:00.0000000-06:00",
-    //     measValue: 348.21,
-    //     moreInformation: "https://dwr.state.co.us/Tools/Stations/LACDITCO",
-    //     parameter: "DISCHRG",
-    //     stage: null,
-    //     stationName: "LARIMER COUNTY DITCH",
-    //     stationPorEnd: "2020-06-02T00:00:00.0000000-06:00",
-    //     stationPorStart: "2015-11-06T00:00:00.0000000-07:00",
-    //     stationStatus: "Active",
-    //     stationType: "Diversion Structure",
-    //     streamMile: 53.32,
-    //     structureType: "Ditch",
-    //     thirdParty: "False",
-    //     units: "CFS",
-    //     usgsStationId: "",
-    //     waterDistrict: 3,
-    //     waterSource: "CACHE LA POUDRE RIVER",
-    //     wdid: "0300911"
-    //   }
-  
-    //   graphTemplateObject = this.replaceProperties(graphTemplateObject, featureProperties);
-    //   var dialog = this.dialog;
-                                                              
-    //   if (graphTemplateObject['product']['subProducts'][0]['data'][0]['properties'].TSID) {
-    //     let TSID: string = graphTemplateObject['product']['subProducts'][0]['data'][0]['properties'].TSID;
-    //     // Split on the ~ and set the actual file path we want to use so our dialog-content component
-    //     // can determine what kind of file was given.
-    //     TSID_Location = TSID.split('~')[0];
-    //     // If the TSID has one tilde (~), set the path using the correct index compared to if the 
-    //     // TSID contains two tildes.
-    //     if (TSID.split('~').length === 2) {
-    //       graphFilePath = TSID.split("~")[1];
-    //     } else if (TSID.split('~').length === 3) {
-    //       graphFilePath = TSID.split("~")[2];
-    //     }
-    //   } else console.error('The TSID has not been set in the graph template file');
-    
-    //   console.log("ShowGraph call");
-    // showGraph(dialog, graphTemplateObject, graphFilePath, TSID_Location);
-    
-    // /**
-    //   * Creates the Dialog object to show the graph in and passes the info needed for it.
-    //   * @param dialog The dialog object needed to create the Dialog popup
-    //   * @param graphTemplateObject The template config object of the current graph being shown
-    //   * @param graphFilePath The file path to the current graph that needs to be read
-    //   */
-    //   function showGraph(dialog: any, graphTemplateObject: any, graphFilePath: string, TSID_Location: string): void {
-    //    console.log("Inside showGraph function:")
-    //     // Create and use a MatDialogConfig object to pass the data we need for the graph that will be shown
-    //     const dialogConfig = new MatDialogConfig();
-    //     dialogConfig.data = {
-    //       graphTemplate: graphTemplateObject,
-    //       graphFilePath: graphFilePath,
-    //       TSID_Location: TSID_Location
-    //     }
-    //   const dialogRef = dialog.open(DialogContent, dialogConfig);
-    //     console.log("Open Dialog call");
-    //   }
-    //   });
   }
 
 

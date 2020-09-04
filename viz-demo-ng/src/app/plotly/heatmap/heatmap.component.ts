@@ -19,13 +19,13 @@ export class HeatmapComponent implements OnInit {
 
   ngOnInit(): void {
     this.openHeatmapDialog();
-    if (this.eventEmitterService.subsVar==undefined) { 
-      console.log("Step3: HeatMap Function call openDialog") 
-      this.eventEmitterService.subsVar = this.eventEmitterService.    
-      invokeHeatMapComponentFunction.subscribe(() => {    
-        this.openHeatmapDialog();    
-      });    
-    }    
+    // if (this.eventEmitterService.subsVar==undefined) { 
+    //   console.log("Step3: HeatMap Function call openDialog") 
+    //   this.eventEmitterService.subsVar = this.eventEmitterService.    
+    //   invokeHeatMapComponentFunction.subscribe(() => {    
+    //     this.openHeatmapDialog();    
+    //   });    
+    // }    
   }
 
   openHeatmapDialog(): void {

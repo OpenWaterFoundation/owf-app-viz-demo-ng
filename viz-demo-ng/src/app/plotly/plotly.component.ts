@@ -21,13 +21,13 @@ export class PlotlyComponent implements OnInit{
   ngOnInit() {
     this.openDialog('Volume_Graph');
 
-    if (this.eventEmitterService.subsVar==undefined) {  
-      this.eventEmitterService.subsVar = this.eventEmitterService.    
-      invokeSnodasComponentFunction.subscribe((name:string) => {  
-        console.log("Step3: Snodas Function call openDialog()");   
-        this.openDialog('Volume_Graph');    
-      });    
-    }  
+    // if (this.eventEmitterService.subsVar==undefined) {  
+    //   this.eventEmitterService.subsVar = this.eventEmitterService.    
+    //   invokeSnodasComponentFunction.subscribe((name:string) => {  
+    //     console.log("Step3: Snodas Function call openDialog()");   
+    //     this.openDialog('Volume_Graph');    
+    //   });    
+    // }  
   }
 
   
