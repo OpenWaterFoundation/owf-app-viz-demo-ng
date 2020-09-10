@@ -219,7 +219,7 @@ export class Heatmap2Dialog implements OnInit{
           
           if(!xAxis.includes(date)){
               xAxis.push(date);
-              console.log(date);
+              // console.log(date);
           }
           let yearIndex = yAxis.indexOf(year);
           let dateIndex = xAxis.indexOf(date);
@@ -238,6 +238,39 @@ export class Heatmap2Dialog implements OnInit{
       //     // [.8, 'blue'],
       //     [1, '#4747d1']
       // ];
+
+      console.log("Zaxis: ", zAxis);
+      console.log("Xaxis: ", xAxis);
+      console.log("Yaxis: ", yAxis);
+
+
+      let dataMerge = yAxis.map(function(x, j){
+        return [x, xAxis, zAxis[j]];
+      });
+      
+      console.log("dataMerge, ", dataMerge);
+
+      let yearData;
+      
+      let dataMerge2;
+      let fulldata;
+      for( let i = 0; i < yAxis.length; i++ ){
+
+        yearData = new Array(366).fill(yAxis[i]);
+
+        console.log("yearData", yearData);
+        // use yeardata instead of yAxis
+        dataMerge2 = yearData.map(function(x, j){
+          return [x, xAxis[j], zAxis[i][j]];
+        });
+
+        // fulldata = fulldata.concat(dataMerge2);
+        
+      }
+
+      // console.log("full Data array 2000-2019: ", fulldata);
+      console.log("datamerge2: ", dataMerge2);
+
 
       var plotlyData = [
           {

@@ -104,7 +104,8 @@ const conv = new showdown.Converter({
     HeatmapTSHCComponent,
     HeatmapTSHCDialogComponent,
     GenericD3Component,
-    GenericTestComponent
+    GenericTestComponent,
+    GenericContentComponent
 
     
   ],

@@ -12,7 +12,7 @@ import { ShowdownNgDemoComponent, ShowdownIMGComponent, ShowdownOptionsComponent
 import { PlotlyTsPointLineComponent } from './plotly/plotly-ts-point-line/plotly-ts-point-line.component';
 import { HighchartsComponent } from './highcharts/highcharts.component';
 import { SnodasComponent } from './highcharts/snodas/snodas.component';
-import { HeatmapHCComponent, HeatmapTSHCComponent} from './highcharts/heatmap/heatmap.component';
+import { HeatmapHCComponent, HeatmapTSHCComponent, HeatmapHCStreamflow} from './highcharts/heatmap/heatmap.component';
 import { TstoolConfigComponent } from './highcharts/tstool-config/tstool-config.component';
 import { GenericD3Component } from './D3/generic/generic.component';
 import { GenericTestComponent } from './D3/generic-test/generic-test.component';
@@ -53,7 +53,7 @@ const routes: Routes = [
   {path: 'highcharts/tstool-month-line', component: TstoolConfigComponent},
   {path: 'highcharts/heatmap-generic', component: HeatmapHCComponent},
   {path: 'highcharts/heatmap-ts', component: HeatmapTSHCComponent},
-  // {path: 'highcharts/heatmap-temp', component: HeatmapHCTempComponent},
+  {path: 'highcharts/heatmap-streamflow', component: HeatmapHCStreamflow},
 
   {path: 'D3/generic', component: GenericD3Component},
   {path: 'D3/generic-test', component: GenericTestComponent},

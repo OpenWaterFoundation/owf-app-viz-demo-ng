@@ -716,12 +716,12 @@ export class TstoolConfigComponent implements OnInit {
         var dataY = CSV ? config[i].datasetData : config[i].plotlyDatasetData;
         
         
-
+        console.log("!!!!!!!!!!datesDatax: ", datesDataX);
         let dataMerge = datesDataX.map(function(x, j){
           return [x, dataY[j]];
         });
 
-        console.log("dataMerge: ", dataMerge);
+        console.log("!!!!!!!!dataMerge: ", dataMerge);
         
         hcFinalData.push({
           name:config[i].legendLabel,
@@ -843,6 +843,8 @@ export class TstoolConfigComponent implements OnInit {
 
         var dataX = CSV ? config[i].dataLabels : config[i].plotly_xAxisLabels;
         var dataY = CSV ? config[i].datasetData : config[i].plotlyDatasetData;
+
+        console.log("dataX" , dataX);
 
         console.log("dataY" , dataY);
 
