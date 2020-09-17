@@ -39,7 +39,7 @@ import { PlotlyTsPointLineComponent, TSDialogContent } from './plotly/plotly-ts-
 import { HighchartsComponent } from './highcharts/highcharts.component';
 import { SnodasComponent } from './highcharts/snodas/snodas.component';
 import { TstoolConfigComponent } from './highcharts/tstool-config/tstool-config.component';
-import { HeatmapHCComponent, HeatmapHCDialogComponent, HeatmapTSHCComponent, HeatmapTSHCDialogComponent } from './highcharts/heatmap/heatmap.component';
+import { HeatmapHCComponent, HeatmapHCDialogComponent, HeatmapHCStreamflow, HeatmapTSHCComponent, HeatmapTSHCDialogComponent } from './highcharts/heatmap/heatmap.component';
 import { GenericD3Component } from './D3/generic/generic.component';
 import { GenericTestComponent } from './D3/generic-test/generic-test.component';
 // import { TstoolConfigComponent } from './highcharts/tstool-config/tstool-config.component';
@@ -105,7 +105,8 @@ const conv = new showdown.Converter({
     HeatmapTSHCDialogComponent,
     GenericD3Component,
     GenericTestComponent,
-    GenericContentComponent
+    GenericContentComponent,
+    HeatmapHCStreamflow
 
     
   ],

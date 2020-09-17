@@ -134,7 +134,7 @@ export class SnodasPlotlyDialog implements OnInit{
       
 
       chartData = await waitForParsedData(data);
-      // console.log("chartData 78: ", chartData);
+      console.log("chartData 137: ", chartData);
 
       // _this.chartType = 'line';
       // _this.chartLegend = true;
@@ -192,7 +192,7 @@ export class SnodasPlotlyDialog implements OnInit{
               }
             }
           }
-          // console.log("LineData Array: ", lineData);
+          console.log("LineData Array: ", lineData);
           // console.log("nameLabels Array: ", nameLabelsArray);
           console.log("DatesArray: ", datesArray);
           min_time = labelsArray[0];
