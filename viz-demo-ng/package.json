@@ -39,7 +39,7 @@
     "ngx-papaparse": "^4.0.4",
     "ngx-showdown": "^5.1.0",
     "plotly.js": "^1.54.1",
-    "rxjs": "^6.5.5",
+    "rxjs": "^6.6.3",
     "showdown": "^1.9.1",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
