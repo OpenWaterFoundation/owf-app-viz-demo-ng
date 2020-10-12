@@ -16,6 +16,8 @@ import { HeatmapHCComponent, HeatmapTSHCComponent, HeatmapHCStreamflow} from './
 import { TstoolConfigComponent } from './highcharts/tstool-config/tstool-config.component';
 import { GenericD3Component } from './D3/generic/generic.component';
 import { GenericTestComponent } from './D3/generic-test/generic-test.component';
+import { GapminderComponent } from './gapminder/gapminder.component';
+import { GapminderJsComponent } from './gapminder/gapminder-js/gapminder-js.component';
 // import { TstoolConfigComponent } from './highcharts/tstool-config/tstool-config.component';
 
 
@@ -56,6 +58,10 @@ const routes: Routes = [
   {path: 'highcharts/heatmap-streamflow', component: HeatmapHCStreamflow},
 
   {path: 'D3/generic', component: GenericD3Component},
+  {path: 'D3/gapminder', component: GapminderComponent},
+  {path: 'D3/gapminder-js', component: GapminderJsComponent},
+
+
   {path: 'D3/generic-test', component: GenericTestComponent},
 
 

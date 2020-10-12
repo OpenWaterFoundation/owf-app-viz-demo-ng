@@ -42,6 +42,8 @@ import { TstoolConfigComponent } from './highcharts/tstool-config/tstool-config.
 import { HeatmapHCComponent, HeatmapHCDialogComponent, HeatmapHCStreamflow, HeatmapTSHCComponent, HeatmapTSHCDialogComponent } from './highcharts/heatmap/heatmap.component';
 import { GenericD3Component } from './D3/generic/generic.component';
 import { GenericTestComponent } from './D3/generic-test/generic-test.component';
+import { GapminderComponent } from './gapminder/gapminder.component';
+import { GapminderJsComponent } from './gapminder/gapminder-js/gapminder-js.component';
 // import { TstoolConfigComponent } from './highcharts/tstool-config/tstool-config.component';
 declare var require: any
 const showdown = require('showdown');
@@ -106,7 +108,9 @@ const conv = new showdown.Converter({
     GenericD3Component,
     GenericTestComponent,
     GenericContentComponent,
-    HeatmapHCStreamflow
+    HeatmapHCStreamflow,
+    GapminderComponent,
+    GapminderJsComponent
 
     
   ],

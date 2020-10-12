@@ -95,7 +95,27 @@
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/js/gapminder-4.0.0.js",
+              "src/assets/js/gapminder-util/expand-parameter.js",
+              "src/assets/js/gapminder-util/properties.js",
+              "src/assets/js/gapminder-util/get-parameters.js",
+              "src/assets/js/gapminder-util/data-class.js",
+              "src/assets/js/gapminder-util/display-data.js",
+
+              "src/assets/js/third-party-libraries/jquery-3.2.0.min.js",
+              "src/assets/js/third-party-libraries/papaparse.min.js",
+              "src/assets/js/third-party-libraries/bootstrap.min.js",
+              "src/assets/js/third-party-libraries/select2.min.js",
+              "src/assets/js/third-party-libraries/highstock.src.js",
+              "src/assets/js/third-party-libraries/data.js",
+              
+              "src/assets/js/custom-test.js",
+
+              "//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"
+
+
+            ]
           }
         },
         "lint": {
