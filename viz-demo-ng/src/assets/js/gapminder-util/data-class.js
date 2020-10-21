@@ -3,7 +3,19 @@
 // for running Gapminder visualization. It also parses through the 
 // csv data read in and converts it to JSON for Gapminder.
 // ----------------------------------------------------------------
-class Data{
+import * as $ from "jquery";
+import * as d3 from 'd3';
+import * as Papa from 'src/assets/js/third-party-libraries/papaparse.min.js';
+// import { Papa } from 'src/assets/js/third-party-libraries/papaparse.min.js';
+
+// $getScript("src/assets/js/third-party-libraries/papaparse.min.js", function(){
+// 	alert("Load performed");
+// });
+
+
+// Papa.parse();
+
+export class Data{
 	constructor(configurationProperties){
 		this.configurationProperties = configurationProperties;
 		this.variables = configurationProperties.VariableNames;
@@ -43,6 +55,7 @@ class Data{
 
 	convert_to_json(){
 		var _this = this;
+		var _Papa = Papa;
 		this.parseDate = d3.timeParse(_this.configurationProperties.InputDateFormat);
 		var URL;	
 		if(_this.configurationProperties.MultipleDatasets){
@@ -58,10 +71,15 @@ class Data{
 				throw new Error(error);
 			},
 			success: function(data){
+				// console.log("inside convert to json success function");
+				console.log("data: ", data);
 				_this.csv = data;
-				var csv = Papa.parse(data,{header:true, comments:true, dynamicTyping:true}).data,
+				// console.log("_this.csv:", _this.csv);
+				var csv = _Papa.parse(data,{header:true, comments:true, dynamicTyping:true}).data,
 					jsonObj = {"data":[]},
 					tempJson = makeJsonObj(csv[0]);
+					console.log("var csv:", csv );
+
 				for(var i = 0; i < csv.length - 1; i++){
 					if(csv[i][_this.variables.Label] == tempJson[_this.variables.Label]){
 						initializeDeminsions(csv[i]);

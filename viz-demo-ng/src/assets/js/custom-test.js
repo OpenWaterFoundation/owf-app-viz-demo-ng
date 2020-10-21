@@ -5,4 +5,4 @@ export function doSomething(){
     console.log("Do Something! ", random);
 }
 
-// console.log("Hello!");
+console.log("Hello!");

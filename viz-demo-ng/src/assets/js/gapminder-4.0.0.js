@@ -1,12 +1,27 @@
-/*Should try and nest these variables in some sort of object to avoid cluttering javascript namespace*/
+import  { Properties } from 'src/assets/js/gapminder-util/properties.js';
+import  { Data } from 'src/assets/js/gapminder-util/data-class.js';
+
+import * as $ from "jquery";
+import * as d3 from 'src/assets/js/third-party-libraries/d3.v4.min.js';
+import 'src/assets/js/third-party-libraries/select2.min.js';
+import { chart } from 'highcharts';
+import { set } from 'd3';
+
+let configurationFile = "assets/gapminder-data/viz-config.json";
+
+
 var bool = true;
 var properties = new Properties(configurationFile);
 properties = properties.properties;
 var additionalParametersDictionary = properties.AdditionalData ? getAdditionalParameters() : null;
 var variables = properties.VariableNames;
 var data = new Data(properties);
+console.log("var data: ", data);
 var json = data.json;
 var demensions = data.demensions;
+console.log("var demensions.dateMin: ", demensions.dateMin);
+console.log("var demensions.dateMax: ", demensions.dateMin);
+
 var annotations_data = data.annotations;
 
 var parseDate = d3.timeParse(properties.InputDateFormat);
@@ -20,7 +35,7 @@ var precisionInt = parsePrecisionInt(properties.TimeStep);
 var precisionUnit = parsePrecisionUnits(properties.TimeStep);
 
 var width = $("#chart").parent().width();
-var height = $("#Gapminder").parent().height() - 270;
+// var height = $("#Gapminder").parent().height() - 270;
 var margin = {top:10, left:30, bottom:80, right:82};
 
 var displayAll = true;
@@ -29,6 +44,62 @@ var visSpeed;
 
 var transtionFunction;
 var transition;
+
+// pathjson line ~1544
+// var pathData = [];
+var pathJSON = json.data;
+// var nested = nest(interpolatePath(demensions.dateMin), pathData);
+// var path;
+
+
+var bisect = d3.bisector(function(d) { return d[0]; });
+var dateArray = dateArray_function(demensions);
+
+
+export function gapminder(){
+
+	console.log("inside main gapminder function");
+	// console.log("pathjson first: ", pathJSON);
+
+
+// let configurationFile = "assets/gapminder-data/viz-config.json";
+
+/*Should try and nest these variables in some sort of object to avoid cluttering javascript namespace*/
+// var bool = true;
+// var properties = new Properties(configurationFile);
+// properties = properties.properties;
+// var additionalParametersDictionary = properties.AdditionalData ? getAdditionalParameters() : null;
+// var variables = properties.VariableNames;
+// var data = new Data(properties);
+// console.log("var data: ", data);
+// var json = data.json;
+// var demensions = data.demensions;
+// console.log("var demensions.dateMin: ", demensions.dateMin);
+// console.log("var demensions.dateMax: ", demensions.dateMin);
+
+// var annotations_data = data.annotations;
+
+// var parseDate = d3.timeParse(properties.InputDateFormat);
+// var inputFileFormat = d3.timeFormat(properties.InputDateFormat);
+// var formatDate = d3.timeFormat(properties.OutputDateFormat);
+
+// var currYear = demensions.dateMin;
+// var topYear = demensions.dateMin;
+
+// var precisionInt = parsePrecisionInt(properties.TimeStep);
+// var precisionUnit = parsePrecisionUnits(properties.TimeStep);
+// // console.log("PrecisionUnit" , precisionUnit);
+
+// var width = $("#chart").parent().width();
+var height = $("#Gapminder").parent().height() - 270;
+// var margin = {top:10, left:30, bottom:80, right:82};
+
+// var displayAll = true;
+// var tracer = (properties.TracerNames == "" || !properties.TracerNames) ? false : true;
+// var visSpeed;
+
+// var transtionFunction;
+// var transition;
 
 //TODO: was used in snodas, not needed in this application, 
 //need to make this more dynamic - Justin Rentie 2/13/2018
@@ -127,23 +198,43 @@ d3.select("#subtitle")
 	})
 
 //----------------------------------ROW 2(row.viz): GAPMINDER CHART/LEGEND/LIST---------------------------
+
+// var selected = d3.select('#chart');
+// if (selected._group[0][0] == null) { 
+// 	// nothing found 
+// 	console.log("'chart' element not selected");
+// } else { 
+// 	// found something 
+// 	console.log("'chart' selected");
+// } 
+
+var selected = document.getElementById("#test");
+console.log("selected test: ", selected);
+
+console.log("height befor chart svg:", height);
+
 //create an svg container for chart elements
 var svg = d3.select("#chart")
 	.append("svg")
     .attr("class", "box")
     .attr("width", "100%")
-    .attr("height", height) //This is the height of only the actual chart, making room for elements above and below the chart
+    .attr("height", height); //This is the height of only the actual chart, making room for elements above and below the chart
+
+	console.log("create svg container: ", svg);
+
 
 //set width to be width of svg container 'box'
 width = $(".box").width(); //Set width to the width of the chart
 
 /*create a div/svg container for legend*/
-legend = d3.select("#legend")
-	.style("height", ((height/2) - 30) + "px"); //Legend is half the height of the chart
+var legend = d3.select("#legend")
+	.style("height", ((height/2) - 30) + "px");
+	 //Legend is half the height of the chart
 
 //create a div for list
-sideTools = d3.select("#sideTools")
-	.style("height", (height/2) + "px"); //sideTools are half the height of the chart
+var sideTools = d3.select("#sideTools")
+	.style("height", (height/2) + "px");
+	 //sideTools are half the height of the chart
 
 //creates the search bar for selecting provider from a dropdown menu </p>
 //utilizes [select2]{@link https://select2.github.io/} library
@@ -159,18 +250,31 @@ var timeScale = d3.scaleTime()
 	.domain([demensions.dateMin, demensions.dateMax])
 	.range([0, (width - 75)]);
 
-var dateArray = dateArray_function();
+// var dateArray = dateArray_function(demensions); //made global
+console.log("Get time: dateArray:  ", dateArray);
+
 var visSpeed = 20000 / (timeScale.range()[1] - timeScale.range()[0]);
 //if the last data in the array isn't the last possible date add the last date to the end of the array
+console.log("Get time: dateArray[dateArray.length - 1]: ", dateArray[dateArray.length - 1]);
 if(dateArray[dateArray.length - 1].getTime() != demensions.dateMax.getTime()){
 	dateArray.push(demensions.dateMax);
 }
 
-var dateLabel = d3.select(".box")
+// setTimeout(() => {
+	var dateLabel = d3.select(".box")
 	.append("text")
 	.text(formatDate(timeScale.ticks()[0]))
 	.attr("fill-opacity", "0");
+	console.log("dateLabel: ", dateLabel);
+	console.log("dateLabel.node(): ", dateLabel.node());
+
 var dateText = dateLabel.node().getBBox();
+	
+// }, 1000);
+
+
+console.log("dateText: ", dateText);
+
 
 //create a div and svg container for yearslider and buttons
 var controlSVG = d3.select("#dateSlider")
@@ -289,7 +393,7 @@ if(additionalParametersDictionary) {
 	}
 }
 //create a row and div for the datatable
-tablediv = d3.select("#tablediv")
+ var tablediv = d3.select("#tablediv")
 	.html( tableContents );
 	
 d3.select("#tablediv")
@@ -297,7 +401,7 @@ d3.select("#tablediv")
 
 //if Config file specifies annotationsappend a div for annotations in same row as datatable
 if(annotations_data && !$.isEmptyObject(annotations_data.GeneralAnnotations)){
-	annotations = d3.select("#annotations")
+	var annotations = d3.select("#annotations")
 		.style("height", "102px")
 	    .attr("transform", "translate("+ (-70) +"," + (height) + ")")
 		.html(
@@ -325,7 +429,7 @@ var tip = d3.select('body')
 
 //-----------------------------------------------GAPMINDER-----------------------------------------------
 // A bisector for interpolating data is sparsely-defined.
-var bisect = d3.bisector(function(d) { return d[0]; });
+// var bisect = d3.bisector(function(d) { return d[0]; });   //made global
 //creates a scale to set color of dots
 var colorScale = d3.scaleOrdinal(d3.schemeCategory10);
 var firstClick = true;
@@ -341,11 +445,11 @@ var xText = d3.select(".box")
 	.text(d3.format(",.0f")(Math.round(demensions.xMax))) //hard-coded, needs to change
 	.attr("fill-opacity", 0);
 //bbox gets height and width attributes of labels
-yTextBox = yText.node().getBBox();
-xTextBox = xText.node().getBBox();
+var yTextBox = yText.node().getBBox();
+var xTextBox = xText.node().getBBox();
 
 //creates a scale to set radius of dots											
-radiusScale = d3.scaleSqrt().domain([0, (demensions.radiusMax * 2)]).range([3, 47]);
+var radiusScale = d3.scaleSqrt().domain([0, (demensions.radiusMax * 2)]).range([3, 47]);
 //assign xScale according to if Config file specifies Log or Linear
 if(properties.XAxisScale.toUpperCase() == "LOG"){
 	var min = properties.XMin && properties.XMin != "" ? properties.XMin : demensions.xMin;
@@ -353,11 +457,12 @@ if(properties.XAxisScale.toUpperCase() == "LOG"){
 	/*var min = Config.setXMin != null ? Config.setXMin : Config.xMin;
 	var max = Config.setXMax != null ? Config.setXMax : Config.xMax;*/
 	//configure the log x scale domain and range
-	xScale = d3.scaleLog()
+	var xScale = d3.scaleLog() //made global using window?
+	// window.xScale = d3.scaleLog() //made global using window?
 		.domain([checkMin(min), max]) //checkLogMin to make sure no negative #s
 		.range([yTextBox.width + margin.left + 15, (width-25)]);
 	//configure the xAxis with the xScale.
-	xAxis = d3.axisBottom()
+	var xAxis = d3.axisBottom()
 		.scale(xScale)
 		.ticks(6, d3.format(",d")) //get logTicks for log & format numbers for log
 		.tickSizeInner(-(height))
@@ -369,11 +474,11 @@ if(properties.XAxisScale.toUpperCase() == "LOG"){
 	/*var min = Config.setXMin != null ? Config.setXMin : Config.xMin;
 	var max = Config.setXMax != null ? Config.setXMax : Config.xMax;*/
 	//configure the linear x scale domain and range
-	xScale = d3.scaleLinear()
+	var xScale = d3.scaleLinear()
 		.domain([min, max])
 		.range([yTextBox.width + margin.left + 15, (width-25)]);
 	//configure the xAxis using the xScale.
-	xAxis = d3.axisBottom()
+	var xAxis = d3.axisBottom()
 		.scale(xScale)
 		.ticks(getMaxXTicks(width, xTextBox.width) - 1) //get maxXTicks for linear
 		.tickFormat(d3.format(",")) //format numbers for linear
@@ -388,11 +493,11 @@ if(properties.YAxisScale.toUpperCase() == "LOG"){
 	/*var min = Config.setYMin != null ? Config.setYMin : Config.yMin;
 	var max = Config.setYMax != null ? Config.setYMax : Config.yMax;*/
 	//configure log y scale domain and range
-	yScale = d3.scaleLog()
+	var yScale = d3.scaleLog()
 		.domain([checkMin(min), max]) //checkLogMin to make sure no negative #s
 		.range([height - 40, 0]);
 	//configure yAxis using y scale
-	yAxis = d3.axisLeft()
+	var yAxis = d3.axisLeft()
 		.scale(yScale)
 		.ticks(6, d3.format(",d")) //get logTicks for log & format numbers for log
 		.tickSizeInner(-(width - margin.right) + 5)
@@ -404,11 +509,11 @@ if(properties.YAxisScale.toUpperCase() == "LOG"){
 	/*var min = Config.setYMin != null ? Config.setYMin : Config.yMin;
 	var max = Config.setYMax != null ? Config.setYMax : Config.yMax;*/
 	//configure linear y scale domain and range
-	yScale = d3.scaleLinear()
+	 var yScale = d3.scaleLinear()
 	    .domain([min, max])
 	    .range([height - 40, 0]);
 	//configure yAxis using y scale
-	yAxis = d3.axisLeft()
+	 var yAxis = d3.axisLeft()
 		.scale(yScale)
 		.ticks(getMaxYTicks(height, yTextBox.height)) //get maxYticks for linear
 		.tickFormat(d3.format(",")) //format numbers for linear
@@ -418,17 +523,17 @@ if(properties.YAxisScale.toUpperCase() == "LOG"){
 }
 
 //add the x-axis to svg, using xAxis
-xaxis = svg.append("g")
+var xaxis = svg.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + (height - 40) + ")")
     .call(xAxis);
 //add the y-axis to svg, using yAxis
-yaxis = svg.append("g")
+var yaxis = svg.append("g")
     .attr("class", "y axis")
     .call(yAxis)
     .attr("transform", "translate(" + (yTextBox.width + margin.left + 15)  + ",0)");
 //add an x-axis label to below x-axis
-xlabel = svg.append("text")
+var xlabel = svg.append("text")
     .attr("class", "xLabel")
     .attr("text-anchor", "middle")
     .attr("x", (width/2))
@@ -436,7 +541,7 @@ xlabel = svg.append("text")
     .text(properties.BottomXAxisTitleString)
     .attr("font-size", "14px");
 //add a y-axis label to svg to left of y-axis
-ylabel = svg.append("text")
+var ylabel = svg.append("text")
     .attr("class", "yLabel")
     .attr("text-anchor", "middle")
     .attr("y", 0)
@@ -454,7 +559,7 @@ function add_legend(data){
 	var pos = 0;
 	//get list of names for legend based off how dots are colored/grouped on the visualization
 	//set height using 20px per name
-	legendHeight = (data.length + 1) * 20;
+	var legendHeight = (data.length + 1) * 20;
 
 	d3.select("#legend")
 		.style("height", function(){
@@ -477,7 +582,7 @@ function add_legend(data){
 		.style("text-decoration", "underline")
 		.attr("y", "10");
 	//add square for each name, color coordinated with colorScale
-	square = legend.append("g")
+	var square = legend.append("g")
 		.attr("class", "square")
 		.selectAll(".square")
 		.data(data)
@@ -511,7 +616,7 @@ function add_legend(data){
 	//reset position for legend div, accounting for text positioning vs. svg rect positioning
 	pos = 7;
 	//add the text to the legend from list of names
-	legendText = legend.append("g")
+	var legendText = legend.append("g")
 		.attr("class", "legendText")
 		.selectAll("legendText")
 		.data(data)
@@ -520,7 +625,7 @@ function add_legend(data){
 	    	return "D" + checkForSymbol(d);
 	    })
 	    .text(function(d){
-	    	s = " - " + d;
+	    	var s = " - " + d;
 	    	if(s.length > 17){
 	    		s = s.substring(0,17); //truncate name if too long to fit inside svg
 	    		s += "...";
@@ -552,7 +657,7 @@ function add_legend(data){
 	    }); //callback function: legendButton()
 }
 
-names = getIndividualDots(json);
+var names = getIndividualDots(json);
 function add_marker_names(data){
 	d3.select("#providerNames")
 		.selectAll(".marker_names")
@@ -572,18 +677,18 @@ add_marker_names(names);
 
 
 //create line for data line (tracer)
-line = d3.line()
+var line = d3.line()
 	.x(function(d) {return xScale(x(d));})
 	.y(function(d) {return yScale(y(d));})
 
 //-------------------------Add different elements to DOM if specified in annotation file----------------------
 if(annotations_data != null && !$.isEmptyObject(annotations_data.SpecificAnnotations)){
-	annotationShapes = svg.append("g")
+	var annotationShapes = svg.append("g")
 		.attr("id", "annotationShapes");
 	//Add line Annoations if they are sepcified in the annotation file
 	var lineAnnotations = retrieveAnnotations("Line");
 	if(lineAnnotations){
-		annotationLine = annotationShapes.selectAll(".line")
+		var annotationLine = annotationShapes.selectAll(".line")
 			.data(lineAnnotations.values)
 			.enter().append("line")
 			.attr("id", "annotationLine")
@@ -700,7 +805,7 @@ if(annotations_data != null && !$.isEmptyObject(annotations_data.SpecificAnnotat
 		//Add Crosses from annotation file
 		var crossAnnotations = retrieveByShape("Cross");
 		if(crossAnnotations){
-			annotationCross = svg.append("g")
+			var annotationCross = svg.append("g")
 				.selectAll(".point")
 				.data(crossAnnotations.values)
 				.enter().append("path")
@@ -762,8 +867,9 @@ if(properties.AnnotationShapes.toUpperCase() == "OFF"){
 }
 
 //Add tracers to the dots on the visualization
-pathData = [];
-var pathJSON = json.data;
+var pathData = [];
+// var pathJSON = json.data;
+console.log("Pathjsonn: " ,pathJSON);
 var nested = nest(interpolatePath(demensions.dateMin), pathData);
 var path;
 function add_path(data){
@@ -848,6 +954,11 @@ add_dots(data);
 if(Properties.DefaultSpeed){
 	setSpeed(properties.DefaultSpeed);
 	document.getElementById("speedSlider").value = Properties.DefaultSpeed;
+}
+
+
+
+// wrapper function
 }
 
 //---------------Various accessors that specify the four dimensions of data to visualize.-------------------
@@ -1534,7 +1645,14 @@ function interpolateValues(values, year) {
 /**
  *Returns an array of dates according to precision units specified in Config file
  */
-function dateArray_function(){
+function dateArray_function(demensions){
+	
+	console.log("Inside dateArray functions ");
+	// console.log("dvar: ", dvar);
+
+	console.log("does it work datemin: ", demensions.dateMin);
+	console.log("dateMax: ", demensions.dateMax);
+
 	var Date1 = new Date(demensions.dateMin);
 	var Date2 = new Date(demensions.dateMax);
 	var returnThis = [];
@@ -1636,7 +1754,7 @@ function checkYValue(val){
  *@param {number} labelDim - height of largest label on y-axis
  */
 function getMaxYTicks(areaDim, labelDim){
-	maxTicks = (areaDim)/(labelDim + 18);
+	var maxTicks = (areaDim)/(labelDim + 18);
 	maxTicks = d3.format(".0f")(maxTicks);
 	return parseInt(maxTicks);
 }
@@ -1647,7 +1765,7 @@ function getMaxYTicks(areaDim, labelDim){
  *@param {number} labelDim - width of largest label on x-axis
  */
 function getMaxXTicks(areaDim, labelDim){
-	maxTicks = (areaDim - 120)/(labelDim + 25);
+	var maxTicks = (areaDim - 120)/(labelDim + 25);
 	maxTicks = d3.format(".0f")(maxTicks);
 	return parseInt(maxTicks);
 }
@@ -1694,12 +1812,12 @@ function logTicks(areaDim){
  *@param {object} json - json object with data 
  */
 function getGroupingNames(json){
-	array = [];
+	var array = [];
 	var nested = d3.nest()
 		.key(function(d){return d[variables.Grouping];})
 		.entries(json.data);
 
-	for(i = 0; i < nested.length; i++){
+	for(var i = 0; i < nested.length; i++){
 		array.push(nested[i].key);
 	}
 	return array.sort(naturalSort);
@@ -1829,7 +1947,7 @@ function retrieveByShape(shape){
  *@param {array} array - an array containing data
  */
 function nest(data, array){
-	for(i = 0; i < data.length; i++){
+	for(var i = 0; i < data.length; i++){
 		array.push(data[i]);
 	}
 	var nested = d3.nest()
@@ -1844,12 +1962,12 @@ function nest(data, array){
  *@param {object} json - json object with data
  */
 function getIndividualDots(json){
-	array = [];
+	var array = [];
 	var nested = d3.nest()
 		.key(function(d){return d[variables.Label];})
 		.entries(json.data);
 
-	for(i=0; i < nested.length; i++){
+	for(var i=0; i < nested.length; i++){
 		array.push(nested[i].key);
 	}
 
@@ -1910,7 +2028,7 @@ function getAnnotations(year){
 function getClosest(date) {
     var close;
     var distance;
-    for (i = 0; i < dateArray.length; i++) {
+    for (var i = 0; i < dateArray.length; i++) {
         if(timeDiff(date, dateArray[i]) < distance || distance === undefined){
         	distance = timeDiff(date, dateArray[i]);
         	close = dateArray[i];
@@ -2087,7 +2205,7 @@ function class_selector(inputString){
 function convert_to_id(inputString){
 	var string = inputString.split(" ");
 	var returnThis = "";
-	for(i = 0; i < string.length - 1; i++){
+	for(var i = 0; i < string.length - 1; i++){
 		if(checkForSymbol(string[i]) != ""){
 			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '') + "";
 		}

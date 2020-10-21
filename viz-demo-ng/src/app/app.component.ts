@@ -8,4 +8,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'viz-demo-ng';
+
+
+
+
+    // console.log("app component component created!");
+ 
+
+  
 }

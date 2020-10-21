@@ -6,7 +6,9 @@
 
 import  { Properties } from 'src/assets/js/gapminder-util/properties.js';
 import * as d3 from 'd3';
-import { Papa } from 'src/assets/js/third-party-libraries/papaparse.min.js';
+// import { Papa } from 'src/assets/js/third-party-libraries/papaparse.min.js';
+import * as Papa from 'src/assets/js/third-party-libraries/papaparse.min.js';
+import 'src/assets/js/third-party-libraries/clusterize.min.js';
 
 
 
@@ -26,7 +28,8 @@ export function displayData(configurationFile){
 	d3.select("#downloadButton")
 		.attr("action", URL);
 
-	var data = Papa.parse(URL, {
+	var data;
+		data = Papa.parse(URL, {
 		header: false,
 		download: true,
 		comments: true,
@@ -38,20 +41,22 @@ export function displayData(configurationFile){
 		complete: function(results){
 			//Datatable utilizing Clusterize.js (has some bugs)
 			if(properties.DataTableType.toUpperCase() == "CLUSTERIZE"){
-				header = results.data[0];
+				var header = results.data[0];
 				results = results.data.slice(1, results.data.length);
 				d3.select("#headers")
 					.html(function(){
-						var head = ''
+						var head = '';
+						var i;
 						for(i = 0; i < header.length; i++){
 							head += '<th>' + header[i] + '</th>'
 						}
 						return head;
 					});
 				var data = [];
+				var i;
 				for(i = 0; i < results.length; i++){
 					var str = '<tr>'
-					for(j = 0; j < results[i].length; j++){
+					for( var j = 0; j < results[i].length; j++){
 						str += '<td>' + results[i][j] + '</td>'
 					}
 					str += '</tr>';

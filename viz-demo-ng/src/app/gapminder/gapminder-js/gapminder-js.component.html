@@ -1,12 +1,13 @@
 
 <main role="main" class="container">
   
-    <p>gapminder-js works!</p>
+    <p>gapminder-js component!</p>
         <br>
     
     <showdown src='assets/app-content/content-pages/pagecontent-home.md'></showdown>
      <H3>Gapminder</H3>
 
+     
     <div id="table">
         <!--Navbar with tabs at top of page-->
         <div class="row" style="width:99%">
@@ -50,10 +51,10 @@
                             </select>
                             <br><br> <!-- </br></br>  Is giving JIT complilation error -->
                             <!-- A button to turn on/off the tracers, function in gapminder.js -->
-                            <button class="btn btn-default button" onclick="tracerButton()" id="tracerButton">Turn Tracer Off</button>
+                            <button class="btn btn-default button" (click)="varOne.tracerButton()" id="tracerButton">Turn Tracer Off</button>
                             <br><br> <!-- </br></br> -->
                             <!-- A button to turn on/off the annotations on the visualization, function in gapminder.js -->
-                            <button class="btn btn-default button" onclick="annotationsButton()" id="annotationsButton">Turn Annotations Off</button>
+                            <button class="btn btn-default button" (click)="varOne.annotationsButton()" id="annotationsButton">Turn Annotations Off</button>
                             <br><br><!-- </br></br> --> 
                         <div class="dropdown" style="overflow: visible;">
                             <p style="display:inline-block; cursor:default;" id="DatasetChoicesLabel"></p> &nbsp; <button style="display:inline-block;" class="btn btn-default button dropdown-toggle" type="button" data-toggle="dropdown" id="DatasetChoices"><span class="caret"></span></button>

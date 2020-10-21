@@ -1,7 +1,7 @@
 {
 	"Properties":{
-		"DataFileName":"./data/sample-data.csv",
-		"AnnotationsFileName":"./data/annotations.json",
+		"DataFileName":"assets/gapminder-data/sample-data.csv",
+		"AnnotationsFileName":"assets/gapminder-data/annotations.json",
 		"MainTitleString":"Water Providers in Colorado",
 		"SubTitleString":"Population(size), Basin(color), Water-Use(x), and Water-Use Rate(y).",
 		"InputDateFormat":"%Y",

@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 // import { Event } from @angular/router;
 import *  as custom from 'src/assets/js/custom-test.js';
+
+
+
+  import * as gapminderv4 from 'src/assets/js/gapminder-4.0.0.js';
+
+
 import *  as display from 'src/assets/js/gapminder-util/display-data.js';
 // import 'src/assets/js/gapminder-util/properties.js';
 
@@ -27,10 +33,22 @@ let configurationFile = "assets/gapminder-data/viz-config.json";
 })
 export class GapminderJsComponent implements OnInit {
 
-  constructor() { }
+
+  public varOne = gapminderv4;
+  constructor() { 
+    // console.log("varOne: ", this.varOne);
+  }
   // declare const displayData: any;
   ngOnInit(): void {
 
+    // setTimeout(() => {
+      
+    // }, 1000);
+
+    console.log("Gapminder component created!");
+     // // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+    gapminderv4.gapminder();
 
   }
 
@@ -43,6 +61,7 @@ export class GapminderJsComponent implements OnInit {
   public gapminderSelected = true;
   /*Opens and displays div selected by tabs*/
   openTab(evt, name) {
+    // custom
     // custom.doSomething();
     // var properties = new Properties(configurationFile);
 
@@ -70,12 +89,12 @@ export class GapminderJsComponent implements OnInit {
       evt.currentTarget.className += " active";
 
 
-      // // Get the element with id="defaultOpen" and click on it
+      // Get the element with id="defaultOpen" and click on it
       // document.getElementById("defaultOpen").click();
 
   }
 
-  // // Get the element with id="defaultOpen" and click on it
+  // // // Get the element with id="defaultOpen" and click on it
   // document.getElementById("defaultOpen").click();
 
 
