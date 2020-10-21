@@ -56,6 +56,12 @@ var bisect = d3.bisector(function(d) { return d[0]; });
 var dateArray = dateArray_function(demensions);
 
 
+// var xScale = d3.scaleLog() //made global using window?
+// // window.xScale = d3.scaleLog() //made global using window?
+// 	.domain([checkMin(min), max]) //checkLogMin to make sure no negative #s
+// 	.range([yTextBox.width + margin.left + 15, (width-25)]);
+
+
 export function gapminder(){
 
 	console.log("inside main gapminder function");
@@ -457,11 +463,15 @@ if(properties.XAxisScale.toUpperCase() == "LOG"){
 	/*var min = Config.setXMin != null ? Config.setXMin : Config.xMin;
 	var max = Config.setXMax != null ? Config.setXMax : Config.xMax;*/
 	//configure the log x scale domain and range
-	var xScale = d3.scaleLog() //made global using window?
-	// window.xScale = d3.scaleLog() //made global using window?
+	
+	
+	// var xScale = d3.scaleLog() //made global using window?
+	window.xScale = d3.scaleLog() //made global using window?
 		.domain([checkMin(min), max]) //checkLogMin to make sure no negative #s
 		.range([yTextBox.width + margin.left + 15, (width-25)]);
-	//configure the xAxis with the xScale.
+
+
+		//configure the xAxis with the xScale.
 	var xAxis = d3.axisBottom()
 		.scale(xScale)
 		.ticks(6, d3.format(",d")) //get logTicks for log & format numbers for log
@@ -520,7 +530,12 @@ if(properties.YAxisScale.toUpperCase() == "LOG"){
 		.tickSizeInner(-(width - margin.right) + 5)
 		.tickSizeOuter(0)
 		.tickPadding(10);
+
+		console.log("yaxis: ", yAxis);
+
 }
+
+console.log("xAxis, : ", xAxis);
 
 //add the x-axis to svg, using xAxis
 var xaxis = svg.append("g")
