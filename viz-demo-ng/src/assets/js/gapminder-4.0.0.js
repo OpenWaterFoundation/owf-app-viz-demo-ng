@@ -31,8 +31,8 @@ var formatDate = d3.timeFormat(properties.OutputDateFormat);
 var currYear = demensions.dateMin;
 var topYear = demensions.dateMin;
 
-var precisionInt = parsePrecisionInt(properties.TimeStep);
-var precisionUnit = parsePrecisionUnits(properties.TimeStep);
+// var precisionInt = parsePrecisionInt(properties.TimeStep);
+// var precisionUnit = parsePrecisionUnits(properties.TimeStep);
 
 var width = $("#chart").parent().width();
 // var height = $("#Gapminder").parent().height() - 270;
@@ -52,8 +52,12 @@ var pathJSON = json.data;
 // var path;
 
 
+
 var bisect = d3.bisector(function(d) { return d[0]; });
-var dateArray = dateArray_function(demensions);
+// var dateArray = dateArray_function(demensions);
+
+var dot;
+var firstClick = true;
 
 
 // var xScale = d3.scaleLog() //made global using window?
@@ -92,8 +96,10 @@ export function gapminder(){
 // var currYear = demensions.dateMin;
 // var topYear = demensions.dateMin;
 
-// var precisionInt = parsePrecisionInt(properties.TimeStep);
+var precisionInt = parsePrecisionInt(properties.TimeStep);
 // var precisionUnit = parsePrecisionUnits(properties.TimeStep);
+window.precisionInt = parsePrecisionInt(properties.TimeStep);
+window.precisionUnit = parsePrecisionUnits(properties.TimeStep);
 // // console.log("PrecisionUnit" , precisionUnit);
 
 // var width = $("#chart").parent().width();
@@ -256,7 +262,7 @@ var timeScale = d3.scaleTime()
 	.domain([demensions.dateMin, demensions.dateMax])
 	.range([0, (width - 75)]);
 
-// var dateArray = dateArray_function(demensions); //made global
+var dateArray = dateArray_function(demensions); //made global
 console.log("Get time: dateArray:  ", dateArray);
 
 var visSpeed = 20000 / (timeScale.range()[1] - timeScale.range()[0]);
@@ -416,7 +422,7 @@ if(annotations_data && !$.isEmptyObject(annotations_data.GeneralAnnotations)){
 }
 
 //create a tip object that will display information when hovering over an annotation
-var tip = d3.select('body')
+window.tip = d3.select('body')
     .append('div')
     .attr('class', 'tip')
     .style('border', '1px solid black')
@@ -438,7 +444,7 @@ var tip = d3.select('body')
 // var bisect = d3.bisector(function(d) { return d[0]; });   //made global
 //creates a scale to set color of dots
 var colorScale = d3.scaleOrdinal(d3.schemeCategory10);
-var firstClick = true;
+// var firstClick = true; //make global
 
 var yText = d3.select(".box")
 	.append("text")
@@ -465,8 +471,8 @@ if(properties.XAxisScale.toUpperCase() == "LOG"){
 	//configure the log x scale domain and range
 	
 	
-	// var xScale = d3.scaleLog() //made global using window?
-	window.xScale = d3.scaleLog() //made global using window?
+	var xScale = d3.scaleLog() //made global using window?
+	// window.xScale = d3.scaleLog() //made global using window?
 		.domain([checkMin(min), max]) //checkLogMin to make sure no negative #s
 		.range([yTextBox.width + margin.left + 15, (width-25)]);
 
@@ -923,7 +929,7 @@ if(!tracer){
 	document.getElementById("tracerButton").innerHTML = "Turn Tracer On";
 }
 
-var dot;
+// var dot; // make global
 function add_dots(data){
 	var dot_g = svg.append("g")
 	    .attr("id", "dots")
@@ -974,33 +980,33 @@ if(Properties.DefaultSpeed){
 
 
 // wrapper function
-}
 
-//---------------Various accessors that specify the four dimensions of data to visualize.-------------------
-/**
- *Accessor function for x-variable
- */
-function x(d) { return d.xVar; }
-/**
- *Accessor function for y-variable
- */
-function y(d) { return d.yVar; }
-/**
- *Accessor function for size of dot
- */
-function radius(d) { return d.size; }
-/**
- *Accessor function for color of dot
- */
-function color(d) {return d.color; }
-/**
- *Accessor function for name of dot
- */
-function key(d) { return d.name; }
-/**
- *Accessor function for date
- */
-function date(d){ return d.year; }
+
+// //---------------Various accessors that specify the four dimensions of data to visualize.-------------------
+// /**
+//  *Accessor function for x-variable
+//  */
+// function x(d) { return d.xVar; }
+// /**
+//  *Accessor function for y-variable
+//  */
+// function y(d) { return d.yVar; }
+// /**
+//  *Accessor function for size of dot
+//  */
+// function radius(d) { return d.size; }
+// /**
+//  *Accessor function for color of dot
+//  */
+// function color(d) {return d.color; }
+// /**
+//  *Accessor function for name of dot
+//  */
+// function key(d) { return d.name; }
+// /**
+//  *Accessor function for date
+//  */
+// function date(d){ return d.year; }
 
 //--------------------------------------Callback functions for dots------------------------------------------
 /**
@@ -1176,9 +1182,9 @@ function position(dot) {
  *@param {object} a - the svg dot to check against
  *@param {object} b - the svg dot to check against
  */
-function order(a, b) {
-	return radius(b) - radius(a);
-}
+// function order(a, b) {
+// 	return radius(b) - radius(a);
+// }
 
 //-----------------------------------Other Callback Functions for various elements----------------------------------
 /**
@@ -1214,109 +1220,111 @@ function draggedYear(date) {
  *Callback Function: Called when user mouse's over an annotation shape on the canvas </p>
  *Displays a tooltip with the annotation information at mouseover event
  */
-function mouseoverAnnotation(d){
-	tip.transition().duration(0);
-	tip.style('top', (d3.event.pageY - 20) + 'px')
-		.style('left', (d3.event.pageX + 13) + 'px')
-		.style('display', 'block')
-		.html(d.Annotation);
-}
+// function mouseoverAnnotation(d){
+// 	tip.transition().duration(0);
+// 	tip.style('top', (d3.event.pageY - 20) + 'px')
+// 		.style('left', (d3.event.pageX + 13) + 'px')
+// 		.style('display', 'block')
+// 		.html(d.Annotation);
+// }
 
-//BUTTON CALLBACKS:
-/**
- *Callback Function: Called when clicking on a selection (basin) on the legend </p>
- *Displays only dots related to that specific label
- */
-function legendButton(d, selectMultiple){
-	displayAll = false;
-	selectedGroup = d;
-	if(!selectMultiple){
-		d3.selectAll("path.tracer").style("stroke-opacity", 0);
-		d3.selectAll(".dot").style("fill-opacity", ".2").attr("stroke-width", "0").attr("display", "false");
-		d3.selectAll("text").style("font-weight", "normal")
-	}
-	d3.selectAll("text" + dot_class_selector(d)).style("font-weight", "bold");
-	setTimeout(function(){
-		d3.selectAll(dot_class_selector(d)).style("fill-opacity", "1").attr("stroke-width", function(){
-			if(d3.select(this).attr("checked") != "true"){
-				return 1;
-			}else{
-				return 4;
-			}
-		}).attr("display", "true");
-		if(tracer){
-			d3.selectAll("path" + path_id_selector(d)).style("stroke-opacity", .75);
-		}
-	}, 100);
+// //BUTTON CALLBACKS:
+// /**
+//  *Callback Function: Called when clicking on a selection (basin) on the legend </p>
+//  *Displays only dots related to that specific label
+//  */
+// function legendButton(d, selectMultiple){
+// 	console.log("LegendButton(), d: ", d);
+// 	displayAll = false;
+// 	var selectedGroup = d;
+// 	console.log("SelectedGroup: ", selectedGroup);
+// 	if(!selectMultiple){
+// 		d3.selectAll("path.tracer").style("stroke-opacity", 0);
+// 		d3.selectAll(".dot").style("fill-opacity", ".2").attr("stroke-width", "0").attr("display", "false");
+// 		d3.selectAll("text").style("font-weight", "normal")
+// 	}
+// 	d3.selectAll("text" + dot_class_selector(d)).style("font-weight", "bold");
+// 	setTimeout(function(){
+// 		d3.selectAll(dot_class_selector(d)).style("fill-opacity", "1").attr("stroke-width", function(){
+// 			if(d3.select(this).attr("checked") != "true"){
+// 				return 1;
+// 			}else{
+// 				return 4;
+// 			}
+// 		}).attr("display", "true");
+// 		if(tracer){
+// 			d3.selectAll("path" + path_id_selector(d)).style("stroke-opacity", .75);
+// 		}
+// 	}, 100);
 	
-}
+// }
 
 /**
  *Callback Function: Called when clicking on Select All button </p>
  *Displays all dots
  */
-function selectAllButton(){
-	displayAll = true;
-	d3.selectAll(".dot").style("fill-opacity", "1").attr("stroke-width", function(){
-		if(d3.select(this).attr("checked") != "true"){
-			return 1;
-		}else{
-			return 4;
-		}
-	}).attr("display", "true");
-	dot.sort(order);
-	d3.selectAll("text").style("font-weight", "normal")
-	if(tracer){
-		d3.selectAll("path.tracer").style("stroke-opacity", .75);
-	}
-	firstClick = true;
-}
+// function selectAllButton(){
+// 	displayAll = true;
+// 	d3.selectAll(".dot").style("fill-opacity", "1").attr("stroke-width", function(){
+// 		if(d3.select(this).attr("checked") != "true"){
+// 			return 1;
+// 		}else{
+// 			return 4;
+// 		}
+// 	}).attr("display", "true");
+// 	dot.sort(order);
+// 	d3.selectAll("text").style("font-weight", "normal")
+// 	if(tracer){
+// 		d3.selectAll("path.tracer").style("stroke-opacity", .75);
+// 	}
+// 	firstClick = true;
+// }
 
 /**
  *Callback Function: Called when clicking Turn Tracer On/ Turn Tracer Off </p>
  *Either displays all tracers or turns them all off
  */
-function tracerButton(){
-	var elem = document.getElementById("tracerButton");
-	if(elem.innerHTML == "Turn Tracer On"){
-		//turn on display for all tracers
-		if(displayAll){
-			d3.selectAll("path.tracer").style("stroke-opacity", .75);
-		}else{
-			d3.selectAll("path" + path_id_selector(selectedGroup)).style("stroke-opacity", .75);
-		}
-		tracer = true;
-		//if(devTools) devTools.document.getElementById("tracer").innerHTML = "<strong>tracer:</strong> true";
-		elem.innerHTML = "Turn Tracer Off";
-	}else{
-		//turn off display for tracers
-		d3.selectAll("path.tracer").style("stroke-opacity", 0);
-		tracer = false;
-		//if(devTools) devTools.document.getElementById("tracer").innerHTML = "<strong>tracer:</strong> false";
-		elem.innerHTML = "Turn Tracer On";
-	}
-}
+// function tracerButton(){
+// 	var elem = document.getElementById("tracerButton");
+// 	if(elem.innerHTML == "Turn Tracer On"){
+// 		//turn on display for all tracers
+// 		if(displayAll){
+// 			d3.selectAll("path.tracer").style("stroke-opacity", .75);
+// 		}else{
+// 			d3.selectAll("path" + path_id_selector(selectedGroup)).style("stroke-opacity", .75);
+// 		}
+// 		tracer = true;
+// 		//if(devTools) devTools.document.getElementById("tracer").innerHTML = "<strong>tracer:</strong> true";
+// 		elem.innerHTML = "Turn Tracer Off";
+// 	}else{
+// 		//turn off display for tracers
+// 		d3.selectAll("path.tracer").style("stroke-opacity", 0);
+// 		tracer = false;
+// 		//if(devTools) devTools.document.getElementById("tracer").innerHTML = "<strong>tracer:</strong> false";
+// 		elem.innerHTML = "Turn Tracer On";
+// 	}
+// }
 
 /**
  *Callback Function: Called when clicking Turn Annotations On/ Turn Annotations Off </p>
  *Either displays the annotation shapes on the canvas or hides them
  */
-function annotationsButton(){
-	var elem = document.getElementById("annotationsButton");
-	if(elem.innerHTML == "Turn Annotations On"){
-		properties.AnnotationShapes.toUpperCase() == "ON";
-		if($("annotationText").length){annotationText.attr("fill-opacity", 1).on("mouseover", mouseoverAnnotation);}
-		d3.selectAll(".annotationShape").attr("stroke-opacity", 1).on("mouseover", mouseoverAnnotation);
-		//if(devTools) devTools.document.getElementById("annotations").innerHTML = "<strong>annotations:</strong> true";
-		elem.innerHTML = "Turn Annotations Off";
-	}else{
-		properties.AnnotationShapes.toUpperCase() == "OFF";
-		if($("annotationText").length){annotationText.attr("fill-opacity", 0).on("mouseover", null);}
-		d3.selectAll(".annotationShape").attr("stroke-opacity", 0).on("mouseover", null);
-		//if(devTools) devTools.document.getElementById("annotations").innerHTML = "<strong>annotations:</strong> false";
-		elem.innerHTML = "Turn Annotations On";
-	}
-}
+// function annotationsButton(){
+// 	var elem = document.getElementById("annotationsButton");
+// 	if(elem.innerHTML == "Turn Annotations On"){
+// 		properties.AnnotationShapes.toUpperCase() == "ON";
+// 		if($("annotationText").length){annotationText.attr("fill-opacity", 1).on("mouseover", mouseoverAnnotation);}
+// 		d3.selectAll(".annotationShape").attr("stroke-opacity", 1).on("mouseover", mouseoverAnnotation);
+// 		//if(devTools) devTools.document.getElementById("annotations").innerHTML = "<strong>annotations:</strong> true";
+// 		elem.innerHTML = "Turn Annotations Off";
+// 	}else{
+// 		properties.AnnotationShapes.toUpperCase() == "OFF";
+// 		if($("annotationText").length){annotationText.attr("fill-opacity", 0).on("mouseover", null);}
+// 		d3.selectAll(".annotationShape").attr("stroke-opacity", 0).on("mouseover", null);
+// 		//if(devTools) devTools.document.getElementById("annotations").innerHTML = "<strong>annotations:</strong> false";
+// 		elem.innerHTML = "Turn Annotations On";
+// 	}
+// }
 
 /**
  *Callback Function: Called when clicking on play button </p>
@@ -1324,12 +1332,12 @@ function annotationsButton(){
  *Disables play button </p>
  *Enables pause button 
  */
-function playButton(){
-	playAnimation();
-	document.getElementById("play").disabled = true;
-	document.getElementById("pause").disabled = false;
-	document.getElementById("back").disabled = false;
-}
+// function playButton(){
+// 	playAnimation();
+// 	document.getElementById("play").disabled = true;
+// 	document.getElementById("pause").disabled = false;
+// 	document.getElementById("back").disabled = false;
+// }
 
 /**
  *Callback Function: Called when clicking on pause button </p>
@@ -1337,11 +1345,11 @@ function playButton(){
  *Disables pause button </p>
  *Enables play button 
  */
-function pauseButton(){
-	stopAnimation();
-	document.getElementById("pause").disabled = true;
-	document.getElementById("play").disabled = false;
-}
+// function pauseButton(){
+// 	stopAnimation();
+// 	document.getElementById("pause").disabled = true;
+// 	document.getElementById("play").disabled = false;
+// }
 
 /**
  *Callback Function: Called when clicking on replay button </p>
@@ -1366,7 +1374,8 @@ function replayButton(){
  *Called seperately to create a synchronous ordering of things,
  * this way the global variables are properly configured before starting the animation agian.
  */
-function replay(){
+// function replay(){
+window.replay = function (){
 	pathData = [];
 	updatePath(nest(interpolatePath(demensions.dateMin), pathData));
 	topYear = demensions.dateMin;
@@ -1380,22 +1389,22 @@ function replay(){
  *Disables pause button </p>
  *Enables play button
  */
-function backButton(){
-	currYear = roundDate(currYear);
-	decrementDate(currYear);
-	document.getElementById("pause").disabled = true;
-	document.getElementById("play").disabled = false;
-	document.getElementById("forward").disabled = false;
-	if(currYear >= demensions.dateMin){
-		stopAnimation();
-		setTimeout(function(){
-			displayYear(currYear);
-		}, 100);
-	}else{
-		displayYear(demensions.dateMin);
-		document.getElementById("back").disabled = true;
-	}
-}
+// function backButton(){
+// 	currYear = roundDate(currYear);
+// 	decrementDate(currYear);
+// 	document.getElementById("pause").disabled = true;
+// 	document.getElementById("play").disabled = false;
+// 	document.getElementById("forward").disabled = false;
+// 	if(currYear >= demensions.dateMin){
+// 		stopAnimation();
+// 		setTimeout(function(){
+// 			displayYear(currYear);
+// 		}, 100);
+// 	}else{
+// 		displayYear(demensions.dateMin);
+// 		document.getElementById("back").disabled = true;
+// 	}
+// }
 
 /**
  *Callback Function: Called when clicking on the forward button </p>
@@ -1403,25 +1412,25 @@ function backButton(){
  *Disables pause button </p>
  *Enables play button
  */
-function forwardButton(){
-	document.getElementById("back").disabled = false;
-	if(currYear <= demensions.maxPopulatedDate){
-		incrementDate(currYear);
-		document.getElementById("pause").disabled = true;
-		document.getElementById("play").disabled = false;
-		if(currYear <= demensions.maxPopulatedDate){
-			stopAnimation();
-			setTimeout(function(){
-				displayYear(currYear);
-			}, 100);
-		}else{
-			displayYear(demensions.maxPopulatedDate);
-			console.log("here")
-			document.getElementById("forward").disabled = true;
-			document.getElementById("play").disabled = true;
-		}
-	}
-}
+// function forwardButton(){
+// 	document.getElementById("back").disabled = false;
+// 	if(currYear <= demensions.maxPopulatedDate){
+// 		incrementDate(currYear);
+// 		document.getElementById("pause").disabled = true;
+// 		document.getElementById("play").disabled = false;
+// 		if(currYear <= demensions.maxPopulatedDate){
+// 			stopAnimation();
+// 			setTimeout(function(){
+// 				displayYear(currYear);
+// 			}, 100);
+// 		}else{
+// 			displayYear(demensions.maxPopulatedDate);
+// 			console.log("here")
+// 			document.getElementById("forward").disabled = true;
+// 			document.getElementById("play").disabled = true;
+// 		}
+// 	}
+// }
 
 /**
  *Jquery event listener for when selecting a provider from the dropdown menu </p>
@@ -1429,7 +1438,7 @@ function forwardButton(){
  *Utilizes [select2]{@link https://select2.github.io/} library
  */
 $('select').on('select2:select', function(evt){
-	provider = evt.params.data.text;
+	var provider = evt.params.data.text;
 	d3.select(dot_id_selector(provider))
 		.style('stroke', 'yellow')
  		.attr('stroke-width', function(){
@@ -1449,7 +1458,7 @@ $('select').on('select2:select', function(evt){
  *Utilizes [select2]{@link https://select2.github.io/} library
  */
 $('select').on('select2:unselect', function(evt){
-	provider = evt.params.data.text;
+	var provider = evt.params.data.text;
 	var checkedNames = $("#providerNames").val();
 	var length = $("#providerNames").val().length;
 	d3.select(dot_id_selector(provider))
@@ -1469,14 +1478,15 @@ $('select').on('select2:unselect', function(evt){
 /**
  *Function which plays the animation starting from Config.currYear to Config.yearMax
  */
-function playAnimation(){
+// function playAnimation(){ //made global
+window.playAnimation = function(){
 	//start transition
-	transitionFunction = svg.transition()
+	var transitionFunction = svg.transition()
 		.duration(getTimeInterpolate(currYear, demensions.maxPopulatedDate)) //call getTimeInterpolate to calculate amount of time between years transition
 		.ease(d3.easeLinear)
 		.tween("year", tweenYear) //tweenYear callback function
 		.on("end", function(){
-			end = true;
+			var end = true;
 			document.getElementById("forward").disabled = true;
 			document.getElementById("play").disabled = true;
 		});
@@ -1487,7 +1497,9 @@ function playAnimation(){
  *
  *@param {number} value - a value from speed slider from 0 - 100
  */
-function setSpeed(value){
+// function setSpeed(value){ //made global
+window.setSpeed = function(value){
+
 	//if(devTools) devTools.document.getElementById("speed").innerHTML = "<strong>speed:</strong> " + value + "%";
 	var speedScale = d3.scaleLinear()
 		.domain([100, 0])
@@ -1505,7 +1517,9 @@ function setSpeed(value){
 /**
  *Function which pauses the animation
  */
-function stopAnimation(){
+// function stopAnimation(){
+window.stopAnimation= function(date){
+
 	transition = true;
 	svg.transition() //pause transition
 		.duration(0);
@@ -1529,13 +1543,15 @@ function tweenYear() {
  * 
  *@param {number} year - year to display data for
  */
-function displayYear(date) {
+// function displayYear(date) {
+window.displayYear= function(date){
+
 	date.setHours(0,0,0); // This WILL prove to be an issue if dealing with hourly time.
 	if(date <= demensions.maxPopulatedDate){
 		//display annotations
 		if(annotations_data){
 			if(getAnnotations(inputFileFormat(date))){
-				d = getAnnotations(inputFileFormat(date));
+				var d = getAnnotations(inputFileFormat(date));
 				annotations.html(
 					"<p class='datatable' style='text-decoration:underline;'><strong> Annotations </strong></p>" +
 					"<p class='datatable' style='font-weight:bold;'> Date: " + inputFileFormat(date) + "</p>" + 
@@ -1601,7 +1617,9 @@ function interpolatePath(year) {
  *
  *@param {array} newData - an array of updated data
  */
-function updatePath(newData){
+// function updatePath(newData){
+window.updatePath= function(newData){
+
 	d3.select("#dataline").selectAll("path")
 		.data(newData) //update path with newData
 		.attr("d", function(d){
@@ -1616,6 +1634,8 @@ function updatePath(newData){
  *@param {number} year - current year to get data for
  */
 function interpolateData(date) {
+
+	
     return json.data.map(function(d) {
       return {
         //X-Axis
@@ -1954,22 +1974,22 @@ function retrieveByShape(shape){
 	}
 }
 
-/**
- *Adds data to the array and then nests that data by name </p>
- *[d3.js nest]{@link https://github.com/d3/d3-3.x-api-reference/blob/master/Arrays.md#nest}
- *
- *@param {object} data - an object containing the data
- *@param {array} array - an array containing data
- */
-function nest(data, array){
-	for(var i = 0; i < data.length; i++){
-		array.push(data[i]);
-	}
-	var nested = d3.nest()
-		.key(function(d){return d.name;})
-		.entries(array);
-	return nested;
-}
+// /**
+//  *Adds data to the array and then nests that data by name </p>
+//  *[d3.js nest]{@link https://github.com/d3/d3-3.x-api-reference/blob/master/Arrays.md#nest}
+//  *
+//  *@param {object} data - an object containing the data
+//  *@param {array} array - an array containing data
+//  */
+// function nest(data, array){
+// 	for(var i = 0; i < data.length; i++){
+// 		array.push(data[i]);
+// 	}
+// 	var nested = d3.nest()
+// 		.key(function(d){return d.name;})
+// 		.entries(array);
+// 	return nested;
+// }
 
 /**
  *Returns an array of names for each dot on the visualization
@@ -1995,9 +2015,9 @@ function getIndividualDots(json){
  *
  *@param {number} value - number to check minimum on
  */
-function minRadius(value){
-	return value < 3.0 ? 3.0 : value;
-}
+// function minRadius(value){
+// 	return value < 3.0 ? 3.0 : value;
+// }
 
 /**
  * Return the additional parameters, if any, provided from the additional parameter data file.
@@ -2059,7 +2079,7 @@ function getClosest(date) {
  *@param {number} end - the ending year
  */
 function getTimeInterpolate(startDate, endDate){
-	distance = timeScale(endDate) - timeScale(startDate);
+	var distance = timeScale(endDate) - timeScale(startDate);
 	return distance * visSpeed;
 }
 
@@ -2073,38 +2093,40 @@ function timeDiff(date1, date2){
 	return Math.abs(date2.getTime() - date1.getTime());
 }
 
-/**
- *Depending on precision units from Config file, incremments the date 
- */
-function incrementDate(date){
-	switch(precisionUnit){
-		case "Year":
-			date.setFullYear(date.getFullYear() + precisionInt);
-			break;
-		case "Month":
-			date.setMonth(date.getMonth() + precisionInt);
-			break;
-		case "Day":
-			date.setDate(date.getDate() + precisionInt);
-			break;
-		case "Hour":
-			date.setHours(date.getHours() + precisionInt);
-			break;
-		case "Minute":
-			date.setMinutes(date.getMinutes() + precisionInt);
-			break;
-		case "Second":
-			date.setSeconds(date.getSeconds() + precisionInt);
-			break;
-		default:
-			break;
-	}
-}
+// /**
+//  *Depending on precision units from Config file, incremments the date 
+//  */
+// function incrementDate(date){
+// 	switch(precisionUnit){
+// 		case "Year":
+// 			date.setFullYear(date.getFullYear() + precisionInt);
+// 			break;
+// 		case "Month":
+// 			date.setMonth(date.getMonth() + precisionInt);
+// 			break;
+// 		case "Day":
+// 			date.setDate(date.getDate() + precisionInt);
+// 			break;
+// 		case "Hour":
+// 			date.setHours(date.getHours() + precisionInt);
+// 			break;
+// 		case "Minute":
+// 			date.setMinutes(date.getMinutes() + precisionInt);
+// 			break;
+// 		case "Second":
+// 			date.setSeconds(date.getSeconds() + precisionInt);
+// 			break;
+// 		default:
+// 			break;
+// 	}
+// }
 
 /**
  *Depending on precision units from Config file, decrements the date
  */
-function decrementDate(date){
+// function decrementDate(date){
+window.decrementDate = function(date){
+
 	switch(precisionUnit){
 		case "Year":
 			date.setFullYear(date.getFullYear() - precisionInt);
@@ -2129,11 +2151,13 @@ function decrementDate(date){
 	}
 }
 
-function roundDate(date){
+// function roundDate(date){
+window.roundDate = function(date){
+
 	switch(precisionUnit){
 		case "Year":
-			returnThis = new Date(date);
-			currMonth = date.getMonth();
+			var returnThis = new Date(date);
+			var currMonth = date.getMonth();
 			returnThis.setMonth(0);
 			returnThis.setDate(1);
 			returnThis.setHours(0);
@@ -2187,111 +2211,111 @@ function roundDate(date){
 			break;
 	}
 }
-//----------------------------Helper Functions that minipulate strings for d3.select() purposes-------------------------
-/**
- *Removes symbols form string, returns the string with no symbols
- *
- *@param {string} string - a string
- */
-function checkForSymbol(string){
-	return string.replace(/[^A-Za-z0-9]/g, '');
-}  
+// //----------------------------Helper Functions that minipulate strings for d3.select() purposes-------------------------
+// /**
+//  *Removes symbols form string, returns the string with no symbols
+//  *
+//  *@param {string} string - a string
+//  */
+// function checkForSymbol(string){
+// 	return string.replace(/[^A-Za-z0-9]/g, '');
+// }  
 
-/**
- *Converts the string into a selector name </p>
- *ex: 'Denver Water' -> '.Denver.Water'
- */
-function class_selector(inputString){
-	var string = inputString.split(" ");
-	var returnThis = ".";
-	for(i = 0; i < string.length - 1; i++){
-		if(checkForSymbol(string[i]) != ""){
-			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '')// + ".";
-		}
-	}
-	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
-	return returnThis.toString();
-}
+// /**
+//  *Converts the string into a selector name </p>
+//  *ex: 'Denver Water' -> '.Denver.Water'
+//  */
+// function class_selector(inputString){
+// 	var string = inputString.split(" ");
+// 	var returnThis = ".";
+// 	for(i = 0; i < string.length - 1; i++){
+// 		if(checkForSymbol(string[i]) != ""){
+// 			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '')// + ".";
+// 		}
+// 	}
+// 	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
+// 	return returnThis.toString();
+// }
 
-/**
- *Converts the string into a selector name </p>
- *ex: 'Denver Water' -> '.Denver.Water'
- */
-function convert_to_id(inputString){
-	var string = inputString.split(" ");
-	var returnThis = "";
-	for(var i = 0; i < string.length - 1; i++){
-		if(checkForSymbol(string[i]) != ""){
-			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '') + "";
-		}
-	}
-	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
-	return returnThis;
-}
+// /**
+//  *Converts the string into a selector name </p>
+//  *ex: 'Denver Water' -> '.Denver.Water'
+//  */
+// function convert_to_id(inputString){
+// 	var string = inputString.split(" ");
+// 	var returnThis = "";
+// 	for(var i = 0; i < string.length - 1; i++){
+// 		if(checkForSymbol(string[i]) != ""){
+// 			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '') + "";
+// 		}
+// 	}
+// 	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
+// 	return returnThis;
+// }
 
-/**
- *Converts the string into an id selector name </p>
- *ex: 'Denver Water' -> '.Denver.Water'
- */
-function dot_id_selector(inputString){
-	var string = inputString.split(" ");
-	var returnThis = "#D";
-	for(i = 0; i < string.length - 1; i++){
-		if(checkForSymbol(string[i]) != ""){
-			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '') + "";
-		}
-	}
-	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
-	return returnThis.toString();
-}
+// /**
+//  *Converts the string into an id selector name </p>
+//  *ex: 'Denver Water' -> '.Denver.Water'
+//  */
+// function dot_id_selector(inputString){
+// 	var string = inputString.split(" ");
+// 	var returnThis = "#D";
+// 	for(i = 0; i < string.length - 1; i++){
+// 		if(checkForSymbol(string[i]) != ""){
+// 			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '') + "";
+// 		}
+// 	}
+// 	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
+// 	return returnThis.toString();
+// }
 
-/**
- *Converts the string into a selector name </p>
- *ex: 'Denver Water' -> '.Denver.Water'
- */
-function dot_class_selector(inputString){
-	var string = inputString.split(" ");
-	var returnThis = ".D";
-	for(i = 0; i < string.length - 1; i++){
-		if(checkForSymbol(string[i]) != ""){
-			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '')// + ".";
-		}
-	}
-	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
-	return returnThis.toString();
-}
+// /**
+//  *Converts the string into a selector name </p>
+//  *ex: 'Denver Water' -> '.Denver.Water'
+//  */
+// function dot_class_selector(inputString){
+// 	var string = inputString.split(" ");
+// 	var returnThis = ".D";
+// 	for(i = 0; i < string.length - 1; i++){
+// 		if(checkForSymbol(string[i]) != ""){
+// 			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '')// + ".";
+// 		}
+// 	}
+// 	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
+// 	return returnThis.toString();
+// }
 
-/**
- *Converts the string into a selector name </p>
- *ex: 'Denver Water' -> '.Denver.Water'
- */
-function path_class_selector(inputString){
-	var string = inputString.split(" ");
-	var returnThis = ".T";
-	for(i = 0; i < string.length - 1; i++){
-		if(checkForSymbol(string[i]) != ""){
-			returnThis = returnThis + string[i]//.replace(/[^A-Za-z0-9]/g, '') + ".";
-		}
-	}
-	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
-	return returnThis.toString();
-}
+// /**
+//  *Converts the string into a selector name </p>
+//  *ex: 'Denver Water' -> '.Denver.Water'
+//  */
+// function path_class_selector(inputString){
+// 	var string = inputString.split(" ");
+// 	var returnThis = ".T";
+// 	for(i = 0; i < string.length - 1; i++){
+// 		if(checkForSymbol(string[i]) != ""){
+// 			returnThis = returnThis + string[i]//.replace(/[^A-Za-z0-9]/g, '') + ".";
+// 		}
+// 	}
+// 	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
+// 	return returnThis.toString();
+// }
 
-/**
- *Converts the string into an id selector name </p>
- *ex: 'Denver Water' -> '.Denver.Water'
- */
-function path_id_selector(inputString){
-	var string = inputString.split(" ");
-	var returnThis = "#T";
-	for(i = 0; i < string.length - 1; i++){
-		if(checkForSymbol(string[i]) != ""){
-			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '') + "";
-		}
-	}
-	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
-	return returnThis.toString();
-}
+// /**
+//  *Converts the string into an id selector name </p>
+//  *ex: 'Denver Water' -> '.Denver.Water'
+//  */
+// function path_id_selector(inputString){
+// 	var string = inputString.split(" ");
+// 	var returnThis = "#T";
+// 	for(i = 0; i < string.length - 1; i++){
+// 		if(checkForSymbol(string[i]) != ""){
+// 			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '') + "";
+// 		}
+// 	}
+// 	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
+// 	return returnThis.toString();
+// }
 
 //-----------------------Helper functions that move elements forward or back in the svg canvas-------------------------
 /*
@@ -2542,4 +2566,460 @@ function updateGapminder(date){
 	d3.selectAll(".dot").remove();
 	var data = interpolateData(demensions.dateMin);
 	add_dots();
+}
+
+
+// end wrapper function
+}
+
+
+/**
+ *Callback Function: Called when clicking on Select All button </p>
+ *Displays all dots
+ */
+export function selectAllButton(){
+	console.log("selectAllButton() function")
+	displayAll = true;
+	d3.selectAll(".dot").style("fill-opacity", "1").attr("stroke-width", function(){
+		if(d3.select(this).attr("checked") != "true"){
+			return 1;
+		}else{
+			return 4;
+		}
+	}).attr("display", "true");
+	console.log("Dot: ", dot);
+	dot.sort(order);
+	d3.selectAll("text").style("font-weight", "normal")
+	if(tracer){
+		d3.selectAll("path.tracer").style("stroke-opacity", .75);
+	}
+	firstClick = true;
+}
+
+/**
+ *Callback Function: Called when clicking Turn Tracer On/ Turn Tracer Off </p>
+ *Either displays all tracers or turns them all off
+ */
+export function tracerButton(){
+	var elem = document.getElementById("tracerButton");
+	if(elem.innerHTML == "Turn Tracer On"){
+		//turn on display for all tracers
+		if(displayAll){
+			d3.selectAll("path.tracer").style("stroke-opacity", .75);
+		}else{
+			d3.selectAll("path" + path_id_selector(selectedGroup)).style("stroke-opacity", .75);
+		}
+		tracer = true;
+		//if(devTools) devTools.document.getElementById("tracer").innerHTML = "<strong>tracer:</strong> true";
+		elem.innerHTML = "Turn Tracer Off";
+	}else{
+		//turn off display for tracers
+		d3.selectAll("path.tracer").style("stroke-opacity", 0);
+		tracer = false;
+		//if(devTools) devTools.document.getElementById("tracer").innerHTML = "<strong>tracer:</strong> false";
+		elem.innerHTML = "Turn Tracer On";
+	}
+}
+
+
+/**
+ *Callback Function: Called when clicking Turn Annotations On/ Turn Annotations Off </p>
+ *Either displays the annotation shapes on the canvas or hides them
+ */
+export function annotationsButton(){
+	var elem = document.getElementById("annotationsButton");
+	if(elem.innerHTML == "Turn Annotations On"){
+		properties.AnnotationShapes.toUpperCase() == "ON";
+		if($("annotationText").length){annotationText.attr("fill-opacity", 1).on("mouseover", mouseoverAnnotation);}
+		d3.selectAll(".annotationShape").attr("stroke-opacity", 1).on("mouseover", mouseoverAnnotation);
+		//if(devTools) devTools.document.getElementById("annotations").innerHTML = "<strong>annotations:</strong> true";
+		elem.innerHTML = "Turn Annotations Off";
+	}else{
+		properties.AnnotationShapes.toUpperCase() == "OFF";
+		if($("annotationText").length){annotationText.attr("fill-opacity", 0).on("mouseover", null);}
+		d3.selectAll(".annotationShape").attr("stroke-opacity", 0).on("mouseover", null);
+		//if(devTools) devTools.document.getElementById("annotations").innerHTML = "<strong>annotations:</strong> false";
+		elem.innerHTML = "Turn Annotations On";
+	}
+}
+
+
+/**
+ *Callback Function: Called when clicking on play button </p>
+ *Starts the animation </p>
+ *Disables play button </p>
+ *Enables pause button 
+ */
+export function playButton(){
+	playAnimation();
+	document.getElementById("play").disabled = true;
+	document.getElementById("pause").disabled = false;
+	document.getElementById("back").disabled = false;
+}
+
+/**
+ *Callback Function: Called when clicking on pause button </p>
+ *Pauses the animation </p>
+ *Disables pause button </p>
+ *Enables play button 
+ */
+export function pauseButton(){
+	stopAnimation();
+	document.getElementById("pause").disabled = true;
+	document.getElementById("play").disabled = false;
+}
+
+
+/**
+ *Callback Function: Called when clicking on replay button </p>
+ *Restarts the animation from Config.yearMin </p>
+ *Disables play button </p>
+ *Enables pause button 
+ */
+export function replayButton(){
+	stopAnimation();
+	document.getElementById("play").disabled = true;
+	document.getElementById("pause").disabled = false;
+	document.getElementById("back").disabled = false;
+	document.getElementById("forward").disabled = false;
+	var end = false;
+	setTimeout(function(){
+		replay()
+	}, 100);
+}
+
+/**
+ *Callback Function: Called when clicking on back button </p>
+ *Displays the animation one year/date back </p>
+ *Disables pause button </p>
+ *Enables play button
+ */
+export function backButton(){
+	currYear = roundDate(currYear);
+	decrementDate(currYear);
+	document.getElementById("pause").disabled = true;
+	document.getElementById("play").disabled = false;
+	document.getElementById("forward").disabled = false;
+	if(currYear >= demensions.dateMin){
+		stopAnimation();
+		setTimeout(function(){
+			displayYear(currYear);
+		}, 100);
+	}else{
+		displayYear(demensions.dateMin);
+		document.getElementById("back").disabled = true;
+	}
+}
+
+/**
+ *Callback Function: Called when clicking on the forward button </p>
+ *Displays the animation one year/date forward </p>
+ *Disables pause button </p>
+ *Enables play button
+ */
+export function forwardButton(){
+	document.getElementById("back").disabled = false;
+	if(currYear <= demensions.maxPopulatedDate){
+		incrementDate(currYear);
+		document.getElementById("pause").disabled = true;
+		document.getElementById("play").disabled = false;
+		if(currYear <= demensions.maxPopulatedDate){
+			stopAnimation();
+			setTimeout(function(){
+				displayYear(currYear);
+			}, 100);
+		}else{
+			displayYear(demensions.maxPopulatedDate);
+			console.log("here")
+			document.getElementById("forward").disabled = true;
+			document.getElementById("play").disabled = true;
+		}
+	}
+}
+
+/**
+ *Called inside replayButton() </p>
+ *Called seperately to create a synchronous ordering of things,
+ * this way the global variables are properly configured before starting the animation agian.
+ */
+// export function replay(){
+// 	var pathData = [];
+// 	console.log()
+// 	updatePath(nest(interpolatePath(demensions.dateMin), pathData));
+// 	topYear = demensions.dateMin;
+// 	currYear = demensions.dateMin;
+// 	playAnimation();
+// }
+
+/**
+ *Ensures smallest dots are above larger dots
+ *
+ *@param {object} a - the svg dot to check against
+ *@param {object} b - the svg dot to check against
+ */
+function order(a, b) {
+	return radius(b) - radius(a);
+}
+
+
+/**
+ *Returns a minimum value for the radius of dots (3.0px)
+ *
+ *@param {number} value - number to check minimum on
+ */
+function minRadius(value){
+	return value < 3.0 ? 3.0 : value;
+}
+
+//-----------------------------------Other Callback Functions for various elements----------------------------------
+// /**
+//  *Callback Function: Called when clicking and dragging the year slider </p>
+//  *Pauses animation and calls display year to display data associated with selected date
+//  *
+//  *@param {number} year - date selected from year slider
+//  */ 
+// function draggedYear(date) {
+// 	slider_tooltip.style("opacity", 0);
+// 	date.setHours(0,0,0);
+// 	stopAnimation();
+// 	document.getElementById("pause").disabled = true;
+// 	document.getElementById("play").disabled = false;
+// 	if(date >= demensions.dateMin && date < demensions.maxPopulatedDate){
+// 		displayYear(date);
+// 		document.getElementById("forward").disabled = false;
+// 		document.getElementById("back").disabled = false;
+// 		document.getElementById("play").disabled = false;
+// 	} 
+// 	else if(date > demensions.maxPopulatedDate){
+// 		displayYear(demensions.maxPopulatedDate);
+// 		document.getElementById("forward").disabled = true;
+// 		document.getElementById("play").disabled = true;
+// 	} 
+// 	else if(date < demensions.dateMin){
+// 		displayYear(demensions.dateMin);
+// 		document.getElementById("back").disabled = true;
+// 	} 
+// }
+
+// /**
+//  *Callback Function: Called when user mouse's over an annotation shape on the canvas </p>
+//  *Displays a tooltip with the annotation information at mouseover event
+//  */
+function mouseoverAnnotation(d){
+	tip.transition().duration(0);
+	tip.style('top', (d3.event.pageY - 20) + 'px')
+		.style('left', (d3.event.pageX + 13) + 'px')
+		.style('display', 'block')
+		.html(d.Annotation);
+}
+
+//BUTTON CALLBACKS:
+/**
+ *Callback Function: Called when clicking on a selection (basin) on the legend </p>
+ *Displays only dots related to that specific label
+ */
+function legendButton(d, selectMultiple){
+	console.log("LegendButton(), d: ", d);
+	displayAll = false;
+	var selectedGroup = d;
+	console.log("SelectedGroup: ", selectedGroup);
+	if(!selectMultiple){
+		d3.selectAll("path.tracer").style("stroke-opacity", 0);
+		d3.selectAll(".dot").style("fill-opacity", ".2").attr("stroke-width", "0").attr("display", "false");
+		d3.selectAll("text").style("font-weight", "normal")
+	}
+	d3.selectAll("text" + dot_class_selector(d)).style("font-weight", "bold");
+	setTimeout(function(){
+		d3.selectAll(dot_class_selector(d)).style("fill-opacity", "1").attr("stroke-width", function(){
+			if(d3.select(this).attr("checked") != "true"){
+				return 1;
+			}else{
+				return 4;
+			}
+		}).attr("display", "true");
+		if(tracer){
+			d3.selectAll("path" + path_id_selector(d)).style("stroke-opacity", .75);
+		}
+	}, 100);
+	
+}
+
+//---------------Various accessors that specify the four dimensions of data to visualize.-------------------
+/**
+ *Accessor function for x-variable
+ */
+function x(d) { return d.xVar; }
+/**
+ *Accessor function for y-variable
+ */
+function y(d) { return d.yVar; }
+/**
+ *Accessor function for size of dot
+ */
+function radius(d) { return d.size; }
+/**
+ *Accessor function for color of dot
+ */
+function color(d) {return d.color; }
+/**
+ *Accessor function for name of dot
+ */
+function key(d) { return d.name; }
+/**
+ *Accessor function for date
+ */
+function date(d){ return d.year; }
+
+//----------------------------Helper Functions that minipulate strings for d3.select() purposes-------------------------
+/**
+ *Removes symbols form string, returns the string with no symbols
+ *
+ *@param {string} string - a string
+ */
+function checkForSymbol(string){
+	return string.replace(/[^A-Za-z0-9]/g, '');
+}  
+
+/**
+ *Converts the string into a selector name </p>
+ *ex: 'Denver Water' -> '.Denver.Water'
+ */
+function class_selector(inputString){
+	var string = inputString.split(" ");
+	var returnThis = ".";
+	for(var i = 0; i < string.length - 1; i++){
+		if(checkForSymbol(string[i]) != ""){
+			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '')// + ".";
+		}
+	}
+	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
+	return returnThis.toString();
+}
+
+/**
+ *Converts the string into a selector name </p>
+ *ex: 'Denver Water' -> '.Denver.Water'
+ */
+function convert_to_id(inputString){
+	var string = inputString.split(" ");
+	var returnThis = "";
+	for(var i = 0; i < string.length - 1; i++){
+		if(checkForSymbol(string[i]) != ""){
+			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '') + "";
+		}
+	}
+	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
+	return returnThis;
+}
+
+/**
+ *Converts the string into an id selector name </p>
+ *ex: 'Denver Water' -> '.Denver.Water'
+ */
+function dot_id_selector(inputString){
+	var string = inputString.split(" ");
+	var returnThis = "#D";
+	for(var i = 0; i < string.length - 1; i++){
+		if(checkForSymbol(string[i]) != ""){
+			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '') + "";
+		}
+	}
+	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
+	return returnThis.toString();
+}
+
+/**
+ *Converts the string into a selector name </p>
+ *ex: 'Denver Water' -> '.Denver.Water'
+ */
+function dot_class_selector(inputString){
+	var string = inputString.split(" ");
+	var returnThis = ".D";
+	for(var i = 0; i < string.length - 1; i++){
+		if(checkForSymbol(string[i]) != ""){
+			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '')// + ".";
+		}
+	}
+	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
+	return returnThis.toString();
+}
+
+/**
+ *Converts the string into a selector name </p>
+ *ex: 'Denver Water' -> '.Denver.Water'
+ */
+function path_class_selector(inputString){
+	var string = inputString.split(" ");
+	var returnThis = ".T";
+	for(var i = 0; i < string.length - 1; i++){
+		if(checkForSymbol(string[i]) != ""){
+			returnThis = returnThis + string[i]//.replace(/[^A-Za-z0-9]/g, '') + ".";
+		}
+	}
+	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
+	return returnThis.toString();
+}
+
+/**
+ *Converts the string into an id selector name </p>
+ *ex: 'Denver Water' -> '.Denver.Water'
+ */
+function path_id_selector(inputString){
+	var string = inputString.split(" ");
+	var returnThis = "#T";
+	for(var i = 0; i < string.length - 1; i++){
+		if(checkForSymbol(string[i]) != ""){
+			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '') + "";
+		}
+	}
+	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
+	return returnThis.toString();
+}
+
+
+/**
+ *Depending on precision units from Config file, incremments the date 
+ */
+function incrementDate(date){
+	switch(precisionUnit){
+		case "Year":
+			date.setFullYear(date.getFullYear() + precisionInt);
+			break;
+		case "Month":
+			date.setMonth(date.getMonth() + precisionInt);
+			break;
+		case "Day":
+			date.setDate(date.getDate() + precisionInt);
+			break;
+		case "Hour":
+			date.setHours(date.getHours() + precisionInt);
+			break;
+		case "Minute":
+			date.setMinutes(date.getMinutes() + precisionInt);
+			break;
+		case "Second":
+			date.setSeconds(date.getSeconds() + precisionInt);
+			break;
+		default:
+			break;
+	}
+}
+
+
+
+/**
+ *Adds data to the array and then nests that data by name </p>
+ *[d3.js nest]{@link https://github.com/d3/d3-3.x-api-reference/blob/master/Arrays.md#nest}
+ *
+ *@param {object} data - an object containing the data
+ *@param {array} array - an array containing data
+ */
+function nest(data, array){
+	for(var i = 0; i < data.length; i++){
+		array.push(data[i]);
+	}
+	var nested = d3.nest()
+		.key(function(d){return d.name;})
+		.entries(array);
+	return nested;
 }

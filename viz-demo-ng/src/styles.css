@@ -1,7 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~bootstrap/dist/css/bootstrap.css';
+/* @import 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'; */
+
 @import 'assets/css/showdown_style00.css';
 /* @import 'assets/css/showdown_style01.css'; */
+/* @import 'assets/css/bootstrap.min.css'; */
+@import 'assets/css/style.css';
+@import 'assets/css/loader.css';
+@import 'assets/css/select2.min.css';
+@import 'assets/css/clusterize.css';
 
 
 /* body {

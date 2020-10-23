@@ -31,7 +31,7 @@ let configurationFile = "assets/gapminder-data/viz-config.json";
   templateUrl: './gapminder-js.component.html',
   styleUrls: ['./gapminder-js.component.css']
 })
-export class GapminderJsComponent implements OnInit {
+export class GapminderJsComponent  {
 
 
   public varOne = gapminderv4;
@@ -39,7 +39,7 @@ export class GapminderJsComponent implements OnInit {
     // console.log("varOne: ", this.varOne);
   }
   // declare const displayData: any;
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
 
     // setTimeout(() => {
       
@@ -97,6 +97,31 @@ export class GapminderJsComponent implements OnInit {
   // // // Get the element with id="defaultOpen" and click on it
   // document.getElementById("defaultOpen").click();
 
+
+
+// selecAllButtonCall(){
+//   this.varOne.selecAllButton();
+// }
+/**
+ *Callback Function: Called when clicking on Select All button </p>
+ *Displays all dots
+ */
+// selectAllButton(){
+// 	displayAll = true;
+// 	d3.selectAll(".dot").style("fill-opacity", "1").attr("stroke-width", function(){
+// 		if(d3.select(this).attr("checked") != "true"){
+// 			return 1;
+// 		}else{
+// 			return 4;
+// 		}
+// 	}).attr("display", "true");
+// 	dot.sort(order);
+// 	d3.selectAll("text").style("font-weight", "normal")
+// 	if(tracer){
+// 		d3.selectAll("path.tracer").style("stroke-opacity", .75);
+// 	}
+// 	firstClick = true;
+// }
 
  
 }
