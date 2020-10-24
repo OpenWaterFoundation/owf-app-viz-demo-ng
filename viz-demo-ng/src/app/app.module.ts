@@ -16,6 +16,8 @@ import { ShowdownModule } from 'ngx-showdown';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { HighchartsChartModule } from 'highcharts-angular';
 
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 
 
 
@@ -130,7 +132,8 @@ const conv = new showdown.Converter({
     ShowdownModule.forRoot({emoji: true, noHeaderId: true, extensions: [bindings], openLinksInNewWindow: true, smartIndentationFix: true,simpleLineBreaks: false ,  flavor: 'github'}),
     CommonModule,
     DragDropModule,
-    HighchartsChartModule
+    HighchartsChartModule,
+    FontAwesomeModule
     
 
 

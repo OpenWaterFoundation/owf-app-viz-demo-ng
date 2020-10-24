@@ -41,8 +41,10 @@
                         <div id="chart" class="col-lg-10 col-sm-10 col-xs-10"></div>
                         <div id="legend" class="col-lg-2 col-sm-2 col-xs-2"></div>
                         <!-- <br></br> -->
-                        <button class="btn btn-default button" (click)="varOne.selectAllButton()">Select All Markers</button>
+                        <!-- <button id="selectAll" class="btn btn-default button" (click)="varOne.selectAllButton()">Select All Markers</button> -->
                         <div id="sideTools" class="col-lg-2 col-sm-2 col-xs-2">
+                            <button id="selectAll" class="btn btn-default button" (click)="varOne.selectAllButton()">Select All Markers</button>
+
                             <!-- Dropdown list for selecting specific annotations, utilizes select2.js -->
                             <select id="providerNames" style="width:99%" multiple="multiple">
                                 <!-- Select2 requires first <option></option> to be empty -->
@@ -73,18 +75,24 @@
                         <div id="buttons" class="col-lg-12 col-sm-12 col-xs-12">
                             <button type="button" id="play" class="btn btn-default btn-md" (click)="varOne.playButton()" title="Play">
                             <span class="glyphicon glyphicon-play"></span>
+                            <i class="fa fa-play"></i>
                             </button>
                             <button type="button" id="pause" class="btn btn-default btn-md" (click)="varOne.pauseButton()" title="Pause" disabled="true">
                                 <span class="glyphicon glyphicon-pause"></span>
+                                <i class="fa fa-pause"></i>
                             </button>
                             <button type="button" id="replay" class="btn btn-default btn-md" (click)="varOne.replayButton()" title="Replay">
                                 <span class="glyphicon glyphicon-repeat"></span>
+                                <i class="fa fa-repeat" aria-hidden="true"></i>
+
                             </button>
                             <button type="button" id="back" class="btn btn-default btn-md" (click)="varOne.backButton()" title="Back" disabled="true">
                                 <span class="glyphicon glyphicon-menu-left"></span>
+                                <i class="fa fa-step-backward"></i>
                             </button>
                             <button type="button" id="forward" class="btn btn-default btn-md" (click)="varOne.forwardButton()" title="Forward">
                                 <span class="glyphicon glyphicon-menu-right"></span>
+                                <i class="fa fa-step-forward"></i>
                             </button>
                             &nbsp; &nbsp;
                             <p class="controls" style="cursor:default;"> Speed: </p>
