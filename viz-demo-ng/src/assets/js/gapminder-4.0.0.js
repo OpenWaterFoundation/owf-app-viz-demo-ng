@@ -68,34 +68,6 @@ var firstClick = true;
 
 export function gapminder(){
 
-	console.log("inside main gapminder function");
-	// console.log("pathjson first: ", pathJSON);
-
-
-// let configurationFile = "assets/gapminder-data/viz-config.json";
-
-/*Should try and nest these variables in some sort of object to avoid cluttering javascript namespace*/
-// var bool = true;
-// var properties = new Properties(configurationFile);
-// properties = properties.properties;
-// var additionalParametersDictionary = properties.AdditionalData ? getAdditionalParameters() : null;
-// var variables = properties.VariableNames;
-// var data = new Data(properties);
-// console.log("var data: ", data);
-// var json = data.json;
-// var demensions = data.demensions;
-// console.log("var demensions.dateMin: ", demensions.dateMin);
-// console.log("var demensions.dateMax: ", demensions.dateMin);
-
-// var annotations_data = data.annotations;
-
-// var parseDate = d3.timeParse(properties.InputDateFormat);
-// var inputFileFormat = d3.timeFormat(properties.InputDateFormat);
-// var formatDate = d3.timeFormat(properties.OutputDateFormat);
-
-// var currYear = demensions.dateMin;
-// var topYear = demensions.dateMin;
-
 var precisionInt = parsePrecisionInt(properties.TimeStep);
 // var precisionUnit = parsePrecisionUnits(properties.TimeStep);
 window.precisionInt = parsePrecisionInt(properties.TimeStep);

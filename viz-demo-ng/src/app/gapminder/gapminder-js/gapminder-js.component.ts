@@ -1,71 +1,79 @@
 import { Component, OnInit } from '@angular/core';
-// import { Event } from @angular/router;
-import *  as custom from 'src/assets/js/custom-test.js';
-
-
-
-  import * as gapminderv4 from 'src/assets/js/gapminder-4.0.0.js';
-
-
-import *  as display from 'src/assets/js/gapminder-util/display-data.js';
-// import 'src/assets/js/gapminder-util/properties.js';
-
-import  { Properties } from 'src/assets/js/gapminder-util/properties.js';
-import * as $ from "jquery";
-
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 // reference to JS functions
+import * as gapminderv4 from 'src/assets/js/gapminder-4.0.0.js';
+import *  as display from 'src/assets/js/gapminder-util/display-data.js';
 
-// assets/gapminderjs/display-data.js
-// declare function displayData();
 
-// test
-// declare function doSomething();
-
-// declare var Properties: any;
-
+// Define gapminder configuration 
 let configurationFile = "assets/gapminder-data/viz-config.json";
+
+@Component({
+  selector: 'app-gapminder',
+  templateUrl: '../../generic-content/generic-content.component.html',
+  styleUrls: ['./gapminder-js.component.css']
+})
+export class GapminderJsComponent implements OnInit {
+
+  constructor(public dialog: MatDialog) { }
+
+  ngOnInit(): void {
+    this.openDialog();
+
+    // tab reopen event emitter
+    // if (this.eventEmitterService.subsVar==undefined) {  
+    //   this.eventEmitterService.subsVar = this.eventEmitterService.    
+    //   invokeChartjsGenericComponentFunction.subscribe((name:string) => {    
+    //     this.openDialog();  
+    //   });    
+    // }  
+  }
+
+  openDialog(): void {
+    console.log("Entered openDialog Function")
+    const dialogRef = this.dialog.open(GeneralGapminderJSComponent, {
+      height: '650px',
+      width: '1000px',
+     
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+     
+    });
+  }
+
+
+}
 
 @Component({
   selector: 'app-gapminder-js',
   templateUrl: './gapminder-js.component.html',
   styleUrls: ['./gapminder-js.component.css']
 })
-export class GapminderJsComponent  {
+export class  GeneralGapminderJSComponent {
 
+  // Define gapminder Ref for function calls in template
+  public gapminderRef = gapminderv4;
 
-  public varOne = gapminderv4;
   constructor() { 
-    // console.log("varOne: ", this.varOne);
   }
-  // declare const displayData: any;
+
   ngAfterViewInit(): void {
-
-    // setTimeout(() => {
-      
-    // }, 1000);
-
-    console.log("Gapminder component created!");
-     // // Get the element with id="defaultOpen" and click on it
+     // Get the element id="defaultOpen" and click for default option 
     document.getElementById("defaultOpen").click();
+
+    // call gapminder js functionality 
     gapminderv4.gapminder();
 
   }
 
-  
-
-  // public configurationFile = "./data/viz-config.json";
   public dataLoaded = false;
-
-  
   public gapminderSelected = true;
+
   /*Opens and displays div selected by tabs*/
   openTab(evt, name) {
-    // custom
-    // custom.doSomething();
-    // var properties = new Properties(configurationFile);
-
-    // console.log("Properties: ", properties);
 
     if(name == "Gapminder"){
       this.gapminderSelected = true;
@@ -88,40 +96,7 @@ export class GapminderJsComponent  {
       document.getElementById(name).style.display = "block";
       evt.currentTarget.className += " active";
 
-
-      // Get the element with id="defaultOpen" and click on it
-      // document.getElementById("defaultOpen").click();
-
   }
-
-  // // // Get the element with id="defaultOpen" and click on it
-  // document.getElementById("defaultOpen").click();
-
-
-
-// selecAllButtonCall(){
-//   this.varOne.selecAllButton();
-// }
-/**
- *Callback Function: Called when clicking on Select All button </p>
- *Displays all dots
- */
-// selectAllButton(){
-// 	displayAll = true;
-// 	d3.selectAll(".dot").style("fill-opacity", "1").attr("stroke-width", function(){
-// 		if(d3.select(this).attr("checked") != "true"){
-// 			return 1;
-// 		}else{
-// 			return 4;
-// 		}
-// 	}).attr("display", "true");
-// 	dot.sort(order);
-// 	d3.selectAll("text").style("font-weight", "normal")
-// 	if(tracer){
-// 		d3.selectAll("path.tracer").style("stroke-opacity", .75);
-// 	}
-// 	firstClick = true;
-// }
 
  
 }

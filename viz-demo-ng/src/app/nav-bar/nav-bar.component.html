@@ -30,6 +30,19 @@
           </div>
         </li>
         <li ngbDropdown class="nav-item dropdown">
+          <a ngbDropdownToggle class="nav-link dropdown-toggle"  id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Showdown: SC</a>
+          <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown01">
+            <a class="dropdown-item" >Showdown in Angular: Demo file</a>
+            <a class="dropdown-item"  (click)= "showdownTableFunction()"> Showdown Table formatting</a>
+            <a class="dropdown-item"  (click)= "showdownImgFunction()"> Showdown Image Integration</a>
+            <a class="dropdown-item"  (click)= "showdownOptionsFunction()"> Showdown Options</a>
+            <a class="dropdown-item"  (click)= "showdownCSSFunction()" > Showdown Custom CSS</a>
+
+
+            <!-- <a class="dropdown-item" href="#">Something else here</a> -->
+          </div>
+        </li>
+        <li ngbDropdown class="nav-item dropdown">
           <a ngbDropdownToggle class="nav-link dropdown-toggle"  id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">ChartJS</a>
           <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown01">
             <a class="dropdown-item" routerLink="chartjs/generic-month-line" routerLinkActive="active" (click)= "genericChartjsDemoFunction()">Generic Line Chart</a>
