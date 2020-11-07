@@ -6,9 +6,14 @@ import {
   MatDialogConfig,
   MAT_DIALOG_DATA } from '@angular/material/dialog'; 
 
-  import { DialogShowdownComponent }       from '../dialog-content/dialog-showdown/dialog-showdown.component';
+  import { Observable,
+    of }         from 'rxjs';
 
+import { DialogShowdownComponent }       from '../dialog-content/dialog-showdown/dialog-showdown.component';
 
+import { HttpClient } from '@angular/common/http';
+  
+import { catchError,  take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-nav-bar',
@@ -23,7 +28,8 @@ export class NavBarComponent implements OnInit {
   //   this.gplotly.openDialog();
   // }
   constructor(  public dialog: MatDialog,
-                private eventEmitterService: EventEmitterService ) { }
+                private eventEmitterService: EventEmitterService,
+                private http: HttpClient ) { }
 
   //Step 1: first (plotly) component function call
   genericPlotlyDemoFunction(){  
@@ -99,28 +105,105 @@ export class NavBarComponent implements OnInit {
   }
 
 
-  openShowdownDialog(dialog: any, text: any, resourcePath: string){
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
-      text: text,
-      resourcePath: resourcePath
-    }
+  /**
+   * When the info button by the side bar slider is clicked, it will either show a popup or separate tab containing the documentation
+   * for the selected geoLayerViewGroup or geoLayerView.
+   * @param docPath The string representing the path to the documentation
+   * @param 
+   */
+  public openShowdownDialog(docPath: string): void {
 
-    const dialogRef: MatDialogRef<DialogShowdownComponent, any> = dialog.open(DialogShowdownComponent, {
-      data: dialogConfig,
-      // This stops the dialog from containing a backdrop, which means the background opacity is set to 0, and the
-      // entire Info Mapper is still navigable while having the dialog open. This way, you can have multiple dialogs
-      // open at the same time.
-      hasBackdrop: false,
-      panelClass: ['custom-dialog-container', 'mat-elevation-z20'],
-      height: "750px",
-      width: "900px",
-      minHeight: "600px",
-      minWidth: "410px",
-      maxHeight: "90vh",
-      maxWidth: "90vw"
+    // var windowID = geoLayerView.geoLayerId + '-dialog-doc';
+    // if (this.windowManager.windowExists(windowID)) {
+    //   return;
+    // }
+
+    var text: boolean, markdown: boolean, html: boolean;
+    // Set the type of display the Mat Dialog will show
+    if (docPath.includes('.txt')) text = true;
+    else if (docPath.includes('.md')) markdown = true;
+    else if (docPath.includes('.html')) html = true;
+
+    this.getPlainText(docPath)
+    .pipe(take(1))
+    .subscribe((doc: any) => {
+
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.data = {
+        doc: doc,
+        docPath: docPath,
+        docText: text,
+        docMarkdown: markdown,
+        docHtml: html,
+        // geoLayerView: geoLayerView,
+        // windowID: windowID
+      }
+        
+      var dialogRef: MatDialogRef<DialogShowdownComponent, any> = this.dialog.open(DialogShowdownComponent, {
+        data: dialogConfig,
+        // hasBackdrop: false,
+        panelClass: ['custom-dialog-container', 'mat-elevation-z20'],
+        height: "725px",
+        width: "700px",
+        minHeight: "550px",
+        minWidth: "500px",
+        maxHeight: "90vh",
+        maxWidth: "90vw"
+      });
+      // this.windowManager.addWindow(windowID, WindowType.DOCS);
     });
+  }
 
+
+    /**
+   * 
+   * @param path The path to the file to be read, or the URL to send the GET request
+   * @param type Optional type of request sent, e.g. PathType.cPP. Used for error handling and messaging
+   * @param id Optional app-config id to help determine where exactly an error occurred
+   */
+  public getPlainText(path: string): Observable<any> {
+
+    const obj: Object = { responseType: 'text' as 'text' }
+    return this.http.get<any>(path, obj)
+    .pipe(
+      catchError(this.handleError<any>(path))
+    );
+  }
+
+
+
+
+    /**
+   * Handle Http operation that failed, and let the app continue.
+   * @param path - Name of the path used that failed
+   * @param type - Optional type of the property error. Was it a home page, template, etc.
+   * @param result - Optional value to return as the observable result
+   */
+  private handleError<T> (path: string, result?: T) {
+    return (error: any): Observable<T> => {
+
+      // Log the error to console instead
+      // If the error message includes a parsing issue, more often than not it is a badly created JSON file. Detect if .json
+      // is in the path, and if it is let the user know. If not, the file is somehow incorrect
+      // if (error.message.includes('Http failure during parsing')) {
+      //   console.error('[' + type + '] error. Info Mapper could not parse a file. Confirm the \'' + path +
+      //   '\' file is %s', (path.includes('.json') ? 'valid JSON' : 'created correctly'));
+      //   return of(result as T);
+      // }
+      // // TODO: jpkeahey delete this once all switch options are done
+      // if (type) {
+      //   console.error('[' + type + '] error. There might have been a problem with the ' + type +
+      //     ' path. Confirm the path is correct in the configuration file');
+      // }
+
+
+      // TODO: jpkeahey 2020.07.22 - Don't show a map error no matter what. I'll probably want to in some cases.
+      // this.router.navigateByUrl('map-error');
+      // Let the app keep running by returning an empty result.
+      return of(result as T);
+    };
   }
 
 }
+
+
