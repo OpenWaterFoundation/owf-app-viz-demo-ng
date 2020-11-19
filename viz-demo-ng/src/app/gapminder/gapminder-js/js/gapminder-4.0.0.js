@@ -1,15 +1,22 @@
-import  { Properties } from 'src/assets/js/gapminder-util/properties.js';
-import  { Data } from 'src/assets/js/gapminder-util/data-class.js';
+import  { Properties } from './gapminder-util/properties.js';
+import  { Data } from './gapminder-util/data-class.js';
 
-import * as $ from "jquery";
-import * as d3 from 'src/assets/js/third-party-libraries/d3.v4.min.js';
-import 'src/assets/js/third-party-libraries/select2.min.js';
-import { chart } from 'highcharts';
-import { set } from 'd3';
+import $ from "jquery";
+import * as d3 from 'd3';
+import 'select2';
+
+// import * as d3 from './third-party-libraries/d3.v4.min.js';
+// import './third-party-libraries/select2.min.js';
+
+
+
 
 let configurationFile = "assets/gapminder-data/viz-config.json";
 
-
+//  let configurationFile
+// export function setGapminderConfig(path) {
+// 	configurationFile = path;
+// }
 var bool = true;
 var properties = new Properties(configurationFile);
 properties = properties.properties;
@@ -285,19 +292,19 @@ slider.append("line")
   .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
     .attr("class", "track-overlay")
     .style("cursor", "pointer")
-    .on("mousemove", function(){
+    .on("mousemove", function(event){
     	slider_tooltip.transition()
     		.duration(200)
     		.style("opacity", .9);
-    	var date = timeScale.invert(Math.round(d3.event.x - 361));// I don't understand why I have to subtract?
+    	var date = timeScale.invert(Math.round(event.x - 361));// I don't understand why I have to subtract?
     	if(date <= demensions.maxPopulatedDate){
     		slider_tooltip.html(handleFormat(date))
-    			.style("left", (d3.event.pageX - 30) + "px")		
-            	.style("top", (d3.event.pageY - 35) + "px");	
+    			.style("left", ( event.pageX - 30) + "px")		
+            	.style("top", ( event.pageY - 35) + "px");	
     	}else{
     		slider_tooltip.html(handleFormat(date) + " (no data)")
-    			.style("left", (d3.event.pageX - 30) + "px")		
-            	.style("top", (d3.event.pageY - 35) + "px");	
+    			.style("left", ( event.pageX - 30) + "px")		
+            	.style("top", ( event.pageY - 35) + "px");	
     	}
     	
     })
@@ -307,8 +314,8 @@ slider.append("line")
     		.style("opacity", 0);
     })
 	.call(d3.drag()
-			.on("start.interrupt", function(){slider.interrupt(); })
-			.on("start drag", function(){ draggedYear(timeScale.invert(Math.round(d3.event.x))); }));
+			.on("start.interrupt", function(event){slider.interrupt(); })
+			.on("start drag", function(event){ draggedYear(timeScale.invert(Math.round( event.x))); }));
 
 var g = slider.insert("g", ".track-overlay")
 	.attr("class", "ticks")
@@ -588,8 +595,8 @@ function add_legend(data){
 	    		return colorScale(d);
 	    })
 	    .attr("cursor", "pointer")
-	    .on("mousedown", function(d){
-	    	if(d3.event.ctrlKey){
+	    .on("mousedown", function(event, d){
+	    	if( event.ctrlKey){
 	    		if(firstClick){
 	    			selectMultiple = false;
 	    			legendButton(d, selectMultiple);
@@ -631,8 +638,8 @@ function add_legend(data){
 	    	return pos+=20;
 	    })
 	    .style("cursor", "pointer")
-	    .on("mousedown", function(d){
-	    	if(d3.event.ctrlKey){
+	    .on("mousedown", function(event, d){
+	    	if( event.ctrlKey){
 	    		if(firstClick){
 	    			selectMultiple = false;
 	    			legendButton(d, selectMultiple);
@@ -872,6 +879,7 @@ function add_path(data){
 		.data(data)
 		.enter().append("path")
 		.attr("class", function(d){
+			console.log("d.key: ", d.key);
 			return "tracer T" + convert_to_id(d.key.toUpperCase());
 		})
 		.attr("id", function(d){
@@ -918,14 +926,14 @@ function add_dots(data){
 	    .on('mouseout', mouseout) //mouseout callback function
 	    .on("mousedown", mousedown) //mousedown callback function
 	    //color according to grouping variable
-	    .on("contextmenu", function(d, i){
+	    .on("contextmenu", function(event, d, i){
 	    	if(properties.TimeseriesEnabled){
-	    		d3.event.preventDefault();
+				event.preventDefault();
 		    	div	.style("opacity", 1);		
 	            div	.html("<p style='margin:0px;'><a style='color:black; font-weight:bold;' href='./highchart.html?csv=" + expand_parameter_value(properties.FilePropertyName, {"Year": properties.DefaultDatasetChoice}) + "&name=" + d.name + "&nameVar=" + variables.Label +
 	            	      "&xVar=" + variables.XAxis + "&yVar=" + variables.YAxis + "&size=" + variables.Sizing + "&datevariable=" + variables.Label + "', target='_blank'> Timeseries</a></p>")
-	                .style("left", (d3.event.pageX) - 300 + "px")		
-	                .style("top", (d3.event.pageY) - 65 +"px");
+	                .style("left", ( event.pageX) - 300 + "px")		
+	                .style("top", ( event.pageY) - 65 +"px");
 	    	}
 	    })
 	    .style("fill", function(d) {return colorScale(color(d)); })
@@ -985,8 +993,8 @@ if(Properties.DefaultSpeed){
  *Callback function: Called when user clicks on a dot </p>
  *Highlights selected dot with a yellow outline
  */
-function mousedown(d, i){
-	if(d3.event.button === 0){
+function mousedown(event, d, i){
+	if( event.button === 0){
 		if(d3.select(this).attr("display") == "true"){
 			if(d3.select(this).attr("checked") == "true"){
 				d3.select(this)
@@ -1819,14 +1827,23 @@ function logTicks(areaDim){
  *@param {object} json - json object with data 
  */
 function getGroupingNames(json){
-	var array = [];
-	var nested = d3.nest()
-		.key(function(d){return d[variables.Grouping];})
-		.entries(json.data);
 
-	for(var i = 0; i < nested.length; i++){
-		array.push(nested[i].key);
+	var array = [];
+	// --d3.nest Depricated--
+	// var nested =  d3.nest()
+	// 	.key(function(d){return d[variables.Grouping];})
+	// 	.entries(json.data);
+
+	var group = d3.group(json.data, function(d){return d[variables.Grouping];})
+	// var rollup = d3.rollup(json.data, v => v.length, function(d){return d[variables.Grouping];});
+
+	console.log("group: ", group);
+	// console.log("rollup: ", rollup);
+
+	for(var i = 0; i < group.length; i++){
+		array.push(group[i].key);
 	}
+
 	return array.sort(naturalSort);
 }
 
@@ -1906,13 +1923,36 @@ function specificPathData(data){
  *@param {String} shape - string specifying which shape data you want returned example: (line, rect, symbol, text)
  */
 function retrieveAnnotations(shape){
+	console.log("shape: ", shape);
 	var returnThis;
-	var nested = d3.nest()
-		.key(function(d){return d.ShapeType;})
-		.entries(annotations_data.SpecificAnnotations);
-	nested.forEach(function(element){
-		if(element.key == shape){
-			returnThis = element;
+	// var nested = d3.nest()
+	// 	.key(function(d){return d.ShapeType;})
+	// 	.entries(annotations_data.SpecificAnnotations);
+
+	// group this data with this key 
+	var group = d3.group(annotations_data.SpecificAnnotations, function(d){return d.ShapeType;})
+	
+	console.log("retrieveAnnotations group: ", group);
+	console.log("the type of group: ", typeof group);
+
+	console.log("[[entries]]: ", group.entries());
+	// console.log("annotationsID : ", group.get([0].value[0].AnnotationID));
+
+
+	console.log("getline: ", group.get('Line'));
+
+
+
+	group.forEach(function(values, key ){
+		console.log("element: ", values);
+		console.log("element key: ", key);
+
+		// console.log("element key: ", element.key);
+		if(key == shape){
+			// let entry = new Map()
+			// entry.set(key, values);
+			// console.log("entry.valyes: ", entry.values());
+			returnThis = values;
 		}
 	})
 	if(returnThis){
@@ -1931,10 +1971,15 @@ function retrieveAnnotations(shape){
 function retrieveByShape(shape){
 	var returnThis;
 	data = retrieveAnnotations("Symbol");
-	var nested = d3.nest()
-		.key(function(d){return d.Properties.SymbolStyle;})
-		.entries(data.values);
-	nested.forEach(function(element){
+
+	// var nested = d3.nest()
+	// 	.key(function(d){return d.Properties.SymbolStyle;})
+	// 	.entries(data.values);
+	// console.log("data values!!: ", data.values);
+
+	var group =  d3.group(data.values, function(d){return d.Properties.SymbolStyle;});
+
+	group.forEach(function(element){
 		if(element.key == shape){
 			returnThis = element;
 		}
@@ -1970,12 +2015,16 @@ function retrieveByShape(shape){
  */
 function getIndividualDots(json){
 	var array = [];
-	var nested = d3.nest()
-		.key(function(d){return d[variables.Label];})
-		.entries(json.data);
 
-	for(var i=0; i < nested.length; i++){
-		array.push(nested[i].key);
+	// Depricated
+	// var nested = d3.nest()
+	// 	.key(function(d){return d[variables.Label];})
+	// 	.entries(json.data);
+
+	var group = d3.group(json.data, function(d){return d[variables.Label];});
+
+	for(var i=0; i < group.length; i++){
+		array.push(group[i].key);
 	}
 
 	return array.sort();
@@ -2777,10 +2826,10 @@ function minRadius(value){
 //  *Callback Function: Called when user mouse's over an annotation shape on the canvas </p>
 //  *Displays a tooltip with the annotation information at mouseover event
 //  */
-function mouseoverAnnotation(d){
+function mouseoverAnnotation(event, d){
 	tip.transition().duration(0);
-	tip.style('top', (d3.event.pageY - 20) + 'px')
-		.style('left', (d3.event.pageX + 13) + 'px')
+	tip.style('top', ( event.pageY - 20) + 'px')
+		.style('left', ( event.pageX + 13) + 'px')
 		.style('display', 'block')
 		.html(d.Annotation);
 }
@@ -2990,8 +3039,12 @@ function nest(data, array){
 	for(var i = 0; i < data.length; i++){
 		array.push(data[i]);
 	}
-	var nested = d3.nest()
-		.key(function(d){return d.name;})
-		.entries(array);
-	return nested;
+
+	// depricated
+	// var nested = d3.group()
+	// 	.key(function(d){return d.name;})
+	// 	.entries(array);
+	
+	var group = d3.group(array, function(d){return d.name;});
+	return group;
 }

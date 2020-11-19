@@ -4,11 +4,11 @@
 // ----------------------------------------------------------------
 
 
-import  { Properties } from 'src/assets/js/gapminder-util/properties.js';
+import  { Properties } from './properties.js';
 import * as d3 from 'd3';
 // import { Papa } from 'src/assets/js/third-party-libraries/papaparse.min.js';
-import * as Papa from 'src/assets/js/third-party-libraries/papaparse.min.js';
-import 'src/assets/js/third-party-libraries/clusterize.min.js';
+import * as Papa from '../third-party-libraries/papaparse.min.js';
+import '../third-party-libraries/clusterize.min.js';
 
 
 

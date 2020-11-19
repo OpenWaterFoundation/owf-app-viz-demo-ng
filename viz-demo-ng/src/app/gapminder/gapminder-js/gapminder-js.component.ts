@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 // reference to JS functions
-import * as gapminderv4 from 'src/assets/js/gapminder-4.0.0.js';
-import *  as display from 'src/assets/js/gapminder-util/display-data.js';
+// reference to JS functions
+import * as gapminderv4         from '../gapminder-js/js/gapminder-4.0.0.js';
+import * as display             from '../gapminder-js/js/gapminder-util/display-data.js';
+// import * as gapminderv4 from 'src/assets/js/gapminder-4.0.0.js';
+// import *  as display from 'src/assets/js/gapminder-util/display-data.js';
 
 
 // Define gapminder configuration 
@@ -63,6 +66,9 @@ export class  GeneralGapminderJSComponent {
   ngAfterViewInit(): void {
      // Get the element id="defaultOpen" and click for default option 
     document.getElementById("defaultOpen").click();
+
+    // // set configuration file 
+    // gapminderv4.setGapminderConfig("assets/gapminder-data/viz-config.json")
 
     // call gapminder js functionality 
     gapminderv4.gapminder();

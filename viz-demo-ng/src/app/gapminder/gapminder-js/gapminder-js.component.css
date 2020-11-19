@@ -4,3 +4,9 @@
 /* @import 'assets/css/bootstrap.min.css'; */
 /* @import 'assets/css/style.css'; */
 /* @import 'assets/css/select2.min.css'; */
+
+@import './css/style.css';
+@import './css/loader.css';
+@import './css/select2.min.css';
+@import './css/clusterize.css';
+@import './css/gapminder_bootstrap.css';

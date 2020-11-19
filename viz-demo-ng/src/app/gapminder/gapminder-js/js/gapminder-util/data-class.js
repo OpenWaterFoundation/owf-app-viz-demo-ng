@@ -5,7 +5,7 @@
 // ----------------------------------------------------------------
 import * as $ from "jquery";
 import * as d3 from 'd3';
-import * as Papa from 'src/assets/js/third-party-libraries/papaparse.min.js';
+import * as Papa from '../third-party-libraries/papaparse.min.js';
 // import { Papa } from 'src/assets/js/third-party-libraries/papaparse.min.js';
 
 // $getScript("src/assets/js/third-party-libraries/papaparse.min.js", function(){
