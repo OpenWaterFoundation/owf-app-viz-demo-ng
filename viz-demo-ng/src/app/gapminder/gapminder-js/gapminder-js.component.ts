@@ -11,6 +11,8 @@ import * as display             from '../gapminder-js/js/gapminder-util/display-
 
 // Define gapminder configuration 
 let configurationFile = "assets/gapminder-data/viz-config.json";
+// '../gapminder-js/gapminder-data/viz-config.json';
+
 
 @Component({
   selector: 'app-gapminder',
@@ -71,7 +73,9 @@ export class  GeneralGapminderJSComponent {
     // gapminderv4.setGapminderConfig("assets/gapminder-data/viz-config.json")
 
     // call gapminder js functionality 
-    gapminderv4.gapminder();
+    gapminderv4.gapminder('assets/gapminder-data/viz-config.json');
+    // gapminderv4.gapminder('./gapminder-data/viz-config.json');
+
 
   }
 

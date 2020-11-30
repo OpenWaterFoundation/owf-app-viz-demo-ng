@@ -2,55 +2,124 @@ import  { Properties } from './gapminder-util/properties.js';
 import  { Data } from './gapminder-util/data-class.js';
 
 import $ from "jquery";
-import * as d3 from 'd3';
-import 'select2';
-
-// import * as d3 from './third-party-libraries/d3.v4.min.js';
-// import './third-party-libraries/select2.min.js';
+import * as d3 from 'd3'; // latest D3 V6
+import 'select2'; //latest but recheck 
+import { entries } from 'd3';
 
 
+var dot;
+// Top level wrapper function 
+export function gapminder(configPath){
 
+var gapminderSelected = true;
 
-let configurationFile = "assets/gapminder-data/viz-config.json";
+/*Should try and nest these variables in some sort of object to avoid cluttering javascript namespace*/
 
-//  let configurationFile
-// export function setGapminderConfig(path) {
-// 	configurationFile = path;
-// }
-var bool = true;
-var properties = new Properties(configurationFile);
+	var bool = true;
+/**
+ * String containing path to  Gapminder configuration file 
+ */
+let configurationFile = configPath; 	
+
+/**
+ * Creating Properties {Object} from JSON Configuration, and Storing properties 
+ */
+window.properties = new Properties(configurationFile);
+
+/**
+ * Assigning object's properties to the local 'properties' variable
+ */
 properties = properties.properties;
-var additionalParametersDictionary = properties.AdditionalData ? getAdditionalParameters() : null;
-var variables = properties.VariableNames;
-var data = new Data(properties);
-console.log("var data: ", data);
-var json = data.json;
-var demensions = data.demensions;
-console.log("var demensions.dateMin: ", demensions.dateMin);
-console.log("var demensions.dateMax: ", demensions.dateMin);
 
+/**
+ * Object holding additional paramaters if property provided in configuration, otherwise set to null;
+ */
+var additionalParametersDictionary = properties.AdditionalData ? getAdditionalParameters() : null;
+
+/**
+ * Object holding variable names from configuration 
+ */
+var variables = properties.VariableNames;
+
+/**
+ * Object that encapsulates all the data needed for Gapminder,
+ * Also parses through csv data read in and convers to JSON for Gapminder
+ */
+var data = new Data(properties);
+
+/**
+ * Object holding JSON data for gapminder 
+ */
+var json = data.json;
+
+/**
+ * Object holding demensions from data
+ */
+window.demensions = data.demensions;
+console.log("var demensions ", demensions);
+// console.log("var demensions ", demensions.dateMin);
+
+
+/**
+ * Object holding annotations data,
+ * .GeneralAnnotaions  - Displayed below visualization if annotations exist for the specified time frame,
+ * .SpecificAnnotations - Displayed on visualization through popup on mouseover 
+ */
 var annotations_data = data.annotations;
 
-var parseDate = d3.timeParse(properties.InputDateFormat);
-var inputFileFormat = d3.timeFormat(properties.InputDateFormat);
+/**
+ * D3's built in time parser, indicates what the date string should look like.
+ * Used to format to format the string into date object, i.e. '%Y'
+ */
+var parseDate = d3.timeParse(properties.InputDateFormat);   // using d3.timeParse (D3's built in time parser) to format the string into date object 
+
+/**
+ * Used to format date object into a string
+ * - Used as parameter for getAnnotations(inputFileFormat) function,
+ */
+var inputFileFormat = d3.timeFormat(properties.InputDateFormat);   // using d3.timeFormat to format the date object into a string.
+
+/**
+ * Used to format date object into a string
+ */
 var formatDate = d3.timeFormat(properties.OutputDateFormat);
 
-var currYear = demensions.dateMin;
+
+window.currYear = demensions.dateMin;   //made global for back and forward functions
 var topYear = demensions.dateMin;
 
 // var precisionInt = parsePrecisionInt(properties.TimeStep);
 // var precisionUnit = parsePrecisionUnits(properties.TimeStep);
 
+/**
+ * Svg container width - responsible for defining the visualization's canvas
+ * ( or the area where the graph and associated bits and pieces are placed)
+ */
 var width = $("#chart").parent().width();
-// var height = $("#Gapminder").parent().height() - 270;
+/**
+ * Svg container height - responsible for defining the visualization's canvas
+ * ( or the area where the graph and associated bits and pieces are placed)
+ */
+var height = $("#Gapminder").parent().height() - 270;
+
+console.log("init width: ", width);
+console.log("init height: ", height);
+
+
+/**
+ * SVG container margin - responsible for defining the visualization's canvas 
+ * ( or the area where the graph and associated bits and pieces are placed)
+ */
 var margin = {top:10, left:30, bottom:80, right:82};
 
-var displayAll = true;
-var tracer = (properties.TracerNames == "" || !properties.TracerNames) ? false : true;
+window.displayAll = true;
+window.tracer = (properties.TracerNames == "" || !properties.TracerNames) ? false : true; // made global for functions outside wrapper
 var visSpeed;
 
 var transtionFunction;
 var transition;
+
+//og end of globals
 
 // pathjson line ~1544
 // var pathData = [];
@@ -58,13 +127,16 @@ var pathJSON = json.data;
 // var nested = nest(interpolatePath(demensions.dateMin), pathData);
 // var path;
 
+var legendHeight;
 
-
+/**
+ * A bisector for interpolating data is sparsely-defined.
+ */
 var bisect = d3.bisector(function(d) { return d[0]; });
 // var dateArray = dateArray_function(demensions);
 
-var dot;
-var firstClick = true;
+// window.dot; // window global didn't work for some reason. made global outside of gapminder function
+window.firstClick = true;
 
 
 // var xScale = d3.scaleLog() //made global using window?
@@ -73,28 +145,22 @@ var firstClick = true;
 // 	.range([yTextBox.width + margin.left + 15, (width-25)]);
 
 
-export function gapminder(){
+// export function gapminder(){
 
 var precisionInt = parsePrecisionInt(properties.TimeStep);
 // var precisionUnit = parsePrecisionUnits(properties.TimeStep);
 window.precisionInt = parsePrecisionInt(properties.TimeStep);
 window.precisionUnit = parsePrecisionUnits(properties.TimeStep);
-// // console.log("PrecisionUnit" , precisionUnit);
 
-// var width = $("#chart").parent().width();
-var height = $("#Gapminder").parent().height() - 270;
-// var margin = {top:10, left:30, bottom:80, right:82};
 
-// var displayAll = true;
-// var tracer = (properties.TracerNames == "" || !properties.TracerNames) ? false : true;
-// var visSpeed;
 
-// var transtionFunction;
-// var transition;
+
 
 //TODO: was used in snodas, not needed in this application, 
 //need to make this more dynamic - Justin Rentie 2/13/2018
 demensions.maxPopulatedDate.setHours(23, 59, 59);
+
+
 
 if(properties.MultipleDatasets){
 	$("#DatasetChoicesLabel").html(properties.DatasetChoicesLabel + ": ");
@@ -123,7 +189,8 @@ if(properties.DataTableType.toUpperCase() == "JQUERY") d3.select("#dataTable1").
 var div = d3.select("#Gapminder").append("div")	
 	    .attr("class", "tooltip")
 	    .style("opacity", 0);
-$(window).click(function(e){
+// $(window).click(function(e){ // .click depricated
+$(window).on("click",function(e){
 	if(e.button == 0){
 		div.remove();
 		div = d3.select("#Gapminder").append("div")	
@@ -199,10 +266,10 @@ d3.select("#subtitle")
 // 	console.log("'chart' selected");
 // } 
 
-var selected = document.getElementById("#test");
-console.log("selected test: ", selected);
+// var selected = document.getElementById("#test");
+// console.log("selected test: ", selected);
 
-console.log("height befor chart svg:", height);
+
 
 //create an svg container for chart elements
 var svg = d3.select("#chart")
@@ -230,6 +297,7 @@ var sideTools = d3.select("#sideTools")
 //creates the search bar for selecting provider from a dropdown menu </p>
 //utilizes [select2]{@link https://select2.github.io/} library
 $(document).ready(function() {
+// $(document).jQuery(function() {
   $("#providerNames").select2({
   	placeholder: "Select Individual " + variables.Label + "..."
   });
@@ -242,11 +310,11 @@ var timeScale = d3.scaleTime()
 	.range([0, (width - 75)]);
 
 var dateArray = dateArray_function(demensions); //made global
-console.log("Get time: dateArray:  ", dateArray);
+
 
 var visSpeed = 20000 / (timeScale.range()[1] - timeScale.range()[0]);
 //if the last data in the array isn't the last possible date add the last date to the end of the array
-console.log("Get time: dateArray[dateArray.length - 1]: ", dateArray[dateArray.length - 1]);
+// console.log("Get time: dateArray[dateArray.length - 1]: ", dateArray[dateArray.length - 1]);
 if(dateArray[dateArray.length - 1].getTime() != demensions.dateMax.getTime()){
 	dateArray.push(demensions.dateMax);
 }
@@ -256,15 +324,13 @@ if(dateArray[dateArray.length - 1].getTime() != demensions.dateMax.getTime()){
 	.append("text")
 	.text(formatDate(timeScale.ticks()[0]))
 	.attr("fill-opacity", "0");
-	console.log("dateLabel: ", dateLabel);
-	console.log("dateLabel.node(): ", dateLabel.node());
 
 var dateText = dateLabel.node().getBBox();
 	
 // }, 1000);
 
 
-console.log("dateText: ", dateText);
+
 
 
 //create a div and svg container for yearslider and buttons
@@ -516,11 +582,10 @@ if(properties.YAxisScale.toUpperCase() == "LOG"){
 		.tickSizeOuter(0)
 		.tickPadding(10);
 
-		console.log("yaxis: ", yAxis);
 
 }
 
-console.log("xAxis, : ", xAxis);
+
 
 //add the x-axis to svg, using xAxis
 var xaxis = svg.append("g")
@@ -559,7 +624,7 @@ function add_legend(data){
 	var pos = 0;
 	//get list of names for legend based off how dots are colored/grouped on the visualization
 	//set height using 20px per name
-	var legendHeight = (data.length + 1) * 20;
+	legendHeight = (data.length + 1) * 20;
 
 	d3.select("#legend")
 		.style("height", function(){
@@ -676,7 +741,10 @@ function add_marker_names(data){
 add_marker_names(names);
 
 
-//create line for data line (tracer)
+
+/**
+ * variable creates life for data line (tracer)
+ */
 var line = d3.line()
 	.x(function(d) {return xScale(x(d));})
 	.y(function(d) {return yScale(y(d));})
@@ -689,11 +757,13 @@ if(annotations_data != null && !$.isEmptyObject(annotations_data.SpecificAnnotat
 	var lineAnnotations = retrieveAnnotations("Line");
 	if(lineAnnotations){
 		var annotationLine = annotationShapes.selectAll(".line")
-			.data(lineAnnotations.values)
+			.data(lineAnnotations.get('Line')) //values
 			.enter().append("line")
 			.attr("id", "annotationLine")
 			.attr("class", "annotationShape")
 			.attr('x1', function(d){
+				// console.log("697 d.Properties.x1: ", d.Properties.x1);
+
 				return xScale(d.Properties.x1);
 			})
 			.attr('y1', function(d){
@@ -720,7 +790,7 @@ if(annotations_data != null && !$.isEmptyObject(annotations_data.SpecificAnnotat
 	var rectAnnotations = retrieveAnnotations("Rectangle");
 	if(rectAnnotations){
 		annotationRect = annotationShapes.selectAll(".rect")
-			.data(rectAnnotations.values)
+			.data(rectAnnotations.get('Rectangle'))
 			.enter().append("rect")
 			.attr("id", "annotationRect")
 			.attr("class", "annotationShape")
@@ -759,7 +829,7 @@ if(annotations_data != null && !$.isEmptyObject(annotations_data.SpecificAnnotat
 		if(circleAnnotations){
 			annotationCircle = svg.append("g")
 				.selectAll(".point")
-				.data(circleAnnotations.values)
+				.data(circleAnnotations.get('Circle'))
 				.enter().append("path")
 				.attr("id", "annotationCircle")
 				.attr("class", "point annotationShape")
@@ -783,7 +853,7 @@ if(annotations_data != null && !$.isEmptyObject(annotations_data.SpecificAnnotat
 		if(triangleAnnotations){
 			annotationTriangle = svg.append("g")
 				.selectAll(".point")
-				.data(triangleAnnotations.values)
+				.data(triangleAnnotations.get('Triangle'))
 				.enter().append("path")
 				.attr("id", "annotationTriangle")
 				.attr("class", "point annotationShape")
@@ -807,7 +877,7 @@ if(annotations_data != null && !$.isEmptyObject(annotations_data.SpecificAnnotat
 		if(crossAnnotations){
 			var annotationCross = svg.append("g")
 				.selectAll(".point")
-				.data(crossAnnotations.values)
+				.data(crossAnnotations.get('Cross'))
 				.enter().append("path")
 				.attr("id", "annotationCross")
 				.attr("class", "point annotationShape")
@@ -829,9 +899,9 @@ if(annotations_data != null && !$.isEmptyObject(annotations_data.SpecificAnnotat
 		//Add Text from annotation file
 		var textAnnotations = retrieveAnnotations("Text");
 		if(textAnnotations){
-			annotationText = svg.append("g")
+			var annotationText = svg.append("g")
 				.selectAll(".text")
-				.data(textAnnotations.values)
+				.data(textAnnotations.get('Text'))
 				.enter().append("text")
 				.attr("id", "annotationText")
 				.attr("class", "annotationShape")
@@ -869,24 +939,28 @@ if(properties.AnnotationShapes.toUpperCase() == "OFF"){
 //Add tracers to the dots on the visualization
 var pathData = [];
 // var pathJSON = json.data;
-console.log("Pathjsonn: " ,pathJSON);
+
 var nested = nest(interpolatePath(demensions.dateMin), pathData);
+
 var path;
 function add_path(data){
 	path = svg.append("g")
 		.attr("id", "dataline")
-		.selectAll(".path")
+		.selectAll(".path") 
 		.data(data)
 		.enter().append("path")
 		.attr("class", function(d){
-			console.log("d.key: ", d.key);
-			return "tracer T" + convert_to_id(d.key.toUpperCase());
+			// var mapIter = d.keys();
+			// console.log("d0: ", d[0]); // keys
+			// console.log("d1: ", d[1]); // values
+			return "tracer T" + convert_to_id(d[0].toUpperCase());
 		})
+		.attr("fill","none")	// path elements by default are filled black, specify CSS fill 'none' to avoid this
 		.attr("id", function(d){
-			return "T" + convert_to_id(d.values[0].color);
+			return "T" + convert_to_id(d[1][0].color);
 		})
 		.style("stroke", function(d){
-			return colorScale(d.values[0].color);
+			return colorScale(d[1][0].color);
 		})
 		.style("stroke-width", "1.5px")
 		.style("stroke-opacity", function(d){
@@ -897,7 +971,7 @@ function add_path(data){
 			}
 		})
 		.attr("d", function(d){
-			return line(d.values);
+			return line(d[1]); //d[1] = values
 		})
 		.style("pointer-events", "none");
 }
@@ -909,7 +983,7 @@ if(!tracer){
 	document.getElementById("tracerButton").innerHTML = "Turn Tracer On";
 }
 
-// var dot; // make global
+// var dot; // made global
 function add_dots(data){
 	var dot_g = svg.append("g")
 	    .attr("id", "dots")
@@ -1025,8 +1099,9 @@ function mousedown(event, d, i){
  *Displays data information associated with dot on mouseover,
  *and creates a bold outline (stroke) around the selected dot
  */
-function mouseover(d, i){
-	//dot outline thicker on mouseover
+function mouseover(event, d, i){
+	//dot outline thicker on mouseover 	// bold outline currently only displaying after selection 
+
 	if(d3.select(this).attr("display") == "true"){
 		if(displayAll){
 			d3.selectAll(".dot").style("fill-opacity", .75).attr("stroke-opacity", .5);
@@ -1101,8 +1176,9 @@ function mouseover(d, i){
 *Callback Function: Called when user moves mouse away from a dot </p>
 *Removes the bolded outline (stroke) around the dot
 */
-function mouseout(d){
-	//remove thick dot outline on mouseout
+function mouseout(event, d){
+	//remove thick dot outline on mouseout	// removal of outline error proned due to it not being created
+
 	if(d3.select(this).attr("display") == "true"){
 		if(displayAll){
 			d3.selectAll(".dot").style("fill-opacity", 1).attr("stroke-opacity", function(){
@@ -1418,6 +1494,7 @@ window.replay = function (){
  *Utilizes [select2]{@link https://select2.github.io/} library
  */
 $('select').on('select2:select', function(evt){
+	console.log("dropdown menu event: ", evnt);
 	var provider = evt.params.data.text;
 	d3.select(dot_id_selector(provider))
 		.style('stroke', 'yellow')
@@ -1599,11 +1676,11 @@ function interpolatePath(year) {
  */
 // function updatePath(newData){
 window.updatePath= function(newData){
-
+	
 	d3.select("#dataline").selectAll("path")
 		.data(newData) //update path with newData
 		.attr("d", function(d){
-			return line(d.values);
+			return line(d[1]); // d[1] equivalent to d.values
 		});
 }
 
@@ -1662,11 +1739,7 @@ function interpolateValues(values, year) {
  */
 function dateArray_function(demensions){
 	
-	console.log("Inside dateArray functions ");
 	// console.log("dvar: ", dvar);
-
-	console.log("does it work datemin: ", demensions.dateMin);
-	console.log("dateMax: ", demensions.dateMax);
 
 	var Date1 = new Date(demensions.dateMin);
 	var Date2 = new Date(demensions.dateMax);
@@ -1835,13 +1908,12 @@ function getGroupingNames(json){
 	// 	.entries(json.data);
 
 	var group = d3.group(json.data, function(d){return d[variables.Grouping];})
-	// var rollup = d3.rollup(json.data, v => v.length, function(d){return d[variables.Grouping];});
+	// var rollup = d3.rollup(json.data, v => v.length, function(d){return d[variables.Grouping];}); // another replacement for d3.nest 
 
-	console.log("group: ", group);
-	// console.log("rollup: ", rollup);
-
-	for(var i = 0; i < group.length; i++){
-		array.push(group[i].key);
+	var mapIter = group.keys();
+	
+	for(var i = 0; i < group.size; i++){
+		array.push(mapIter.next().value);
 	}
 
 	return array.sort(naturalSort);
@@ -1923,7 +1995,7 @@ function specificPathData(data){
  *@param {String} shape - string specifying which shape data you want returned example: (line, rect, symbol, text)
  */
 function retrieveAnnotations(shape){
-	console.log("shape: ", shape);
+
 	var returnThis;
 	// var nested = d3.nest()
 	// 	.key(function(d){return d.ShapeType;})
@@ -1932,27 +2004,9 @@ function retrieveAnnotations(shape){
 	// group this data with this key 
 	var group = d3.group(annotations_data.SpecificAnnotations, function(d){return d.ShapeType;})
 	
-	console.log("retrieveAnnotations group: ", group);
-	console.log("the type of group: ", typeof group);
-
-	console.log("[[entries]]: ", group.entries());
-	// console.log("annotationsID : ", group.get([0].value[0].AnnotationID));
-
-
-	console.log("getline: ", group.get('Line'));
-
-
-
-	group.forEach(function(values, key ){
-		console.log("element: ", values);
-		console.log("element key: ", key);
-
-		// console.log("element key: ", element.key);
+	group.forEach(function(values, key, map){
 		if(key == shape){
-			// let entry = new Map()
-			// entry.set(key, values);
-			// console.log("entry.valyes: ", entry.values());
-			returnThis = values;
+			returnThis = map;
 		}
 	})
 	if(returnThis){
@@ -1975,13 +2029,13 @@ function retrieveByShape(shape){
 	// var nested = d3.nest()
 	// 	.key(function(d){return d.Properties.SymbolStyle;})
 	// 	.entries(data.values);
-	// console.log("data values!!: ", data.values);
 
-	var group =  d3.group(data.values, function(d){return d.Properties.SymbolStyle;});
+	var group =  d3.group(data.get('Symbol'), function(d){return d.Properties.SymbolStyle;});
 
-	group.forEach(function(element){
-		if(element.key == shape){
-			returnThis = element;
+	group.forEach(function(values, key, map){
+		
+		if(key == shape){
+			returnThis = map;
 		}
 	})
 	if(returnThis){
@@ -2023,8 +2077,10 @@ function getIndividualDots(json){
 
 	var group = d3.group(json.data, function(d){return d[variables.Label];});
 
-	for(var i=0; i < group.length; i++){
-		array.push(group[i].key);
+	var mapIter = group.keys();
+
+	for(var i=0; i < group.size; i++){
+		array.push(mapIter.next().value);
 	}
 
 	return array.sort();
@@ -2365,8 +2421,12 @@ window.onunload = function(){
  *Resizes the chart elements when window is resized
  */
 function resize() {
-    height = $("#Gapminder").parent().height() - 270;
-	width = $(".box").width();
+    let height = $("#Gapminder").parent().height() - 270;
+	let width = $(".box").width();
+
+	console.log("width: ", width);
+	console.log("height: ", height);
+
 
 	d3.select("svg.box").attr("height", height);
 
@@ -2407,7 +2467,9 @@ function resize() {
 	//update line paths (tracers) for dots
 	if(tracer){
 		line.x(function(d) {return xScale(x(d));}).y(function(d) {return yScale(y(d));})	
-		path.attr("d", function(d){return line(d.values);});
+		path.attr("d", function(d){
+			return line(d[1]); // data value accessed using d[1]
+		});
 	}
 
 	if($("#annotationLine").length){
@@ -2589,6 +2651,26 @@ function updateGapminder(date){
 	add_dots();
 }
 
+// /**
+//  *Callback Function: Called when clicking Turn Annotations On/ Turn Annotations Off </p>
+//  *Either displays the annotation shapes on the canvas or hides them
+//  */
+// function annotationsButton(){
+// 	var elem = document.getElementById("annotationsButton");
+// 	if(elem.innerHTML == "Turn Annotations On"){
+// 		properties.AnnotationShapes.toUpperCase() == "ON";
+// 		if($("annotationText").length){annotationText.attr("fill-opacity", 1).on("mouseover", mouseoverAnnotation);}
+// 		d3.selectAll(".annotationShape").attr("stroke-opacity", 1).on("mouseover", mouseoverAnnotation);
+// 		//if(devTools) devTools.document.getElementById("annotations").innerHTML = "<strong>annotations:</strong> true";
+// 		elem.innerHTML = "Turn Annotations Off";
+// 	}else{
+// 		properties.AnnotationShapes.toUpperCase() == "OFF";
+// 		if($("annotationText").length){annotationText.attr("fill-opacity", 0).on("mouseover", null);}
+// 		d3.selectAll(".annotationShape").attr("stroke-opacity", 0).on("mouseover", null);
+// 		//if(devTools) devTools.document.getElementById("annotations").innerHTML = "<strong>annotations:</strong> false";
+// 		elem.innerHTML = "Turn Annotations On";
+// 	}
+// }
 
 // end wrapper function
 }
@@ -2599,7 +2681,7 @@ function updateGapminder(date){
  *Displays all dots
  */
 export function selectAllButton(){
-	console.log("selectAllButton() function")
+
 	displayAll = true;
 	d3.selectAll(".dot").style("fill-opacity", "1").attr("stroke-width", function(){
 		if(d3.select(this).attr("checked") != "true"){
@@ -2608,7 +2690,7 @@ export function selectAllButton(){
 			return 4;
 		}
 	}).attr("display", "true");
-	console.log("Dot: ", dot);
+	// console.log("Dot: ", dot);
 	dot.sort(order);
 	d3.selectAll("text").style("font-weight", "normal")
 	if(tracer){
@@ -2751,7 +2833,6 @@ export function forwardButton(){
 			}, 100);
 		}else{
 			displayYear(demensions.maxPopulatedDate);
-			console.log("here")
 			document.getElementById("forward").disabled = true;
 			document.getElementById("play").disabled = true;
 		}
@@ -2827,6 +2908,10 @@ function minRadius(value){
 //  *Displays a tooltip with the annotation information at mouseover event
 //  */
 function mouseoverAnnotation(event, d){
+	
+	// console.log("d.annotation in mouseover annotation: ", d.Annotation);
+
+
 	tip.transition().duration(0);
 	tip.style('top', ( event.pageY - 20) + 'px')
 		.style('left', ( event.pageX + 13) + 'px')
@@ -2840,7 +2925,7 @@ function mouseoverAnnotation(event, d){
  *Displays only dots related to that specific label
  */
 function legendButton(d, selectMultiple){
-	console.log("LegendButton(), d: ", d);
+	// console.log("LegendButton(), d: ", d);
 	displayAll = false;
 	var selectedGroup = d;
 	console.log("SelectedGroup: ", selectedGroup);

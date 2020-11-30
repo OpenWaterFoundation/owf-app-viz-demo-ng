@@ -23,8 +23,13 @@ export class Properties{
 		return this;
 	}
 
+	/**
+	 * Assigns default option to the properties that are not specified in JSON Configuration 
+	 * Throws error if variable names are not provided 
+	 * @param {Object} properties - object specifying properties obtained from Gapminder JSON Configuration
+	 */
+
 	check_properties(properties){
-		console.log("Properties! ", properties);
 		if(!properties.AnimationSpeed || properties.AnimationSpeed == "") properties.AnimationSpeed = 90;
 		if(!properties.BottomXAxisTitleString || properties.BottomXAxisTitleString == "") properties.BottomXAxisTitleString = "";
 		if(properties.MultipleDatasets && (!properties.DatasetChoicesLabel || properties.DatasetChoicesLabel == "")) properties.DatasetChoicesLabel = "Choices";

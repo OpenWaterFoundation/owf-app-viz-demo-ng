@@ -72,13 +72,13 @@ export class Data{
 			},
 			success: function(data){
 				// console.log("inside convert to json success function");
-				console.log("data: ", data);
+				// console.log("data: ", data);
 				_this.csv = data;
 				// console.log("_this.csv:", _this.csv);
 				var csv = _Papa.parse(data,{header:true, comments:true, dynamicTyping:true}).data,
 					jsonObj = {"data":[]},
 					tempJson = makeJsonObj(csv[0]);
-					console.log("var csv:", csv );
+					// console.log("var csv:", csv );
 
 				for(var i = 0; i < csv.length - 1; i++){
 					if(csv[i][_this.variables.Label] == tempJson[_this.variables.Label]){

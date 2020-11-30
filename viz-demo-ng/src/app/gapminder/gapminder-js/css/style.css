@@ -149,6 +149,7 @@ hovered over in which it will pop up */
 #dataline {
   fill: none;
 }
+
 /* style x and y axis */
 .ys.x.axis .domain{
   stroke: #808B96;
