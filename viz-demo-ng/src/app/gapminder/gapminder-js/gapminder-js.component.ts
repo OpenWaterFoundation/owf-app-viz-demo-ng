@@ -5,8 +5,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 // reference to JS functions
 import * as gapminderv4         from '../gapminder-js/js/gapminder-4.0.0.js';
 import * as display             from '../gapminder-js/js/gapminder-util/display-data.js';
-// import * as gapminderv4 from 'src/assets/js/gapminder-4.0.0.js';
-// import *  as display from 'src/assets/js/gapminder-util/display-data.js';
+
 
 
 // Define gapminder configuration 

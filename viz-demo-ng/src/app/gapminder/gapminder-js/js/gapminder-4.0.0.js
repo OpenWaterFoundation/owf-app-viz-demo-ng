@@ -3,8 +3,8 @@ import  { Data } from './gapminder-util/data-class.js';
 
 import $ from "jquery";
 import * as d3 from 'd3'; // latest D3 V6
-import 'select2'; //latest but recheck 
-import { entries } from 'd3';
+import 'select2'; 
+
 
 
 var dot;
@@ -313,27 +313,22 @@ var dateArray = dateArray_function(demensions); //made global
 
 
 var visSpeed = 20000 / (timeScale.range()[1] - timeScale.range()[0]);
-//if the last data in the array isn't the last possible date add the last date to the end of the array
-// console.log("Get time: dateArray[dateArray.length - 1]: ", dateArray[dateArray.length - 1]);
+//if the last data in the array isn't the last possible date, add the last date to the end of the array
 if(dateArray[dateArray.length - 1].getTime() != demensions.dateMax.getTime()){
 	dateArray.push(demensions.dateMax);
 }
 
-// setTimeout(() => {
-	var dateLabel = d3.select(".box")
+var dateLabel = d3.select(".box")
 	.append("text")
 	.text(formatDate(timeScale.ticks()[0]))
 	.attr("fill-opacity", "0");
 
 var dateText = dateLabel.node().getBBox();
-	
-// }, 1000);
 
 
-
-
-
-//create a div and svg container for yearslider and buttons
+/**
+ * div and svg container for yearslider and buttons
+ */
 var controlSVG = d3.select("#dateSlider")
     .append("svg")
 	.attr("width", "100%")
@@ -353,10 +348,21 @@ slider.append("line")
 	.attr("class", "track")
 	.attr("x1", timeScale.range()[0])
 	.attr("x2", timeScale.range()[1])
+	.attr("stroke-linecap","round")	// CSS Styling for dateslider: rounds track edges
+	.attr("stroke","#000")	// CSS Styling for dateslider: adds color to track
+	.attr("stroke-opacity","0.3")	// CSS Styling for dateslider: lowers opacity of track 
+	.attr("stroke-width","4px")	// CSS Styling for dateslider : adjusts track width (slightly thicker)
   .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
-    .attr("class", "track-inset")
+	.attr("class", "track-inset")
+	.attr("stroke-linecap","round")	// CSS Styling for dateslider
+	.attr("stroke","#ddd")	// CSS Styling for dateslider
+	.attr("stroke-width","2px")	// CSS Styling for dateslider
   .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
-    .attr("class", "track-overlay")
+	.attr("class", "track-overlay")
+	.attr("stroke-linecap","round")	// CSS Styling for date slider
+	.attr("pointer-events","stroke")	//  CSS Styling for dateslider
+	.attr("stroke","transparent")	//  CSS Styling for dateslider
+	.attr("cussor","crosshair")	//  CSS Styling for dateslider
     .style("cursor", "pointer")
     .on("mousemove", function(event){
     	slider_tooltip.transition()
@@ -398,9 +404,18 @@ g.selectAll("text")
 	.style("cursor", "default")
 	.text(function(d){return formatDate(d); });
 
-var handle = slider.insert("circle", ".track-overlay")
-    .attr("class", "handle")
-    .attr("r", 5);
+/**
+ * handle part of slider, handle slides across track
+ */
+var handle = slider.insert("circle", ".track-overlay") 
+    .attr("class", "handle") 
+	.attr("r", 5)
+	.attr("fill","#fff")	// CSS Styling for date slider: defualt handle color is black, this makes it white
+	.attr("stroke","#000")	// CSS Styling for dateslider: gives handle a black outline
+	.attr("stroke-opacity","0.5")	// CSS Styling for dateslider: lowers opacity of black outline 
+	.attr("stroke-width","1.25px");	// CSS Styling for dateslider:  sets outline width
+
+	
 
 var handleText = slider.insert("text", ".track-overlay")
 	.attr("font-size", "10px")
@@ -955,7 +970,7 @@ function add_path(data){
 			// console.log("d1: ", d[1]); // values
 			return "tracer T" + convert_to_id(d[0].toUpperCase());
 		})
-		.attr("fill","none")	// path elements by default are filled black, specify CSS fill 'none' to avoid this
+		.attr("fill","none")	// path elements by default are filled black, specify CSS fill 'none' to avoid this on tracer
 		.attr("id", function(d){
 			return "T" + convert_to_id(d[1][0].color);
 		})

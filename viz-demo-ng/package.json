@@ -34,6 +34,7 @@
     "chart.js": "^2.9.3",
     "chartjs-plugin-annotation": "^0.5.7",
     "chartjs-plugin-zoom": "^0.7.7",
+    "clusterize.js": "^0.18.1",
     "d3": "^6.1.1",
     "font-awesome": "^4.7.0",
     "highcharts": "^8.1.2",

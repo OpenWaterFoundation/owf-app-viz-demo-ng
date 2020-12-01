@@ -29,7 +29,8 @@
             ],
             "scripts": [
               "node_modules/showdown/dist/showdown.min.js",
-              "node_modules/chart.js/dist/Chart.bundle.min.js"
+              "node_modules/chart.js/dist/Chart.bundle.min.js",
+              "node_modules/clusterize.js/clusterize.min.js"
             ]
           },
           "configurations": {
@@ -105,15 +106,8 @@
               "src/assets/js/gapminder-util/data-class.js",
               "src/assets/js/gapminder-util/display-data.js",
 
-              "src/assets/js/third-party-libraries/jquery-3.2.0.min.js",
-              "src/assets/js/third-party-libraries/papaparse.min.js",
+              "node_modules/font-awesome/css/font-awesome.css",
               "src/assets/js/third-party-libraries/bootstrap.min.js",
-              "src/assets/js/third-party-libraries/select2.min.js",
-              "src/assets/js/third-party-libraries/highstock.src.js",
-              "src/assets/js/third-party-libraries/data.js",
-              
-              "src/assets/js/custom-test.js",
-
               "//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"
 
 
