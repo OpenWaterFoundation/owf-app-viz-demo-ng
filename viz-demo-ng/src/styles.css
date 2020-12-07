@@ -3,6 +3,15 @@
 /* @import 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'; */
 
 @import 'assets/css/showdown_style00.css';
+
+@import "../node_modules/select2/dist/css/select2.min.css";
+
+@import "./app/gapminder/gapminder-js/css/style.css";
+/* @import './app/gapminder/gapminder-js/css/style.css'; */
+
+
+/* @import "./app/gapminder/gapminder-js/css/bootstrap.min.css" Breaks application using old bootstrap version */
+
 /* @import 'assets/css/gapminder_bootstrap.css'; */
 
 /* @import 'assets/css/showdown_style01.css'; */
@@ -22,7 +31,7 @@
     padding-top: 80px;
 }
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; } */
 
 /* Showdown table styling */
 
