@@ -95,12 +95,16 @@ var topYear = demensions.dateMin;
  * Svg container width - responsible for defining the visualization's canvas
  * ( or the area where the graph and associated bits and pieces are placed)
  */
-var width = $("#chart").parent().width();  
+// var width = $("#chart").parent().width();  
+// var width = 660;
+var width = 800;
+
 /**
  * Svg container height - responsible for defining the visualization's canvas
  * ( or the area where the graph and associated bits and pieces are placed)
  */
-var height = $("#Gapminder").parent().height() - 270;
+// var height = $("#Gapminder").parent().height() - 270;
+var height = 553;
 
 console.log("init width: ", width);
 console.log("init height: ", height);
@@ -135,9 +139,23 @@ window.firstClick = true;
 
 // export function gapminder(){
 
+console.log("timestep: ", properties.TimeStep);
+/**
+ * Precision int for the respected time step,
+ * TimeStep: 1Year. Returns '1'
+ */
 var precisionInt = parsePrecisionInt(properties.TimeStep);
 // var precisionUnit = parsePrecisionUnits(properties.TimeStep);
+
+/**
+ * Precision int for the respected time step,
+ * TimeStep: 1Year. Returns '1'
+ */
 window.precisionInt = parsePrecisionInt(properties.TimeStep);
+/**
+ * Precision unit for the time step,
+ * TimeStep: 1Year. Returns 'Year'
+ */
 window.precisionUnit = parsePrecisionUnits(properties.TimeStep);
 
 
@@ -766,7 +784,7 @@ if(annotations_data != null && !$.isEmptyObject(annotations_data.SpecificAnnotat
 	var lineAnnotations = retrieveAnnotations("Line");
 	if(lineAnnotations){
 		var annotationLine = annotationShapes.selectAll(".line")
-			.data(lineAnnotations.get('Line')) //values
+			.data(lineAnnotations.get('Line')) // Updated: retrieve values
 			.enter().append("line")
 			.attr("id", "annotationLine")
 			.attr("class", "annotationShape")
@@ -799,7 +817,7 @@ if(annotations_data != null && !$.isEmptyObject(annotations_data.SpecificAnnotat
 	var rectAnnotations = retrieveAnnotations("Rectangle");
 	if(rectAnnotations){
 		annotationRect = annotationShapes.selectAll(".rect")
-			.data(rectAnnotations.get('Rectangle'))
+			.data(rectAnnotations.get('Rectangle'))		// Updated: retrieve values
 			.enter().append("rect")
 			.attr("id", "annotationRect")
 			.attr("class", "annotationShape")
@@ -838,7 +856,7 @@ if(annotations_data != null && !$.isEmptyObject(annotations_data.SpecificAnnotat
 		if(circleAnnotations){
 			annotationCircle = svg.append("g")
 				.selectAll(".point")
-				.data(circleAnnotations.get('Circle'))
+				.data(circleAnnotations.get('Circle'))	// Updated: retrieve values
 				.enter().append("path")
 				.attr("id", "annotationCircle")
 				.attr("class", "point annotationShape")
@@ -862,7 +880,7 @@ if(annotations_data != null && !$.isEmptyObject(annotations_data.SpecificAnnotat
 		if(triangleAnnotations){
 			annotationTriangle = svg.append("g")
 				.selectAll(".point")
-				.data(triangleAnnotations.get('Triangle'))
+				.data(triangleAnnotations.get('Triangle'))	// Updated: retrieve values
 				.enter().append("path")
 				.attr("id", "annotationTriangle")
 				.attr("class", "point annotationShape")
@@ -886,7 +904,7 @@ if(annotations_data != null && !$.isEmptyObject(annotations_data.SpecificAnnotat
 		if(crossAnnotations){
 			var annotationCross = svg.append("g")
 				.selectAll(".point")
-				.data(crossAnnotations.get('Cross'))
+				.data(crossAnnotations.get('Cross'))	// Updated: retrieve values
 				.enter().append("path")
 				.attr("id", "annotationCross")
 				.attr("class", "point annotationShape")
@@ -910,7 +928,7 @@ if(annotations_data != null && !$.isEmptyObject(annotations_data.SpecificAnnotat
 		if(textAnnotations){
 			var annotationText = svg.append("g")
 				.selectAll(".text")
-				.data(textAnnotations.get('Text'))
+				.data(textAnnotations.get('Text'))	// Updated: retrieve values
 				.enter().append("text")
 				.attr("id", "annotationText")
 				.attr("class", "annotationShape")
@@ -962,14 +980,14 @@ function add_path(data){
 	
 			return "tracer T" + convert_to_id(d[0].toUpperCase());	// d.key changed to d[0] 
 		})
-		.attr("fill","none")	// path elements by default are filled black, specify CSS fill 'none' to avoid this on tracer
+		.attr("fill","none")	// Updated: path elements by default are filled black, specify CSS fill 'none' to avoid this on tracer
 		.attr("id", function(d){
-			return "T" + convert_to_id(d[1][0].color);	//d.values chandes to d[1]
+			return "T" + convert_to_id(d[1][0].color);	//d.values changes to d[1]
 		})
 		.style("stroke", function(d){
-			console.log("tracing color: ", d[1][0].color);
+			// console.log("tracing color: ", d[1][0].color);	//d.values changes to d[1]
 
-			return colorScale(d[1][0].color);	//d.values chandes to d[1]
+			return colorScale(d[1][0].color);	//d.values changes to d[1]
 		})
 		.style("stroke-width", "1.5px")
 		.style("stroke-opacity", function(d){
@@ -1009,7 +1027,7 @@ function add_dots(data){
 	    .on('mouseout', mouseout) //mouseout callback function
 	    .on("mousedown", mousedown) //mousedown callback function
 	    //color according to grouping variable
-	    .on("contextmenu", function(event, d, i){
+	    .on("contextmenu", function(event, d, i){	// event passed as first argument to all listeners 
 	    	if(properties.TimeseriesEnabled){
 				event.preventDefault();		// d3.event ⇨ (event) 
 		    	div	.style("opacity", 1);		
@@ -1108,7 +1126,7 @@ function mousedown(event, d, i){	// event passed as first argument to all listen
  *Displays data information associated with dot on mouseover,
  *and creates a bold outline (stroke) around the selected dot
  */
-function mouseover(event, d, i){
+function mouseover(event, d, i){	// Updated: event passed as first argument to all listeners 
 	//dot outline thicker on mouseover 	// bold outline currently only displaying after selection 
 
 	if(d3.select(this).attr("display") == "true"){
@@ -1185,7 +1203,7 @@ function mouseover(event, d, i){
 *Callback Function: Called when user moves mouse away from a dot </p>
 *Removes the bolded outline (stroke) around the dot
 */
-function mouseout(event, d){
+function mouseout(event, d){	// Updated: event passed as first argument to all listeners 
 	//remove thick dot outline on mouseout	// removal of outline error proned due to it not being created
 
 	if(d3.select(this).attr("display") == "true"){

@@ -47,6 +47,7 @@ import { GenericTestComponent } from './D3/generic-test/generic-test.component';
 import { GapminderComponent } from './gapminder/gapminder.component';
 import { GapminderJsComponent, GeneralGapminderJSComponent } from './gapminder/gapminder-js/gapminder-js.component';
 import { DialogShowdownComponent } from './dialog-content/dialog-showdown/dialog-showdown.component';
+import { DialogGapminderComponent } from './dialog-content/dialog-gapminder/dialog-gapminder.component';
 // import { TstoolConfigComponent } from './highcharts/tstool-config/tstool-config.component';
 declare var require: any
 const showdown = require('showdown');
@@ -115,7 +116,8 @@ const conv = new showdown.Converter({
     GapminderComponent,
     GapminderJsComponent,
     GeneralGapminderJSComponent,
-    DialogShowdownComponent
+    DialogShowdownComponent,
+    DialogGapminderComponent
 
     
   ],

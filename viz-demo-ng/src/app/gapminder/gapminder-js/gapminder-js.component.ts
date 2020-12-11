@@ -1,16 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
-// reference to JS functions
-// reference to JS functions
-import * as gapminderv4         from '../gapminder-js/js/gapminder-4.0.0.js';
+/* Reference to JS functions */
+import * as gapminderv6         from '../gapminder-js/js/gapminder-4.0.0.js';
 import * as display             from '../gapminder-js/js/gapminder-util/display-data.js';
 
 
 
-// Define gapminder configuration 
+// Define gapminder configuration: Will be set using configuration. Hard coded for now 
 let configurationFile = "assets/gapminder-data/viz-config.json";
-// '../gapminder-js/gapminder-data/viz-config.json';
+
 
 
 @Component({
@@ -25,13 +24,7 @@ export class GapminderJsComponent implements OnInit {
   ngOnInit(): void {
     this.openDialog();
 
-    // tab reopen event emitter
-    // if (this.eventEmitterService.subsVar==undefined) {  
-    //   this.eventEmitterService.subsVar = this.eventEmitterService.    
-    //   invokeChartjsGenericComponentFunction.subscribe((name:string) => {    
-    //     this.openDialog();  
-    //   });    
-    // }  
+    
   }
 
   openDialog(): void {
@@ -59,21 +52,20 @@ export class GapminderJsComponent implements OnInit {
 export class  GeneralGapminderJSComponent {
 
   // Define gapminder Ref for function calls in template
-  public gapminderRef = gapminderv4;
+  public gapminderRef = gapminderv6;
 
   constructor() { 
   }
 
   ngAfterViewInit(): void {
-     // Get the element id="defaultOpen" and click for default option 
+     // Get the element id="defaultOpen" and click for default option to be set
     document.getElementById("defaultOpen").click();
 
-    // // set configuration file 
-    // gapminderv4.setGapminderConfig("assets/gapminder-data/viz-config.json")
+    // call gapminder js functionality using path to configuration file
+    // gapminderv6.gapminder('assets/gapminder-data/viz-config.json');
+    gapminderv6.gapminder(configurationFile);
 
-    // call gapminder js functionality 
-    gapminderv4.gapminder('assets/gapminder-data/viz-config.json');
-    // gapminderv4.gapminder('./gapminder-data/viz-config.json');
+   
 
 
   }

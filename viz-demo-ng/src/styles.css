@@ -1,66 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~bootstrap/dist/css/bootstrap.css';
-/* @import 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'; */
-
 @import 'assets/css/showdown_style00.css';
 
-@import "../node_modules/select2/dist/css/select2.min.css";
-
-@import "./app/gapminder/gapminder-js/css/style.css";
-/* @import './app/gapminder/gapminder-js/css/style.css'; */
-
-
-/* @import "./app/gapminder/gapminder-js/css/bootstrap.min.css" Breaks application using old bootstrap version */
-
-/* @import 'assets/css/gapminder_bootstrap.css'; */
-
-/* @import 'assets/css/showdown_style01.css'; */
-/* @import 'assets/css/bootstrap.min.css'; */
-
-/* 
-@import 'assets/css/style.css';
-@import 'assets/css/loader.css';
-@import 'assets/css/select2.min.css';
-@import 'assets/css/clusterize.css'; */
+/* Styling imports for gapminder */
+@import "../node_modules/select2/dist/css/select2.min.css"; /* Gapminder Styling all the way */
+@import "./app/gapminder/gapminder-js/css/style.css"; /* Gapminder Styling  all the way */
 
 
 /* body {
     padding-top: 80px;
 } */
+
 .container {
     padding-top: 80px;
 }
 html, body { height: 100%; }
-/* body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; } */
-
-/* Showdown table styling */
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 
-/* table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-    display: block;
-  }
-  
-  td, th {
-    border: 1px solid  #dddddd;
-    
-    text-align: left;
-    padding: 8px;
-  } */
-/*   
-  tr:nth-child(even) {
-    background-color: #ebebeb;
-  } */
-  /* .showdown_pre {
-    padding: 16px;
-    overflow: auto;
-    font-size: 85%;
-    line-height: 1.45;
-    background-color: #f6f8fa;
-    border-radius: 3px;
-} */
 
 
 .nav-link  {cursor: pointer;}
