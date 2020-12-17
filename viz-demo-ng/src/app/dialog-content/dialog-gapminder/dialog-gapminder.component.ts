@@ -1,12 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 /* Reference to JS functions */
-import * as gapminderv6         from '../../gapminder/gapminder-js/js/gapminder-4.0.0.js';
-import * as display             from '../../gapminder/gapminder-js/js/gapminder-util/display-data.js';
+import * as gapminderv6         from './js/gapminder-6.1.1.js';
+import * as display             from './js/gapminder-util/display-data.js';
 
-// Define gapminder configuration: Will be set using configuration. Hard coded for now 
-let configurationFile = "assets/gapminder-data/viz-config.json";
 
 @Component({
   selector: 'app-dialog-gapminder',
@@ -14,20 +12,27 @@ let configurationFile = "assets/gapminder-data/viz-config.json";
   styleUrls: ['./dialog-gapminder.component.css']
 })
 export class DialogGapminderComponent  {
-  
+    // Define gapminder configuration: Will be set by providing path to openDialog function
+    public configurationFile;
     // Define gapminder Ref for function calls in template
     public gapminderRef = gapminderv6;
   
-    constructor() { 
+    constructor(
+            public dialogRef: MatDialogRef<DialogGapminderComponent>,
+            @Inject(MAT_DIALOG_DATA) public dataObject: any) { 
+            
+              this.configurationFile = dataObject.data.configPath;
+        
     }
   
     ngAfterViewInit(): void {
+      console.log("Config path: ", this.configurationFile)
        // Get the element id="defaultOpen" and click for default option to be set
       document.getElementById("defaultOpen").click();
   
       // call gapminder js functionality using path to configuration file
       // gapminderv6.gapminder('assets/gapminder-data/viz-config.json');
-      gapminderv6.gapminder(configurationFile);
+      gapminderv6.gapminder(this.configurationFile);
   
      
   
@@ -46,7 +51,7 @@ export class DialogGapminderComponent  {
         this.gapminderSelected = false;
       }
       if(name == "Data" && !this.dataLoaded){
-        display.displayData(configurationFile);
+        display.displayData(this.configurationFile);
         this.dataLoaded = true;
       }
         var i, tabcontent, tablinks;

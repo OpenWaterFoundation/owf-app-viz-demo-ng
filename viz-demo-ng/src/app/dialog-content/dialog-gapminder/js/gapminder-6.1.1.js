@@ -1168,8 +1168,6 @@ function mouseover(event, d, i){	// Updated: event passed as first argument to a
 	// The following are the default variables to be displayed in the datatable
 	// which consiste of the name of the dot and the four variables this visualization 
 	// displays.
-	// d3.select("#currentDateDiv").selectAll("text").text(formatDate(roundDate(date)));
-	// og: formatDate(getClosest(date(d)))
 	var tableContents = "<p><strong>" + variables.Label +  "</strong>: " + key(d) + "</p>" +
 					"<p><strong>" + variables.Date + "</strong>: " + formatDate(getClosest(date(d))) + "</p>" +
 					"<p><strong>" + variables.XAxis + "</strong>: " + d3.format(".2f")(d.xVarRaw.toFixed(2)) + "</p>" +
@@ -1681,43 +1679,7 @@ window.displayYear= function(date){
 	   	if(date > topYear){
 	   		topYear = date;
 	   	}
-		currYear = new Date(date);
-		
-		// // update tablediv with each animation
-		// // d3.select("#currentDateDiv").selectAll("text").text(formatDate(roundDate(date)));
-		// // og: formatDate(getClosest(date(d)))
-		// var tableContents = "<p><strong>" + variables.Label +  "</strong>: " + key(d) + "</p>" +
-		// "<p><strong>" + variables.Date + "</strong>: " + formatDate(getClosest(date(d))) + "</p>" +
-		// "<p><strong>" + variables.XAxis + "</strong>: " + d3.format(".2f")(d.xVarRaw.toFixed(2)) + "</p>" +
-		// "<p><strong>" + variables.YAxis + "</strong>: " + d3.format(".2f")(d.yVarRaw.toFixed(2)) + "</p>" +
-		// "<p><strong>" + variables.Sizing + "</strong>: " + d3.format(".2f")(d.sizeRaw.toFixed(2)) + "</p>" +
-		// "<p><strong>" + variables.Grouping + "</strong>: " + color(d) + "</p>";
-		// // If there are additional parameters to show then add the content to the tablediv
-		// // if(parametersFromFile){
-		// // 	if(additionalParameters && additionalParameters.length > 0){
-		// // 		tableContents += "<br> Additional Parameters:<br>------------------";
-		// // 	}
-		// // 	for(var i = 0; i < additionalParameters.length; i++){
-		// // 		tableContents += "<p><strong>" + additionalParameters[i] + "</strong>: " + parametersFromFile[additionalParameters[i]]	 + "</p>";
-		// // 	}
-		// // }
-		// if(properties.AdditionalData){
-		// var additionalParameters = additionalParametersDictionary[key(d)];
-		// var showColumns = properties.AdditionalData.ShowColumns;
-		// // If there are additional parameters to show then add the content to the tablediv
-		// if(additionalParameters) {
-		// tableContents += "<br> Additional Parameters:<br>------------------";
-		// for(var i = 0; i < showColumns.length; i++){
-		// tableContents += "<p><strong>" + showColumns[i] + "</strong>: " + additionalParameters[showColumns[i]] + "</p>";
-		// }
-		// }
-		// }
-
-		// //display information in data table if Config file specifies datatable
-		// tablediv.html( tableContents );
-
-
-
+	    currYear = new Date(date);
 	}else{
 		stopAnimation();
 	}

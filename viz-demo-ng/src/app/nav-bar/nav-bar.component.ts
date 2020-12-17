@@ -10,7 +10,7 @@ import {
     of }         from 'rxjs';
 
 import { DialogShowdownComponent }       from '../dialog-content/dialog-showdown/dialog-showdown.component';
-
+import { DialogGapminderComponent }  from '../dialog-content/dialog-gapminder/dialog-gapminder.component';
 import { HttpClient } from '@angular/common/http';
   
 import { catchError,  take } from 'rxjs/operators';
@@ -155,6 +155,28 @@ export class NavBarComponent implements OnInit {
   }
 
 
+  public openGapminderDialog(configPath: string): void {
+
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.data = {
+        configPath: configPath,
+      }
+        
+      // Open the dialog WITHOUT any given data for right now.
+      const dialogRef: MatDialogRef<DialogGapminderComponent, any> = this.dialog.open(DialogGapminderComponent, {
+      data: dialogConfig,
+      hasBackdrop: false,
+      panelClass: ['custom-dialog-container', 'mat-elevation-z24'],
+      height: "700px",
+      width: "910px",
+      minHeight: "600px",
+      minWidth: "645px",
+      maxHeight: "90vh",
+      maxWidth: "90vw"
+    });
+      // this.windowManager.addWindow(windowID, WindowType.DOCS);
+ 
+  }
     /**
    * 
    * @param path The path to the file to be read, or the URL to send the GET request
@@ -171,31 +193,6 @@ export class NavBarComponent implements OnInit {
   }
 
 
-  // public openGapminderDialog(){
-
-  //   // Display a Gapminder Visualization
-  //   else if (actionArray[i] === 'displayGapminder') {
-  //     let fullResourcePath = _this.appService.buildPath(IM.Path.rP, [resourcePathArray[i]]);
-
-  //     const dialogConfig = new MatDialogConfig();
-  //     dialogConfig.data = {
-  //       resourcePath: fullResourcePath
-  //     }
-
-  //     // Open the dialog WITHOUT any given data for right now.
-  //     const dialogRef: MatDialogRef<DialogGapminderComponent, any> = _this.dialog.open(DialogGapminderComponent, {
-  //       data: dialogConfig,
-  //       hasBackdrop: false,
-  //       panelClass: ['custom-dialog-container', 'mat-elevation-z24'],
-  //       height: "700px",
-  //       width: "910px",
-  //       minHeight: "600px",
-  //       minWidth: "645px",
-  //       maxHeight: "90vh",
-  //       maxWidth: "90vw"
-  //     });
-  //   }
-  // }
 
 
 
