@@ -10,15 +10,16 @@ cp -r "$SOURCE/js" $DESTINATION
 cp -r "$SOURCE/dialog-gapminder.component.css" $DESTINATION
 cp -r "$SOURCE/dialog-gapminder.component.html" $DESTINATION
 cp -r "$SOURCE/dialog-gapminder.component.ts" $DESTINATION
+cp -r "$SOURCE/README.md" $DESTINATION
 cp -r "$SRCASSETS" $DSTASSETS
 
 
 #INFOMAPPER GLOBAL STYLING PATH
-STYLECSS="./../owf-app-infomapper-ng-master/infomapper/src/styles.css"
+STYLECSS="./../owf-app-infomapper-ng/infomapper/src/styles.css"
 
 #GLOBAL IMPORTS 
 IMPSELECT2="@import \"../node_modules/select2/dist/css/select2.min.css\";"
-IMPGAPSTYLE="@import \"./app/gapminder/gapminder-js/css/style.css\";"
+IMPGAPSTYLE="@import \"./app/map-components/dialog-content/dialog-gapminder/css/style.css\";"
 
 
 if grep -Fxq "$IMPSELECT2" $STYLECSS
@@ -43,8 +44,3 @@ else
     echo "Does not contain"
     sed -i "1i\ $IMPGAPSTYLE" $STYLECSS
 fi
-
-# function fileTransfer(){
-# SOURCE="./viz-demo-ng/src/app/gapminder/gapminder-js"
-# DESTINATION 
-# }

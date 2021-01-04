@@ -1,5 +1,23 @@
 
+<!-- The draggable <h1> element so a user can move a graph around anywhere on the screen -->
+<!-- <div cdkDrag cdkDragRootElement=".cdk-overlay-pane"> -->
+    <!-- The draggable <h1> element so a user can move a graph around anywhere on the screen, but only using the h1 -->
+    <!-- <div mat-dialog-title cdkDragHandle class="drag-header-main"> -->
+        <!-- Keep this empty for now. Might add a title later on for time series graphs -->
+        <!-- <div class="header-div">
+        <p class="header-title">
+            Gapminder
+        </p>
+        </div> -->
+        <!-- The close button on the upper right part of the dialog -->
+        <!-- <button mat-button (click)="onClose()" class="upper-close-button">
+        <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+    </div>
+      
+    <div class="gapminder-content"> -->
 
+        <!-- end -->
      <H3>Gapminder</H3>
 
      
@@ -71,27 +89,27 @@
                          <div id="buttons" class="col-lg-12 col-sm-12 col-xs-12">
                              <button type="button" id="play" class="btn btn-default btn-md" (click)="gapminderRef.playButton()" title="Play">
                              <span class="glyphicon glyphicon-play"></span>
-                             <i class="fa fa-play" (click)="gapminderRef.playButton()"></i> Play
+                             <i class="fa fa-play" (click)="gapminderRef.playButton()"></i> 
                              </button>
                              <button type="button" id="pause" class="btn btn-default btn-md" (click)="gapminderRef.pauseButton()" title="Pause" disabled="true">
                              <!-- <button type="button" id="pause" <i class="fa fa-pause"></i> (click)="gapminderRef.pauseButton()" title="Pause" disabled="true"> -->
                              <!-- <button style="font-size:24px" (click)="gapminderRef.pauseButton()" > pause <i class="fa fa-pause-circle-o"></i></button> -->
                                  <span class="glyphicon glyphicon-pause"></span>
-                                 <i class="fa fa-pause"></i> Pause
+                                 <i class="fa fa-pause"></i> 
                              </button>
                              <button type="button" id="replay" class="btn btn-default btn-md" (click)="gapminderRef.replayButton()" title="Replay">
                                  <span class="glyphicon glyphicon-repeat"></span>
-                                 <!-- <i class="fa fa-repeat" aria-hidden="true"></i> -->
-                                 <i class="fas fa-redo" (click)="gapminderRef.replayButton()"></i> Replay
+                                 <!-- <i class="fa fa-reply" aria-hidden="true"></i> -->
+                                 <i class="fa fa-repeat" (click)="gapminderRef.replayButton()"></i> 
  
                              </button>
                              <button type="button" id="back" class="btn btn-default btn-md" (click)="gapminderRef.backButton()" title="Back" disabled="true">
                                  <span class="glyphicon glyphicon-menu-left"></span>
-                                 <i class="fa fa-step-backward" (click)="gapminderRef.backButton()"></i> Back
+                                 <i class="fa fa-step-backward" (click)="gapminderRef.backButton()"></i> 
                              </button>
                              <button type="button" id="forward" class="btn btn-default btn-md" (click)="gapminderRef.forwardButton()" title="Forward">
                                  <span class="glyphicon glyphicon-menu-right"></span>
-                                 <i class="fa fa-step-forward"></i> Forward
+                                 <i class="fa fa-step-forward"></i> 
                              </button>
                              &nbsp; &nbsp;
                              <p class="controls" style="cursor:default;"> Speed: </p>
@@ -199,7 +217,18 @@
          </div>
      </div>
  
-    
+    <!-- </div>   -->
+
+    <!-- A button on the lower left for viewing the data table of the current time series graph -->
+    <!-- <div class="gapminder-components-group">
+  
+      <button mat-raised-button (click)="onClose()">
+        Close
+      </button>
+    </div>
+  
+  </div> -->
+  
  
  
  

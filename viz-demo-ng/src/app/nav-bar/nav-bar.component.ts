@@ -165,7 +165,7 @@ export class NavBarComponent implements OnInit {
       // Open the dialog WITHOUT any given data for right now.
       const dialogRef: MatDialogRef<DialogGapminderComponent, any> = this.dialog.open(DialogGapminderComponent, {
       data: dialogConfig,
-      hasBackdrop: false,
+      hasBackdrop: true,
       panelClass: ['custom-dialog-container', 'mat-elevation-z24'],
       height: "700px",
       width: "910px",

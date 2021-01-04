@@ -5,28 +5,15 @@ import $ from "jquery";
 import * as d3 from 'd3'; // latest D3 V6
 import 'select2'; 
 
+let configurationFile = "./data/viz-config.json";
 
-
-var dot;
-// Top level wrapper function 
-export function gapminder(configPath){
-
-var gapminderSelected = true;
 
 /*Should try and nest these variables in some sort of object to avoid cluttering javascript namespace*/
+var bool = true;
+//Creating Properties {Object} from JSON Configuration, and Storing properties
+var properties = new Properties(configurationFile);
 
-	var bool = true;
-/**
- * String containing path to  Gapminder configuration file 
- */
-let configurationFile = configPath; 	
-
-/**
- * Creating Properties {Object} from JSON Configuration, and Storing properties 
- */
-window.properties = new Properties(configurationFile);
-
-/**
+/** 
  * Assigning object's properties to the local 'properties' variable
  */
 properties = properties.properties;
@@ -46,6 +33,7 @@ var variables = properties.VariableNames;
  * Also parses through csv data read in and convers to JSON for Gapminder
  */
 var data = new Data(properties);
+console.log("var data: ", data);
 
 /**
  * Object holding JSON data for gapminder 
@@ -55,10 +43,7 @@ var json = data.json;
 /**
  * Object holding demensions from data
  */
-window.demensions = data.demensions;
-console.log("var demensions ", demensions);
-// console.log("var demensions ", demensions.dateMin);
-
+var demensions = data.demensions;
 
 /**
  * Object holding annotations data,
@@ -71,44 +56,36 @@ var annotations_data = data.annotations;
  * D3's built in time parser, indicates what the date string should look like.
  * Used to format to format the string into date object, i.e. '%Y'
  */
-var parseDate = d3.timeParse(properties.InputDateFormat);   // using d3.timeParse (D3's built in time parser) to format the string into date object 
+var parseDate = d3.timeParse(properties.InputDateFormat);	 // using d3.timeParse (D3's built in time parser) to format the string into date object 
 
 /**
  * Used to format date object into a string
  * - Used as parameter for getAnnotations(inputFileFormat) function,
  */
-var inputFileFormat = d3.timeFormat(properties.InputDateFormat);   // using d3.timeFormat to format the date object into a string.
+var inputFileFormat = d3.timeFormat(properties.InputDateFormat);	// using d3.timeFormat to format the date object into a string.
 
 /**
  * Used to format date object into a string
  */
 var formatDate = d3.timeFormat(properties.OutputDateFormat);
 
-
-window.currYear = demensions.dateMin;   //made global for back and forward functions
+var currYear = demensions.dateMin;
 var topYear = demensions.dateMin;
 
-// var precisionInt = parsePrecisionInt(properties.TimeStep);
-// var precisionUnit = parsePrecisionUnits(properties.TimeStep);
+var precisionInt = parsePrecisionInt(properties.TimeStep);
+var precisionUnit = parsePrecisionUnits(properties.TimeStep);
 
 /**
  * Svg container width - responsible for defining the visualization's canvas
  * ( or the area where the graph and associated bits and pieces are placed)
  */
-// var width = $("#chart").parent().width();  
-// var width = 660;
-var width = 800;
+var width = $("#chart").parent().width();
 
 /**
  * Svg container height - responsible for defining the visualization's canvas
  * ( or the area where the graph and associated bits and pieces are placed)
  */
-// var height = $("#Gapminder").parent().height() - 270;
-var height = 553;
-
-console.log("init width: ", width);
-console.log("init height: ", height);
-
+var height = $("#Gapminder").parent().height() - 270;
 
 /**
  * SVG container margin - responsible for defining the visualization's canvas 
@@ -116,57 +93,19 @@ console.log("init height: ", height);
  */
 var margin = {top:10, left:30, bottom:80, right:82};
 
-window.displayAll = true;
-window.tracer = (properties.TracerNames == "" || !properties.TracerNames) ? false : true; // made global for functions outside wrapper
+console.log("init width: ", width);
+console.log("init height: ", height);
+
+var displayAll = true;
+var tracer = (properties.TracerNames == "" || !properties.TracerNames) ? false : true;
 var visSpeed;
 
-// var transtionFunction;
-
-/**
- * Used in stopAnimation() function, stops the next transition.
- */
-var transition;
-
-//og end of globals
-
-
-var legendHeight;
-
-
-// window.dot; // window global didn't work for some reason. made global outside of gapminder function
-window.firstClick = true;
-
-
-// export function gapminder(){
-
-console.log("timestep: ", properties.TimeStep);
-/**
- * Precision int for the respected time step,
- * TimeStep: 1Year. Returns '1'
- */
-var precisionInt = parsePrecisionInt(properties.TimeStep);
-// var precisionUnit = parsePrecisionUnits(properties.TimeStep);
-
-/**
- * Precision int for the respected time step,
- * TimeStep: 1Year. Returns '1'
- */
-window.precisionInt = parsePrecisionInt(properties.TimeStep);
-/**
- * Precision unit for the time step,
- * TimeStep: 1Year. Returns 'Year'
- */
-window.precisionUnit = parsePrecisionUnits(properties.TimeStep);
-
-
-
-
+// var transtionFunction; // not in use 
+// var transition; // not in use 
 
 //TODO: was used in snodas, not needed in this application, 
 //need to make this more dynamic - Justin Rentie 2/13/2018
 demensions.maxPopulatedDate.setHours(23, 59, 59);
-
-
 
 if(properties.MultipleDatasets){
 	$("#DatasetChoicesLabel").html(properties.DatasetChoicesLabel + ": ");
@@ -195,8 +134,7 @@ if(properties.DataTableType.toUpperCase() == "JQUERY") d3.select("#dataTable1").
 var div = d3.select("#Gapminder").append("div")	
 	    .attr("class", "tooltip")
 	    .style("opacity", 0);
-// $(window).click(function(e){ // .click depricated
-$(window).on("click",function(e){
+$(window).click(function(e){
 	if(e.button == 0){
 		div.remove();
 		div = d3.select("#Gapminder").append("div")	
@@ -262,49 +200,27 @@ d3.select("#subtitle")
 	})
 
 //----------------------------------ROW 2(row.viz): GAPMINDER CHART/LEGEND/LIST---------------------------
-
-// var selected = d3.select('#chart');
-// if (selected._group[0][0] == null) { 
-// 	// nothing found 
-// 	console.log("'chart' element not selected");
-// } else { 
-// 	// found something 
-// 	console.log("'chart' selected");
-// } 
-
-
-/**
- * SVG container for chart elements
- */
+//create an svg container for chart elements
 var svg = d3.select("#chart")
 	.append("svg")
     .attr("class", "box")
-	.attr("width", "100%")
-	// .attr("width", (width + 50))
-    .attr("height", height); //This is the height of only the actual chart, making room for elements above and below the chart
-
-	console.log("create svg container: ", svg);
-
+    .attr("width", "100%")
+    .attr("height", height) //This is the height of only the actual chart, making room for elements above and below the chart
 
 //set width to be width of svg container 'box'
 width = $(".box").width(); //Set width to the width of the chart
 
-console.log("width1: ", width);
-
 /*create a div/svg container for legend*/
-var legend = d3.select("#legend")
-	.style("height", ((height/2) - 30) + "px");
-	 //Legend is half the height of the chart
+legend = d3.select("#legend")
+	.style("height", ((height/2) - 30) + "px"); //Legend is half the height of the chart
 
 //create a div for list
-var sideTools = d3.select("#sideTools")
-	.style("height", (height/2) + "px");
-	 //sideTools are half the height of the chart
+sideTools = d3.select("#sideTools")
+	.style("height", (height/2) + "px"); //sideTools are half the height of the chart
 
 //creates the search bar for selecting provider from a dropdown menu </p>
 //utilizes [select2]{@link https://select2.github.io/} library
 $(document).ready(function() {
-// $(document).jQuery(function() {
   $("#providerNames").select2({
   	placeholder: "Select Individual " + variables.Label + "..."
   });
@@ -316,11 +232,9 @@ var timeScale = d3.scaleTime()
 	.domain([demensions.dateMin, demensions.dateMax])
 	.range([0, (width - 75)]);
 
-var dateArray = dateArray_function(demensions); //made global
-
-
+var dateArray = dateArray_function();
 var visSpeed = 20000 / (timeScale.range()[1] - timeScale.range()[0]);
-//if the last data in the array isn't the last possible date, add the last date to the end of the array
+//if the last data in the array isn't the last possible date add the last date to the end of the array
 if(dateArray[dateArray.length - 1].getTime() != demensions.dateMax.getTime()){
 	dateArray.push(demensions.dateMax);
 }
@@ -329,13 +243,9 @@ var dateLabel = d3.select(".box")
 	.append("text")
 	.text(formatDate(timeScale.ticks()[0]))
 	.attr("fill-opacity", "0");
-
 var dateText = dateLabel.node().getBBox();
 
-
-/**
- * div and svg container for yearslider and buttons
- */
+//create a div and svg container for yearslider and buttons
 var controlSVG = d3.select("#dateSlider")
     .append("svg")
 	.attr("width", "100%")
@@ -355,35 +265,24 @@ slider.append("line")
 	.attr("class", "track")
 	.attr("x1", timeScale.range()[0])
 	.attr("x2", timeScale.range()[1])
-	.attr("stroke-linecap","round")	// CSS Styling for dateslider: rounds track edges
-	.attr("stroke","#000")	// CSS Styling for dateslider: adds color to track
-	.attr("stroke-opacity","0.3")	// CSS Styling for dateslider: lowers opacity of track 
-	.attr("stroke-width","4px")	// CSS Styling for dateslider : adjusts track width (slightly thicker)
   .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
-	.attr("class", "track-inset")
-	.attr("stroke-linecap","round")	// CSS Styling for dateslider
-	.attr("stroke","#ddd")	// CSS Styling for dateslider
-	.attr("stroke-width","2px")	// CSS Styling for dateslider
+    .attr("class", "track-inset")
   .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
-	.attr("class", "track-overlay")
-	.attr("stroke-linecap","round")	// CSS Styling for date slider
-	.attr("pointer-events","stroke")	//  CSS Styling for dateslider
-	.attr("stroke","transparent")	//  CSS Styling for dateslider
-	.attr("cussor","crosshair")	//  CSS Styling for dateslider
+    .attr("class", "track-overlay")
     .style("cursor", "pointer")
-    .on("mousemove", function(event){	// event passed as first argument to all listeners 
+    .on("mousemove", function(event){ // event passed as first argument to all listeners 
     	slider_tooltip.transition()
     		.duration(200)
     		.style("opacity", .9);
     	var date = timeScale.invert(Math.round(event.x - 361));// I don't understand why I have to subtract?
     	if(date <= demensions.maxPopulatedDate){
     		slider_tooltip.html(handleFormat(date))
-    			.style("left", ( event.pageX - 30) + "px")		// d3.event ⇨ (event)
-            	.style("top", ( event.pageY - 35) + "px");		// d3.event ⇨ (event)
+    			.style("left", (event.pageX - 30) + "px")	// d3.event ⇨ (event) 
+            	.style("top", (event.pageY - 35) + "px");	// d3.event ⇨ (event) 
     	}else{
     		slider_tooltip.html(handleFormat(date) + " (no data)")
-    			.style("left", ( event.pageX - 30) + "px")		// d3.event ⇨ (event)
-            	.style("top", ( event.pageY - 35) + "px");		// d3.event ⇨ (event)
+    			.style("left", (event.pageX - 30) + "px")	// d3.event ⇨ (event) 
+            	.style("top", (event.pageY - 35) + "px");	// d3.event ⇨ (event) 
     	}
     	
     })
@@ -393,8 +292,8 @@ slider.append("line")
     		.style("opacity", 0);
     })
 	.call(d3.drag()
-			.on("start.interrupt", function(event){slider.interrupt(); })
-			.on("start drag", function(event){ draggedYear(timeScale.invert(Math.round( event.x))); }));	// event passed as first argument to all listeners 
+			.on("start.interrupt", function(){slider.interrupt(); })
+			.on("start drag", function(event){ draggedYear(timeScale.invert(Math.round(event.x))); }));		// event passed as first argument to all listeners 
 
 var g = slider.insert("g", ".track-overlay")
 	.attr("class", "ticks")
@@ -411,18 +310,9 @@ g.selectAll("text")
 	.style("cursor", "default")
 	.text(function(d){return formatDate(d); });
 
-/**
- * handle part of slider, handle slides across track
- */
-var handle = slider.insert("circle", ".track-overlay") 
-    .attr("class", "handle") 
-	.attr("r", 5)
-	.attr("fill","#fff")	// CSS Styling for date slider: defualt handle color is black, this makes it white
-	.attr("stroke","#000")	// CSS Styling for dateslider: gives handle a black outline
-	.attr("stroke-opacity","0.5")	// CSS Styling for dateslider: lowers opacity of black outline 
-	.attr("stroke-width","1.25px");	// CSS Styling for dateslider:  sets outline width
-
-	
+var handle = slider.insert("circle", ".track-overlay")
+    .attr("class", "handle")
+    .attr("r", 5);
 
 var handleText = slider.insert("text", ".track-overlay")
 	.attr("font-size", "10px")
@@ -472,7 +362,7 @@ if(additionalParametersDictionary) {
 	}
 }
 //create a row and div for the datatable
- var tablediv = d3.select("#tablediv")
+tablediv = d3.select("#tablediv")
 	.html( tableContents );
 	
 d3.select("#tablediv")
@@ -480,7 +370,7 @@ d3.select("#tablediv")
 
 //if Config file specifies annotationsappend a div for annotations in same row as datatable
 if(annotations_data && !$.isEmptyObject(annotations_data.GeneralAnnotations)){
-	var annotations = d3.select("#annotations")
+	annotations = d3.select("#annotations")
 		.style("height", "102px")
 	    .attr("transform", "translate("+ (-70) +"," + (height) + ")")
 		.html(
@@ -489,8 +379,7 @@ if(annotations_data && !$.isEmptyObject(annotations_data.GeneralAnnotations)){
 }
 
 //create a tip object that will display information when hovering over an annotation
-// window tip 
-window.tip= d3.select('body')
+var tip = d3.select('body')
     .append('div')
     .attr('class', 'tip')
     .style('border', '1px solid black')
@@ -508,15 +397,11 @@ window.tip= d3.select('body')
     });
 
 //-----------------------------------------------GAPMINDER-----------------------------------------------
-/**
- * A bisector for interpolating data is sparsely-defined.
- */
+// A bisector for interpolating data is sparsely-defined.
 var bisect = d3.bisector(function(d) { return d[0]; });
-/**
- * creates a scale to set the color of dots
- */
-var colorScale = d3.scaleOrdinal(d3.schemeCategory10);		//d3.schemeCategory is a standard color scheme 
-// var firstClick = true; //make global
+//creates a scale to set color of dots
+var colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+var firstClick = true;
 
 var yText = d3.select(".box")
 	.append("text")
@@ -529,11 +414,11 @@ var xText = d3.select(".box")
 	.text(d3.format(",.0f")(Math.round(demensions.xMax))) //hard-coded, needs to change
 	.attr("fill-opacity", 0);
 //bbox gets height and width attributes of labels
-var yTextBox = yText.node().getBBox();
-var xTextBox = xText.node().getBBox();
+yTextBox = yText.node().getBBox();
+xTextBox = xText.node().getBBox();
 
 //creates a scale to set radius of dots											
-var radiusScale = d3.scaleSqrt().domain([0, (demensions.radiusMax * 2)]).range([3, 47]);
+radiusScale = d3.scaleSqrt().domain([0, (demensions.radiusMax * 2)]).range([3, 47]);
 //assign xScale according to if Config file specifies Log or Linear
 if(properties.XAxisScale.toUpperCase() == "LOG"){
 	var min = properties.XMin && properties.XMin != "" ? properties.XMin : demensions.xMin;
@@ -541,16 +426,11 @@ if(properties.XAxisScale.toUpperCase() == "LOG"){
 	/*var min = Config.setXMin != null ? Config.setXMin : Config.xMin;
 	var max = Config.setXMax != null ? Config.setXMax : Config.xMax;*/
 	//configure the log x scale domain and range
-	
-	
-	var xScale = d3.scaleLog() //made global using window?
-	// window.xScale = d3.scaleLog() //made global using window?
+	xScale = d3.scaleLog()
 		.domain([checkMin(min), max]) //checkLogMin to make sure no negative #s
 		.range([yTextBox.width + margin.left + 15, (width-25)]);
-
-
-		//configure the xAxis with the xScale.
-	var xAxis = d3.axisBottom()
+	//configure the xAxis with the xScale.
+	xAxis = d3.axisBottom()
 		.scale(xScale)
 		.ticks(6, d3.format(",d")) //get logTicks for log & format numbers for log
 		.tickSizeInner(-(height))
@@ -562,11 +442,11 @@ if(properties.XAxisScale.toUpperCase() == "LOG"){
 	/*var min = Config.setXMin != null ? Config.setXMin : Config.xMin;
 	var max = Config.setXMax != null ? Config.setXMax : Config.xMax;*/
 	//configure the linear x scale domain and range
-	var xScale = d3.scaleLinear()
+	xScale = d3.scaleLinear()
 		.domain([min, max])
 		.range([yTextBox.width + margin.left + 15, (width-25)]);
 	//configure the xAxis using the xScale.
-	var xAxis = d3.axisBottom()
+	xAxis = d3.axisBottom()
 		.scale(xScale)
 		.ticks(getMaxXTicks(width, xTextBox.width) - 1) //get maxXTicks for linear
 		.tickFormat(d3.format(",")) //format numbers for linear
@@ -581,11 +461,11 @@ if(properties.YAxisScale.toUpperCase() == "LOG"){
 	/*var min = Config.setYMin != null ? Config.setYMin : Config.yMin;
 	var max = Config.setYMax != null ? Config.setYMax : Config.yMax;*/
 	//configure log y scale domain and range
-	var yScale = d3.scaleLog()
+	yScale = d3.scaleLog()
 		.domain([checkMin(min), max]) //checkLogMin to make sure no negative #s
 		.range([height - 40, 0]);
 	//configure yAxis using y scale
-	var yAxis = d3.axisLeft()
+	yAxis = d3.axisLeft()
 		.scale(yScale)
 		.ticks(6, d3.format(",d")) //get logTicks for log & format numbers for log
 		.tickSizeInner(-(width - margin.right) + 5)
@@ -597,35 +477,31 @@ if(properties.YAxisScale.toUpperCase() == "LOG"){
 	/*var min = Config.setYMin != null ? Config.setYMin : Config.yMin;
 	var max = Config.setYMax != null ? Config.setYMax : Config.yMax;*/
 	//configure linear y scale domain and range
-	 var yScale = d3.scaleLinear()
+	yScale = d3.scaleLinear()
 	    .domain([min, max])
 	    .range([height - 40, 0]);
 	//configure yAxis using y scale
-	 var yAxis = d3.axisLeft()
+	yAxis = d3.axisLeft()
 		.scale(yScale)
 		.ticks(getMaxYTicks(height, yTextBox.height)) //get maxYticks for linear
 		.tickFormat(d3.format(",")) //format numbers for linear
 		.tickSizeInner(-(width - margin.right) + 5)
 		.tickSizeOuter(0)
 		.tickPadding(10);
-
-
 }
 
-
-
 //add the x-axis to svg, using xAxis
-var xaxis = svg.append("g")
+xaxis = svg.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + (height - 40) + ")")
     .call(xAxis);
 //add the y-axis to svg, using yAxis
-var yaxis = svg.append("g")
+yaxis = svg.append("g")
     .attr("class", "y axis")
     .call(yAxis)
     .attr("transform", "translate(" + (yTextBox.width + margin.left + 15)  + ",0)");
 //add an x-axis label to below x-axis
-var xlabel = svg.append("text")
+xlabel = svg.append("text")
     .attr("class", "xLabel")
     .attr("text-anchor", "middle")
     .attr("x", (width/2))
@@ -633,7 +509,7 @@ var xlabel = svg.append("text")
     .text(properties.BottomXAxisTitleString)
     .attr("font-size", "14px");
 //add a y-axis label to svg to left of y-axis
-var ylabel = svg.append("text")
+ylabel = svg.append("text")
     .attr("class", "yLabel")
     .attr("text-anchor", "middle")
     .attr("y", 0)
@@ -674,7 +550,7 @@ function add_legend(data){
 		.style("text-decoration", "underline")
 		.attr("y", "10");
 	//add square for each name, color coordinated with colorScale
-	var square = legend.append("g")
+	square = legend.append("g")
 		.attr("class", "square")
 		.selectAll(".square")
 		.data(data)
@@ -688,7 +564,7 @@ function add_legend(data){
 	    })
 	    .attr("cursor", "pointer")
 	    .on("mousedown", function(event, d){	// event passed as first argument to all listeners 
-	    	if( event.ctrlKey){		// d3.event ⇨ (event) 
+	    	if(event.ctrlKey){
 	    		if(firstClick){
 	    			selectMultiple = false;
 	    			legendButton(d, selectMultiple);
@@ -708,7 +584,7 @@ function add_legend(data){
 	//reset position for legend div, accounting for text positioning vs. svg rect positioning
 	pos = 7;
 	//add the text to the legend from list of names
-	var legendText = legend.append("g")
+	legendText = legend.append("g")
 		.attr("class", "legendText")
 		.selectAll("legendText")
 		.data(data)
@@ -717,7 +593,7 @@ function add_legend(data){
 	    	return "D" + checkForSymbol(d);
 	    })
 	    .text(function(d){
-	    	var s = " - " + d;
+	    	s = " - " + d;
 	    	if(s.length > 17){
 	    		s = s.substring(0,17); //truncate name if too long to fit inside svg
 	    		s += "...";
@@ -731,7 +607,7 @@ function add_legend(data){
 	    })
 	    .style("cursor", "pointer")
 	    .on("mousedown", function(event, d){	// event passed as first argument to all listeners 
-	    	if( event.ctrlKey){		// d3.event ⇨ (event) 
+	    	if(event.ctrlKey){
 	    		if(firstClick){
 	    			selectMultiple = false;
 	    			legendButton(d, selectMultiple);
@@ -749,7 +625,7 @@ function add_legend(data){
 	    }); //callback function: legendButton()
 }
 
-var names = getIndividualDots(json);
+names = getIndividualDots(json);
 function add_marker_names(data){
 	d3.select("#providerNames")
 		.selectAll(".marker_names")
@@ -768,29 +644,24 @@ function add_marker_names(data){
 add_marker_names(names);
 
 
-
-/**
- * variable creates life for data line (tracer)
- */
-var line = d3.line()
+//create line for data line (tracer)
+line = d3.line()
 	.x(function(d) {return xScale(x(d));})
 	.y(function(d) {return yScale(y(d));})
 
 //-------------------------Add different elements to DOM if specified in annotation file----------------------
 if(annotations_data != null && !$.isEmptyObject(annotations_data.SpecificAnnotations)){
-	var annotationShapes = svg.append("g")
+	annotationShapes = svg.append("g")
 		.attr("id", "annotationShapes");
 	//Add line Annoations if they are sepcified in the annotation file
 	var lineAnnotations = retrieveAnnotations("Line");
 	if(lineAnnotations){
-		var annotationLine = annotationShapes.selectAll(".line")
-			.data(lineAnnotations.get('Line')) // Updated: retrieve values
+		annotationLine = annotationShapes.selectAll(".line")
+			.data(lineAnnotations.get('Line')) // value accessor changed due to d3.nest deprication
 			.enter().append("line")
 			.attr("id", "annotationLine")
 			.attr("class", "annotationShape")
 			.attr('x1', function(d){
-				// console.log("697 d.Properties.x1: ", d.Properties.x1);
-
 				return xScale(d.Properties.x1);
 			})
 			.attr('y1', function(d){
@@ -808,7 +679,7 @@ if(annotations_data != null && !$.isEmptyObject(annotations_data.SpecificAnnotat
 			.attr('stroke', 'black')
 			.style("cursor", "pointer")
 			.on('mouseover', mouseoverAnnotation)
-			.on('mouseout', function(event, d, i){
+			.on('mouseout', function(d, i){
 				tip.transition()
 			        .style('display', 'none');
 			});
@@ -817,7 +688,7 @@ if(annotations_data != null && !$.isEmptyObject(annotations_data.SpecificAnnotat
 	var rectAnnotations = retrieveAnnotations("Rectangle");
 	if(rectAnnotations){
 		annotationRect = annotationShapes.selectAll(".rect")
-			.data(rectAnnotations.get('Rectangle'))		// Updated: retrieve values
+			.data(rectAnnotations.get('Rectangle')) 	// values accessor changed due to d3.nest deprication 
 			.enter().append("rect")
 			.attr("id", "annotationRect")
 			.attr("class", "annotationShape")
@@ -843,7 +714,7 @@ if(annotations_data != null && !$.isEmptyObject(annotations_data.SpecificAnnotat
 			})
 			.attr('stroke', 'black')
 			.on('mouseover', mouseoverAnnotation)
-			.on('mouseout', function(event, d, i){
+			.on('mouseout', function(d, i){
 				tip.transition()
 			        .style('display', 'none');
 			});
@@ -856,7 +727,7 @@ if(annotations_data != null && !$.isEmptyObject(annotations_data.SpecificAnnotat
 		if(circleAnnotations){
 			annotationCircle = svg.append("g")
 				.selectAll(".point")
-				.data(circleAnnotations.get('Circle'))	// Updated: retrieve values
+				.data(circleAnnotations.get('Circle')) //values accessor changed due to d3.nest deprication 
 				.enter().append("path")
 				.attr("id", "annotationCircle")
 				.attr("class", "point annotationShape")
@@ -870,7 +741,7 @@ if(annotations_data != null && !$.isEmptyObject(annotations_data.SpecificAnnotat
 				.attr('stroke', 'black')
 				.attr('fill-opacity', 0)
 				.on('mouseover', mouseoverAnnotation)
-				.on('mouseout', function(event, d, i){
+				.on('mouseout', function(d, i){
 					tip.transition()
 				        .style('display', 'none');
 				});
@@ -880,7 +751,7 @@ if(annotations_data != null && !$.isEmptyObject(annotations_data.SpecificAnnotat
 		if(triangleAnnotations){
 			annotationTriangle = svg.append("g")
 				.selectAll(".point")
-				.data(triangleAnnotations.get('Triangle'))	// Updated: retrieve values
+				.data(triangleAnnotations.get('Triangle'))	//values accessor changed due to d3.nest deprication 
 				.enter().append("path")
 				.attr("id", "annotationTriangle")
 				.attr("class", "point annotationShape")
@@ -894,7 +765,7 @@ if(annotations_data != null && !$.isEmptyObject(annotations_data.SpecificAnnotat
 				.attr('stroke', 'black')
 				.attr('fill-opacity', 0)
 				.on('mouseover', mouseoverAnnotation)
-				.on('mouseout', function(event, d, i){
+				.on('mouseout', function(d, i){
 					tip.transition()
 				        .style('display', 'none');
 				});
@@ -902,9 +773,9 @@ if(annotations_data != null && !$.isEmptyObject(annotations_data.SpecificAnnotat
 		//Add Crosses from annotation file
 		var crossAnnotations = retrieveByShape("Cross");
 		if(crossAnnotations){
-			var annotationCross = svg.append("g")
+			annotationCross = svg.append("g")
 				.selectAll(".point")
-				.data(crossAnnotations.get('Cross'))	// Updated: retrieve values
+				.data(crossAnnotations.get('Cross')) 	//values accessor changed due to d3.nest deprication 
 				.enter().append("path")
 				.attr("id", "annotationCross")
 				.attr("class", "point annotationShape")
@@ -918,7 +789,7 @@ if(annotations_data != null && !$.isEmptyObject(annotations_data.SpecificAnnotat
 				.attr('stroke', 'black')
 				.attr('fill-opacity', 0)
 				.on('mouseover', mouseoverAnnotation)
-				.on('mouseout', function(event, d, i){
+				.on('mouseout', function(d, i){
 					tip.transition()
 				        .style('display', 'none');
 				});
@@ -926,9 +797,9 @@ if(annotations_data != null && !$.isEmptyObject(annotations_data.SpecificAnnotat
 		//Add Text from annotation file
 		var textAnnotations = retrieveAnnotations("Text");
 		if(textAnnotations){
-			var annotationText = svg.append("g")
+			annotationText = svg.append("g")
 				.selectAll(".text")
-				.data(textAnnotations.get('Text'))	// Updated: retrieve values
+				.data(textAnnotations.get('Text')) 	//values accessor changed due to d3.nest deprication 
 				.enter().append("text")
 				.attr("id", "annotationText")
 				.attr("class", "annotationShape")
@@ -946,7 +817,7 @@ if(annotations_data != null && !$.isEmptyObject(annotations_data.SpecificAnnotat
 					return d.Properties.FontSize;
 				})
 				.on('mouseover', mouseoverAnnotation)
-				.on('mouseout', function(event, d, i){
+				.on('mouseout', function(d, i){
 					tip.transition()
 				        .style('display', 'none');
 				})
@@ -964,29 +835,28 @@ if(properties.AnnotationShapes.toUpperCase() == "OFF"){
 }
 
 //Add tracers to the dots on the visualization
-var pathData = [];
+pathData = [];
 var pathJSON = json.data;
-
 var nested = nest(interpolatePath(demensions.dateMin), pathData);
-
 var path;
+// console.log("NESTED: ", nested);
+
 function add_path(data){
 	path = svg.append("g")
 		.attr("id", "dataline")
-		.selectAll(".path") 
+		.selectAll(".path")
 		.data(data)
 		.enter().append("path")
 		.attr("class", function(d){
-	
-			return "tracer T" + convert_to_id(d[0].toUpperCase());	// d.key changed to d[0] 
+			// console.log("d...: ", d);
+			// console.log("d.key: ", d.key);
+			return "tracer T" + convert_to_id(d[0].toUpperCase()); // d.key changed to d[0] 
 		})
-		.attr("fill","none")	// Updated: path elements by default are filled black, specify CSS fill 'none' to avoid this on tracer
 		.attr("id", function(d){
-			return "T" + convert_to_id(d[1][0].color);	//d.values changes to d[1]
+			return "T" + convert_to_id(d[1][0].color); //d.values changes to d[1]
 		})
 		.style("stroke", function(d){
-			// console.log("tracing color: ", d[1][0].color);	//d.values changes to d[1]
-
+			console.log("tracing color: ", d[1][0].color);
 			return colorScale(d[1][0].color);	//d.values changes to d[1]
 		})
 		.style("stroke-width", "1.5px")
@@ -998,7 +868,7 @@ function add_path(data){
 			}
 		})
 		.attr("d", function(d){
-			return line(d[1]); //d[1] = values
+			return line(d[1]);	//d.values changes to d[1]
 		})
 		.style("pointer-events", "none");
 }
@@ -1010,7 +880,7 @@ if(!tracer){
 	document.getElementById("tracerButton").innerHTML = "Turn Tracer On";
 }
 
-// var dot; // made global
+var dot;
 function add_dots(data){
 	var dot_g = svg.append("g")
 	    .attr("id", "dots")
@@ -1027,14 +897,14 @@ function add_dots(data){
 	    .on('mouseout', mouseout) //mouseout callback function
 	    .on("mousedown", mousedown) //mousedown callback function
 	    //color according to grouping variable
-	    .on("contextmenu", function(event, d, i){	// event passed as first argument to all listeners 
+	    .on("contextmenu", function(event, d, i){
 	    	if(properties.TimeseriesEnabled){
-				event.preventDefault();		// d3.event ⇨ (event) 
+	    		event.preventDefault();		// event passed as first argument to all listeners 
 		    	div	.style("opacity", 1);		
 	            div	.html("<p style='margin:0px;'><a style='color:black; font-weight:bold;' href='./highchart.html?csv=" + expand_parameter_value(properties.FilePropertyName, {"Year": properties.DefaultDatasetChoice}) + "&name=" + d.name + "&nameVar=" + variables.Label +
 	            	      "&xVar=" + variables.XAxis + "&yVar=" + variables.YAxis + "&size=" + variables.Sizing + "&datevariable=" + variables.Label + "', target='_blank'> Timeseries</a></p>")
-	                .style("left", ( event.pageX) - 300 + "px")		// d3.event ⇨ (event) 
-	                .style("top", ( event.pageY) - 65 +"px");		// d3.event ⇨ (event) 
+	                .style("left", (event.pageX) - 300 + "px")		
+	                .style("top", (event.pageY) - 65 +"px");
 	    	}
 	    })
 	    .style("fill", function(d) {return colorScale(color(d)); })
@@ -1058,36 +928,31 @@ if(Properties.DefaultSpeed){
 	document.getElementById("speedSlider").value = Properties.DefaultSpeed;
 }
 
-
-
-// wrapper function
-
-
-// //---------------Various accessors that specify the four dimensions of data to visualize.-------------------
-// /**
-//  *Accessor function for x-variable
-//  */
-// function x(d) { return d.xVar; }
-// /**
-//  *Accessor function for y-variable
-//  */
-// function y(d) { return d.yVar; }
-// /**
-//  *Accessor function for size of dot
-//  */
-// function radius(d) { return d.size; }
-// /**
-//  *Accessor function for color of dot
-//  */
-// function color(d) {return d.color; }
-// /**
-//  *Accessor function for name of dot
-//  */
-// function key(d) { return d.name; }
-// /**
-//  *Accessor function for date
-//  */
-// function date(d){ return d.year; }
+//---------------Various accessors that specify the four dimensions of data to visualize.-------------------
+/**
+ *Accessor function for x-variable
+ */
+function x(d) { return d.xVar; }
+/**
+ *Accessor function for y-variable
+ */
+function y(d) { return d.yVar; }
+/**
+ *Accessor function for size of dot
+ */
+function radius(d) { return d.size; }
+/**
+ *Accessor function for color of dot
+ */
+function color(d) {return d.color; }
+/**
+ *Accessor function for name of dot
+ */
+function key(d) { return d.name; }
+/**
+ *Accessor function for date
+ */
+function date(d){ return d.year; }
 
 //--------------------------------------Callback functions for dots------------------------------------------
 /**
@@ -1095,7 +960,7 @@ if(Properties.DefaultSpeed){
  *Highlights selected dot with a yellow outline
  */
 function mousedown(event, d, i){	// event passed as first argument to all listeners 
-	if( event.button === 0){		// d3.event ⇨ (event) 
+	if(event.button === 0){
 		if(d3.select(this).attr("display") == "true"){
 			if(d3.select(this).attr("checked") == "true"){
 				d3.select(this)
@@ -1126,9 +991,13 @@ function mousedown(event, d, i){	// event passed as first argument to all listen
  *Displays data information associated with dot on mouseover,
  *and creates a bold outline (stroke) around the selected dot
  */
-function mouseover(event, d, i){	// Updated: event passed as first argument to all listeners 
-	//dot outline thicker on mouseover 	// bold outline currently only displaying after selection 
-	console.log("mouseover d: ", d);
+function mouseover(event, d, i){
+	//dot outline thicker on mouseover
+	console.log("d in mouseover: ", d);
+	console.log("d.color in mouseover: ", d.color);
+
+
+	// console.log("d name in mouseover: ", d.name);
 	if(d3.select(this).attr("display") == "true"){
 		if(displayAll){
 			d3.selectAll(".dot").style("fill-opacity", .75).attr("stroke-opacity", .5);
@@ -1203,9 +1072,8 @@ function mouseover(event, d, i){	// Updated: event passed as first argument to a
 *Callback Function: Called when user moves mouse away from a dot </p>
 *Removes the bolded outline (stroke) around the dot
 */
-function mouseout(event, d){	// Updated: event passed as first argument to all listeners 
-	//remove thick dot outline on mouseout	// removal of outline error proned due to it not being created
-
+function mouseout(event, d){
+	//remove thick dot outline on mouseout
 	if(d3.select(this).attr("display") == "true"){
 		if(displayAll){
 			d3.selectAll(".dot").style("fill-opacity", 1).attr("stroke-opacity", function(){
@@ -1265,9 +1133,9 @@ function position(dot) {
  *@param {object} a - the svg dot to check against
  *@param {object} b - the svg dot to check against
  */
-// function order(a, b) {
-// 	return radius(b) - radius(a);
-// }
+function order(a, b) {
+	return radius(b) - radius(a);
+}
 
 //-----------------------------------Other Callback Functions for various elements----------------------------------
 /**
@@ -1299,135 +1167,113 @@ function draggedYear(date) {
 	} 
 }
 
-// // /**
-// //  *Callback Function: Called when user mouse's over an annotation shape on the canvas </p>
-// //  *Displays a tooltip with the annotation information at mouseover event
-// //  */
-// window.mouseoverAnnotation = function(event, d){
-	
-// 	// console.log("d.annotation in mouseover annotation: ", d.Annotation);
-
-// 	console.log("mouseoverAnnotations event : ", event);
-// 	console.log("mouseoverAnnotations d : ", d);
-// 	console.log("mouseoverAnnotations d.Annnotation  : ", d.Annotation);
-
-
-// 	tip.transition().duration(0);
-// 	tip.style('top', ( event.pageY - 20) + 'px')	// d3.event ⇨ (event) 
-// 		.style('left', ( event.pageX + 13) + 'px')	// d3.event ⇨ (event) 
-// 		.style('display', 'block')
-// 		.html(d.Annotation);
-// }
-
 /**
  *Callback Function: Called when user mouse's over an annotation shape on the canvas </p>
  *Displays a tooltip with the annotation information at mouseover event
  */
-// function mouseoverAnnotation(d){
-// 	tip.transition().duration(0);
-// 	tip.style('top', (d3.event.pageY - 20) + 'px')
-// 		.style('left', (d3.event.pageX + 13) + 'px')
-// 		.style('display', 'block')
-// 		.html(d.Annotation);
-// }
+function mouseoverAnnotation(event, d){		// event passed as first argument to all listeners 
+	tip.transition().duration(0);
+	tip.style('top', (event.pageY - 20) + 'px')		// d3.event ⇨ (event) 
+		.style('left', (event.pageX + 13) + 'px')	// d3.event ⇨ (event) 
+		.style('display', 'block')
+		.html(d.Annotation);
+}
 
-// //BUTTON CALLBACKS:
-// /**
-//  *Callback Function: Called when clicking on a selection (basin) on the legend </p>
-//  *Displays only dots related to that specific label
-//  */
-// function legendButton(d, selectMultiple){
-// 	console.log("LegendButton(), d: ", d);
-// 	displayAll = false;
-// 	var selectedGroup = d;
-// 	console.log("SelectedGroup: ", selectedGroup);
-// 	if(!selectMultiple){
-// 		d3.selectAll("path.tracer").style("stroke-opacity", 0);
-// 		d3.selectAll(".dot").style("fill-opacity", ".2").attr("stroke-width", "0").attr("display", "false");
-// 		d3.selectAll("text").style("font-weight", "normal")
-// 	}
-// 	d3.selectAll("text" + dot_class_selector(d)).style("font-weight", "bold");
-// 	setTimeout(function(){
-// 		d3.selectAll(dot_class_selector(d)).style("fill-opacity", "1").attr("stroke-width", function(){
-// 			if(d3.select(this).attr("checked") != "true"){
-// 				return 1;
-// 			}else{
-// 				return 4;
-// 			}
-// 		}).attr("display", "true");
-// 		if(tracer){
-// 			d3.selectAll("path" + path_id_selector(d)).style("stroke-opacity", .75);
-// 		}
-// 	}, 100);
+//BUTTON CALLBACKS:
+/**
+ *Callback Function: Called when clicking on a selection (basin) on the legend </p>
+ *Displays only dots related to that specific label
+ */
+function legendButton(d, selectMultiple){
+	displayAll = false;
+	selectedGroup = d;
+	if(!selectMultiple){
+		d3.selectAll("path.tracer").style("stroke-opacity", 0);
+		d3.selectAll(".dot").style("fill-opacity", ".2").attr("stroke-width", "0").attr("display", "false");
+		d3.selectAll("text").style("font-weight", "normal")
+	}
+	d3.selectAll("text" + dot_class_selector(d)).style("font-weight", "bold");
+	setTimeout(function(){
+		d3.selectAll(dot_class_selector(d)).style("fill-opacity", "1").attr("stroke-width", function(){
+			if(d3.select(this).attr("checked") != "true"){
+				return 1;
+			}else{
+				return 4;
+			}
+		}).attr("display", "true");
+		if(tracer){
+			d3.selectAll("path" + path_id_selector(d)).style("stroke-opacity", .75);
+		}
+	}, 100);
 	
-// }
+}
 
 /**
  *Callback Function: Called when clicking on Select All button </p>
  *Displays all dots
  */
-// function selectAllButton(){
-// 	displayAll = true;
-// 	d3.selectAll(".dot").style("fill-opacity", "1").attr("stroke-width", function(){
-// 		if(d3.select(this).attr("checked") != "true"){
-// 			return 1;
-// 		}else{
-// 			return 4;
-// 		}
-// 	}).attr("display", "true");
-// 	dot.sort(order);
-// 	d3.selectAll("text").style("font-weight", "normal")
-// 	if(tracer){
-// 		d3.selectAll("path.tracer").style("stroke-opacity", .75);
-// 	}
-// 	firstClick = true;
-// }
+function selectAllButton(){
+	displayAll = true;
+	d3.selectAll(".dot").style("fill-opacity", "1").attr("stroke-width", function(){
+		if(d3.select(this).attr("checked") != "true"){
+			return 1;
+		}else{
+			return 4;
+		}
+	}).attr("display", "true");
+	dot.sort(order);
+	d3.selectAll("text").style("font-weight", "normal")
+	if(tracer){
+		d3.selectAll("path.tracer").style("stroke-opacity", .75);
+	}
+	firstClick = true;
+}
 
 /**
  *Callback Function: Called when clicking Turn Tracer On/ Turn Tracer Off </p>
  *Either displays all tracers or turns them all off
  */
-// function tracerButton(){
-// 	var elem = document.getElementById("tracerButton");
-// 	if(elem.innerHTML == "Turn Tracer On"){
-// 		//turn on display for all tracers
-// 		if(displayAll){
-// 			d3.selectAll("path.tracer").style("stroke-opacity", .75);
-// 		}else{
-// 			d3.selectAll("path" + path_id_selector(selectedGroup)).style("stroke-opacity", .75);
-// 		}
-// 		tracer = true;
-// 		//if(devTools) devTools.document.getElementById("tracer").innerHTML = "<strong>tracer:</strong> true";
-// 		elem.innerHTML = "Turn Tracer Off";
-// 	}else{
-// 		//turn off display for tracers
-// 		d3.selectAll("path.tracer").style("stroke-opacity", 0);
-// 		tracer = false;
-// 		//if(devTools) devTools.document.getElementById("tracer").innerHTML = "<strong>tracer:</strong> false";
-// 		elem.innerHTML = "Turn Tracer On";
-// 	}
-// }
+function tracerButton(){
+	var elem = document.getElementById("tracerButton");
+	if(elem.innerHTML == "Turn Tracer On"){
+		//turn on display for all tracers
+		if(displayAll){
+			d3.selectAll("path.tracer").style("stroke-opacity", .75);
+		}else{
+			d3.selectAll("path" + path_id_selector(selectedGroup)).style("stroke-opacity", .75);
+		}
+		tracer = true;
+		//if(devTools) devTools.document.getElementById("tracer").innerHTML = "<strong>tracer:</strong> true";
+		elem.innerHTML = "Turn Tracer Off";
+	}else{
+		//turn off display for tracers
+		d3.selectAll("path.tracer").style("stroke-opacity", 0);
+		tracer = false;
+		//if(devTools) devTools.document.getElementById("tracer").innerHTML = "<strong>tracer:</strong> false";
+		elem.innerHTML = "Turn Tracer On";
+	}
+}
 
 /**
  *Callback Function: Called when clicking Turn Annotations On/ Turn Annotations Off </p>
  *Either displays the annotation shapes on the canvas or hides them
  */
-// function annotationsButton(){
-// 	var elem = document.getElementById("annotationsButton");
-// 	if(elem.innerHTML == "Turn Annotations On"){
-// 		properties.AnnotationShapes.toUpperCase() == "ON";
-// 		if($("annotationText").length){annotationText.attr("fill-opacity", 1).on("mouseover", mouseoverAnnotation);}
-// 		d3.selectAll(".annotationShape").attr("stroke-opacity", 1).on("mouseover", mouseoverAnnotation);
-// 		//if(devTools) devTools.document.getElementById("annotations").innerHTML = "<strong>annotations:</strong> true";
-// 		elem.innerHTML = "Turn Annotations Off";
-// 	}else{
-// 		properties.AnnotationShapes.toUpperCase() == "OFF";
-// 		if($("annotationText").length){annotationText.attr("fill-opacity", 0).on("mouseover", null);}
-// 		d3.selectAll(".annotationShape").attr("stroke-opacity", 0).on("mouseover", null);
-// 		//if(devTools) devTools.document.getElementById("annotations").innerHTML = "<strong>annotations:</strong> false";
-// 		elem.innerHTML = "Turn Annotations On";
-// 	}
-// }
+function annotationsButton(){
+	var elem = document.getElementById("annotationsButton");
+	if(elem.innerHTML == "Turn Annotations On"){
+		properties.AnnotationShapes.toUpperCase() == "ON";
+		if($("annotationText").length){annotationText.attr("fill-opacity", 1).on("mouseover", mouseoverAnnotation);}
+		d3.selectAll(".annotationShape").attr("stroke-opacity", 1).on("mouseover", mouseoverAnnotation);
+		//if(devTools) devTools.document.getElementById("annotations").innerHTML = "<strong>annotations:</strong> true";
+		elem.innerHTML = "Turn Annotations Off";
+	}else{
+		properties.AnnotationShapes.toUpperCase() == "OFF";
+		if($("annotationText").length){annotationText.attr("fill-opacity", 0).on("mouseover", null);}
+		d3.selectAll(".annotationShape").attr("stroke-opacity", 0).on("mouseover", null);
+		//if(devTools) devTools.document.getElementById("annotations").innerHTML = "<strong>annotations:</strong> false";
+		elem.innerHTML = "Turn Annotations On";
+	}
+}
 
 /**
  *Callback Function: Called when clicking on play button </p>
@@ -1435,12 +1281,12 @@ function draggedYear(date) {
  *Disables play button </p>
  *Enables pause button 
  */
-// function playButton(){
-// 	playAnimation();
-// 	document.getElementById("play").disabled = true;
-// 	document.getElementById("pause").disabled = false;
-// 	document.getElementById("back").disabled = false;
-// }
+function playButton(){
+	playAnimation();
+	document.getElementById("play").disabled = true;
+	document.getElementById("pause").disabled = false;
+	document.getElementById("back").disabled = false;
+}
 
 /**
  *Callback Function: Called when clicking on pause button </p>
@@ -1448,11 +1294,11 @@ function draggedYear(date) {
  *Disables pause button </p>
  *Enables play button 
  */
-// function pauseButton(){
-// 	stopAnimation();
-// 	document.getElementById("pause").disabled = true;
-// 	document.getElementById("play").disabled = false;
-// }
+function pauseButton(){
+	stopAnimation();
+	document.getElementById("pause").disabled = true;
+	document.getElementById("play").disabled = false;
+}
 
 /**
  *Callback Function: Called when clicking on replay button </p>
@@ -1477,8 +1323,7 @@ function replayButton(){
  *Called seperately to create a synchronous ordering of things,
  * this way the global variables are properly configured before starting the animation agian.
  */
-// function replay(){
-window.replay = function (){
+function replay(){
 	pathData = [];
 	updatePath(nest(interpolatePath(demensions.dateMin), pathData));
 	topYear = demensions.dateMin;
@@ -1492,22 +1337,22 @@ window.replay = function (){
  *Disables pause button </p>
  *Enables play button
  */
-// function backButton(){
-// 	currYear = roundDate(currYear);
-// 	decrementDate(currYear);
-// 	document.getElementById("pause").disabled = true;
-// 	document.getElementById("play").disabled = false;
-// 	document.getElementById("forward").disabled = false;
-// 	if(currYear >= demensions.dateMin){
-// 		stopAnimation();
-// 		setTimeout(function(){
-// 			displayYear(currYear);
-// 		}, 100);
-// 	}else{
-// 		displayYear(demensions.dateMin);
-// 		document.getElementById("back").disabled = true;
-// 	}
-// }
+function backButton(){
+	currYear = roundDate(currYear);
+	decrementDate(currYear);
+	document.getElementById("pause").disabled = true;
+	document.getElementById("play").disabled = false;
+	document.getElementById("forward").disabled = false;
+	if(currYear >= demensions.dateMin){
+		stopAnimation();
+		setTimeout(function(){
+			displayYear(currYear);
+		}, 100);
+	}else{
+		displayYear(demensions.dateMin);
+		document.getElementById("back").disabled = true;
+	}
+}
 
 /**
  *Callback Function: Called when clicking on the forward button </p>
@@ -1515,25 +1360,25 @@ window.replay = function (){
  *Disables pause button </p>
  *Enables play button
  */
-// function forwardButton(){
-// 	document.getElementById("back").disabled = false;
-// 	if(currYear <= demensions.maxPopulatedDate){
-// 		incrementDate(currYear);
-// 		document.getElementById("pause").disabled = true;
-// 		document.getElementById("play").disabled = false;
-// 		if(currYear <= demensions.maxPopulatedDate){
-// 			stopAnimation();
-// 			setTimeout(function(){
-// 				displayYear(currYear);
-// 			}, 100);
-// 		}else{
-// 			displayYear(demensions.maxPopulatedDate);
-// 			console.log("here")
-// 			document.getElementById("forward").disabled = true;
-// 			document.getElementById("play").disabled = true;
-// 		}
-// 	}
-// }
+function forwardButton(){
+	document.getElementById("back").disabled = false;
+	if(currYear <= demensions.maxPopulatedDate){
+		incrementDate(currYear);
+		document.getElementById("pause").disabled = true;
+		document.getElementById("play").disabled = false;
+		if(currYear <= demensions.maxPopulatedDate){
+			stopAnimation();
+			setTimeout(function(){
+				displayYear(currYear);
+			}, 100);
+		}else{
+			displayYear(demensions.maxPopulatedDate);
+			console.log("here")
+			document.getElementById("forward").disabled = true;
+			document.getElementById("play").disabled = true;
+		}
+	}
+}
 
 /**
  *Jquery event listener for when selecting a provider from the dropdown menu </p>
@@ -1541,8 +1386,7 @@ window.replay = function (){
  *Utilizes [select2]{@link https://select2.github.io/} library
  */
 $('select').on('select2:select', function(evt){
-	console.log("dropdown menu event: ", evt);
-	var provider = evt.params.data.text;
+	provider = evt.params.data.text;
 	d3.select(dot_id_selector(provider))
 		.style('stroke', 'yellow')
  		.attr('stroke-width', function(){
@@ -1562,7 +1406,7 @@ $('select').on('select2:select', function(evt){
  *Utilizes [select2]{@link https://select2.github.io/} library
  */
 $('select').on('select2:unselect', function(evt){
-	var provider = evt.params.data.text;
+	provider = evt.params.data.text;
 	var checkedNames = $("#providerNames").val();
 	var length = $("#providerNames").val().length;
 	d3.select(dot_id_selector(provider))
@@ -1582,15 +1426,14 @@ $('select').on('select2:unselect', function(evt){
 /**
  *Function which plays the animation starting from Config.currYear to Config.yearMax
  */
-// function playAnimation(){ //made global
-window.playAnimation = function(){
+function playAnimation(){
 	//start transition
-	var transitionFunction = svg.transition()
+	transitionFunction = svg.transition()
 		.duration(getTimeInterpolate(currYear, demensions.maxPopulatedDate)) //call getTimeInterpolate to calculate amount of time between years transition
 		.ease(d3.easeLinear)
 		.tween("year", tweenYear) //tweenYear callback function
 		.on("end", function(){
-			var end = true;
+			end = true;
 			document.getElementById("forward").disabled = true;
 			document.getElementById("play").disabled = true;
 		});
@@ -1601,9 +1444,7 @@ window.playAnimation = function(){
  *
  *@param {number} value - a value from speed slider from 0 - 100
  */
-// function setSpeed(value){ //made global
-window.setSpeed = function(value){
-
+function setSpeed(value){
 	//if(devTools) devTools.document.getElementById("speed").innerHTML = "<strong>speed:</strong> " + value + "%";
 	var speedScale = d3.scaleLinear()
 		.domain([100, 0])
@@ -1621,9 +1462,7 @@ window.setSpeed = function(value){
 /**
  *Function which pauses the animation
  */
-// function stopAnimation(){
-window.stopAnimation= function(date){
-
+function stopAnimation(){
 	transition = true;
 	svg.transition() //pause transition
 		.duration(0);
@@ -1647,15 +1486,13 @@ function tweenYear() {
  * 
  *@param {number} year - year to display data for
  */
-// function displayYear(date) {
-window.displayYear= function(date){
-
+function displayYear(date) {
 	date.setHours(0,0,0); // This WILL prove to be an issue if dealing with hourly time.
 	if(date <= demensions.maxPopulatedDate){
 		//display annotations
 		if(annotations_data){
 			if(getAnnotations(inputFileFormat(date))){
-				var d = getAnnotations(inputFileFormat(date));
+				d = getAnnotations(inputFileFormat(date));
 				annotations.html(
 					"<p class='datatable' style='text-decoration:underline;'><strong> Annotations </strong></p>" +
 					"<p class='datatable' style='font-weight:bold;'> Date: " + inputFileFormat(date) + "</p>" + 
@@ -1679,103 +1516,11 @@ window.displayYear= function(date){
 	   	if(date > topYear){
 	   		topYear = date;
 	   	}
-		currYear = new Date(date);
-		
-		// update data table for each year
-		// Get the parameters from the additional parameters file 
-		// var parametersFromFile = parameters[key(d)];
-		// Get the list of additional parameters to display in the table
-		// var additionalParameters = properties.Datatable.AdditionalParameters;
-
-		// The following are the default variables to be displayed in the datatable
-		// which consiste of the name of the dot and the four variables this visualization 
-		// displays.
-		// var data = interpolateData(demensions.min);
-		// console.log("update table data: ", data);
-		// var tableContents = "<p><strong>" + variables.Label +  "</strong>: " + key(data) + "</p>" +
-		// "<p><strong>" + variables.Date + "</strong>: " + formatDate(getClosest(date(data))) + "</p>" +
-		// "<p><strong>" + variables.XAxis + "</strong>: " + d3.format(".2f")(data.xVarRaw.toFixed(2)) + "</p>" +
-		// "<p><strong>" + variables.YAxis + "</strong>: " + d3.format(".2f")(data.yVarRaw.toFixed(2)) + "</p>" +
-		// "<p><strong>" + variables.Sizing + "</strong>: " + d3.format(".2f")(data.sizeRaw.toFixed(2)) + "</p>" +
-		// "<p><strong>" + variables.Grouping + "</strong>: " + color(d) + "</p>";
-		// // If there are additional parameters to show then add the content to the tablediv
-		// // if(parametersFromFile){
-		// // 	if(additionalParameters && additionalParameters.length > 0){
-		// // 		tableContents += "<br> Additional Parameters:<br>------------------";
-		// // 	}
-		// // 	for(var i = 0; i < additionalParameters.length; i++){
-		// // 		tableContents += "<p><strong>" + additionalParameters[i] + "</strong>: " + parametersFromFile[additionalParameters[i]]	 + "</p>";
-		// // 	}
-		// // }
-		// if(properties.AdditionalData){
-		// var additionalParameters = additionalParametersDictionary[key(data)];
-		// var showColumns = properties.AdditionalData.ShowColumns;
-		// // If there are additional parameters to show then add the content to the tablediv
-		// if(additionalParameters) {
-		// tableContents += "<br> Additional Parameters:<br>------------------";
-		// for(var i = 0; i < showColumns.length; i++){
-		// tableContents += "<p><strong>" + showColumns[i] + "</strong>: " + additionalParameters[showColumns[i]] + "</p>";
-		// }
-		// }
-		// }
-
-		// //display information in data table if Config file specifies datatable
-		// tablediv.html( tableContents );
-
-
-
-
-
-
+	    currYear = new Date(date);
 	}else{
 		stopAnimation();
 	}
     //if(devTools) devTools.document.getElementById("currdate").innerHTML = "<strong>date:</strong> " + date;
-
-
-
-		// update data table for each year
-		// Get the parameters from the additional parameters file 
-		// var parametersFromFile = parameters[key(d)];
-		// Get the list of additional parameters to display in the table
-		// var additionalParameters = properties.Datatable.AdditionalParameters;
-
-		// The following are the default variables to be displayed in the datatable
-		// which consiste of the name of the dot and the four variables this visualization 
-		// displays.
-		// var data = interpolateData(demensions.min);
-		// console.log("update table data: ", data);
-		// var tableContents = "<p><strong>" + variables.Label +  "</strong>: " + key(data) + "</p>" +
-		// "<p><strong>" + variables.Date + "</strong>: " + formatDate(getClosest(date(data))) + "</p>" +
-		// "<p><strong>" + variables.XAxis + "</strong>: " + d3.format(".2f")(data.xVarRaw.toFixed(2)) + "</p>" +
-		// "<p><strong>" + variables.YAxis + "</strong>: " + d3.format(".2f")(data.yVarRaw.toFixed(2)) + "</p>" +
-		// "<p><strong>" + variables.Sizing + "</strong>: " + d3.format(".2f")(data.sizeRaw.toFixed(2)) + "</p>" +
-		// "<p><strong>" + variables.Grouping + "</strong>: " + color(d) + "</p>";
-		// // If there are additional parameters to show then add the content to the tablediv
-		// // if(parametersFromFile){
-		// // 	if(additionalParameters && additionalParameters.length > 0){
-		// // 		tableContents += "<br> Additional Parameters:<br>------------------";
-		// // 	}
-		// // 	for(var i = 0; i < additionalParameters.length; i++){
-		// // 		tableContents += "<p><strong>" + additionalParameters[i] + "</strong>: " + parametersFromFile[additionalParameters[i]]	 + "</p>";
-		// // 	}
-		// // }
-		// if(properties.AdditionalData){
-		// var additionalParameters = additionalParametersDictionary[key(data)];
-		// var showColumns = properties.AdditionalData.ShowColumns;
-		// // If there are additional parameters to show then add the content to the tablediv
-		// if(additionalParameters) {
-		// tableContents += "<br> Additional Parameters:<br>------------------";
-		// for(var i = 0; i < showColumns.length; i++){
-		// tableContents += "<p><strong>" + showColumns[i] + "</strong>: " + additionalParameters[showColumns[i]] + "</p>";
-		// }
-		// }
-		// }
-
-		// //display information in data table if Config file specifies datatable
-		// tablediv.html( tableContents );
-
-
 }
 
 /**
@@ -1813,13 +1558,11 @@ function interpolatePath(year) {
  *
  *@param {array} newData - an array of updated data
  */
-// function updatePath(newData){
-window.updatePath= function(newData){
-	
+function updatePath(newData){
 	d3.select("#dataline").selectAll("path")
 		.data(newData) //update path with newData
 		.attr("d", function(d){
-			return line(d[1]); // d[1] equivalent to d.values
+			return line(d.values);
 		});
 }
 
@@ -1830,8 +1573,6 @@ window.updatePath= function(newData){
  *@param {number} year - current year to get data for
  */
 function interpolateData(date) {
-
-	
     return json.data.map(function(d) {
       return {
         //X-Axis
@@ -1876,10 +1617,7 @@ function interpolateValues(values, year) {
 /**
  *Returns an array of dates according to precision units specified in Config file
  */
-function dateArray_function(demensions){
-	
-	// console.log("dvar: ", dvar);
-
+function dateArray_function(){
 	var Date1 = new Date(demensions.dateMin);
 	var Date2 = new Date(demensions.dateMax);
 	var returnThis = [];
@@ -1981,7 +1719,7 @@ function checkYValue(val){
  *@param {number} labelDim - height of largest label on y-axis
  */
 function getMaxYTicks(areaDim, labelDim){
-	var maxTicks = (areaDim)/(labelDim + 18);
+	maxTicks = (areaDim)/(labelDim + 18);
 	maxTicks = d3.format(".0f")(maxTicks);
 	return parseInt(maxTicks);
 }
@@ -1992,7 +1730,7 @@ function getMaxYTicks(areaDim, labelDim){
  *@param {number} labelDim - width of largest label on x-axis
  */
 function getMaxXTicks(areaDim, labelDim){
-	var maxTicks = (areaDim - 120)/(labelDim + 25);
+	maxTicks = (areaDim - 120)/(labelDim + 25);
 	maxTicks = d3.format(".0f")(maxTicks);
 	return parseInt(maxTicks);
 }
@@ -2039,16 +1777,15 @@ function logTicks(areaDim){
  *@param {object} json - json object with data 
  */
 function getGroupingNames(json){
+	array = [];
 
-	var array = [];
-	// --d3.nest Depricated--
-	// var nested =  d3.nest()
+	// D3.nest depricated
+	// var nested = d3.nest()
 	// 	.key(function(d){return d[variables.Grouping];})
 	// 	.entries(json.data);
 
 	var group = d3.group(json.data, function(d){return d[variables.Grouping];})
-	// var rollup = d3.rollup(json.data, v => v.length, function(d){return d[variables.Grouping];}); // another replacement for d3.nest 
-
+	
 	var mapIter = group.keys();
 	
 	for(var i = 0; i < group.size; i++){
@@ -2134,8 +1871,9 @@ function specificPathData(data){
  *@param {String} shape - string specifying which shape data you want returned example: (line, rect, symbol, text)
  */
 function retrieveAnnotations(shape){
-
 	var returnThis;
+
+	// d3.nest depricated 
 	// var nested = d3.nest()
 	// 	.key(function(d){return d.ShapeType;})
 	// 	.entries(annotations_data.SpecificAnnotations);
@@ -2165,9 +1903,11 @@ function retrieveByShape(shape){
 	var returnThis;
 	data = retrieveAnnotations("Symbol");
 
+	// d3.nest depricated
 	// var nested = d3.nest()
 	// 	.key(function(d){return d.Properties.SymbolStyle;})
 	// 	.entries(data.values);
+
 
 	var group =  d3.group(data.get('Symbol'), function(d){return d.Properties.SymbolStyle;});
 
@@ -2184,22 +1924,26 @@ function retrieveByShape(shape){
 	}
 }
 
-// /**
-//  *Adds data to the array and then nests that data by name </p>
-//  *[d3.js nest]{@link https://github.com/d3/d3-3.x-api-reference/blob/master/Arrays.md#nest}
-//  *
-//  *@param {object} data - an object containing the data
-//  *@param {array} array - an array containing data
-//  */
-// function nest(data, array){
-// 	for(var i = 0; i < data.length; i++){
-// 		array.push(data[i]);
-// 	}
-// 	var nested = d3.nest()
-// 		.key(function(d){return d.name;})
-// 		.entries(array);
-// 	return nested;
-// }
+/**
+ *Adds data to the array and then nests that data by name </p>
+ *[d3.js nest]{@link https://github.com/d3/d3-3.x-api-reference/blob/master/Arrays.md#nest}
+ *
+ *@param {object} data - an object containing the data
+ *@param {array} array - an array containing data
+ */
+function nest(data, array){
+	for(var i = 0; i < data.length; i++){
+		array.push(data[i]);
+	}
+
+	// depricated
+	// var nested = d3.group()
+	// 	.key(function(d){return d.name;})
+	// 	.entries(array);
+	
+	var group = d3.group(array, function(d){return d.name;});
+	return group;
+}
 
 /**
  *Returns an array of names for each dot on the visualization
@@ -2207,8 +1951,7 @@ function retrieveByShape(shape){
  *@param {object} json - json object with data
  */
 function getIndividualDots(json){
-	var array = [];
-
+	array = [];
 	// Depricated
 	// var nested = d3.nest()
 	// 	.key(function(d){return d[variables.Label];})
@@ -2231,9 +1974,9 @@ function getIndividualDots(json){
  *
  *@param {number} value - number to check minimum on
  */
-// function minRadius(value){
-// 	return value < 3.0 ? 3.0 : value;
-// }
+function minRadius(value){
+	return value < 3.0 ? 3.0 : value;
+}
 
 /**
  * Return the additional parameters, if any, provided from the additional parameter data file.
@@ -2279,7 +2022,7 @@ function getAnnotations(year){
 function getClosest(date) {
     var close;
     var distance;
-    for (var i = 0; i < dateArray.length; i++) {
+    for (i = 0; i < dateArray.length; i++) {
         if(timeDiff(date, dateArray[i]) < distance || distance === undefined){
         	distance = timeDiff(date, dateArray[i]);
         	close = dateArray[i];
@@ -2295,7 +2038,7 @@ function getClosest(date) {
  *@param {number} end - the ending year
  */
 function getTimeInterpolate(startDate, endDate){
-	var distance = timeScale(endDate) - timeScale(startDate);
+	distance = timeScale(endDate) - timeScale(startDate);
 	return distance * visSpeed;
 }
 
@@ -2309,40 +2052,38 @@ function timeDiff(date1, date2){
 	return Math.abs(date2.getTime() - date1.getTime());
 }
 
-// /**
-//  *Depending on precision units from Config file, incremments the date 
-//  */
-// function incrementDate(date){
-// 	switch(precisionUnit){
-// 		case "Year":
-// 			date.setFullYear(date.getFullYear() + precisionInt);
-// 			break;
-// 		case "Month":
-// 			date.setMonth(date.getMonth() + precisionInt);
-// 			break;
-// 		case "Day":
-// 			date.setDate(date.getDate() + precisionInt);
-// 			break;
-// 		case "Hour":
-// 			date.setHours(date.getHours() + precisionInt);
-// 			break;
-// 		case "Minute":
-// 			date.setMinutes(date.getMinutes() + precisionInt);
-// 			break;
-// 		case "Second":
-// 			date.setSeconds(date.getSeconds() + precisionInt);
-// 			break;
-// 		default:
-// 			break;
-// 	}
-// }
+/**
+ *Depending on precision units from Config file, incremments the date 
+ */
+function incrementDate(date){
+	switch(precisionUnit){
+		case "Year":
+			date.setFullYear(date.getFullYear() + precisionInt);
+			break;
+		case "Month":
+			date.setMonth(date.getMonth() + precisionInt);
+			break;
+		case "Day":
+			date.setDate(date.getDate() + precisionInt);
+			break;
+		case "Hour":
+			date.setHours(date.getHours() + precisionInt);
+			break;
+		case "Minute":
+			date.setMinutes(date.getMinutes() + precisionInt);
+			break;
+		case "Second":
+			date.setSeconds(date.getSeconds() + precisionInt);
+			break;
+		default:
+			break;
+	}
+}
 
 /**
  *Depending on precision units from Config file, decrements the date
  */
-// function decrementDate(date){
-window.decrementDate = function(date){
-
+function decrementDate(date){
 	switch(precisionUnit){
 		case "Year":
 			date.setFullYear(date.getFullYear() - precisionInt);
@@ -2367,13 +2108,11 @@ window.decrementDate = function(date){
 	}
 }
 
-// function roundDate(date){
-window.roundDate = function(date){
-
+function roundDate(date){
 	switch(precisionUnit){
 		case "Year":
-			var returnThis = new Date(date);
-			var currMonth = date.getMonth();
+			returnThis = new Date(date);
+			currMonth = date.getMonth();
 			returnThis.setMonth(0);
 			returnThis.setDate(1);
 			returnThis.setHours(0);
@@ -2427,111 +2166,112 @@ window.roundDate = function(date){
 			break;
 	}
 }
-// //----------------------------Helper Functions that minipulate strings for d3.select() purposes-------------------------
-// /**
-//  *Removes symbols form string, returns the string with no symbols
-//  *
-//  *@param {string} string - a string
-//  */
-// function checkForSymbol(string){
-// 	return string.replace(/[^A-Za-z0-9]/g, '');
-// }  
+//----------------------------Helper Functions that minipulate strings for d3.select() purposes-------------------------
+/**
+ *Removes symbols form string, returns the string with no symbols
+ *
+ *@param {string} string - a string
+ */
+function checkForSymbol(string){
+	return string.replace(/[^A-Za-z0-9]/g, '');
+}  
 
-// /**
-//  *Converts the string into a selector name </p>
-//  *ex: 'Denver Water' -> '.Denver.Water'
-//  */
-// function class_selector(inputString){
-// 	var string = inputString.split(" ");
-// 	var returnThis = ".";
-// 	for(i = 0; i < string.length - 1; i++){
-// 		if(checkForSymbol(string[i]) != ""){
-// 			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '')// + ".";
-// 		}
-// 	}
-// 	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
-// 	return returnThis.toString();
-// }
+/**
+ *Converts the string into a selector name </p>
+ *ex: 'Denver Water' -> '.Denver.Water'
+ */
+function class_selector(inputString){
+	var string = inputString.split(" ");
+	var returnThis = ".";
+	for(i = 0; i < string.length - 1; i++){
+		if(checkForSymbol(string[i]) != ""){
+			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '')// + ".";
+		}
+	}
+	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
+	return returnThis.toString();
+}
 
-// /**
-//  *Converts the string into a selector name </p>
-//  *ex: 'Denver Water' -> '.Denver.Water'
-//  */
-// function convert_to_id(inputString){
-// 	var string = inputString.split(" ");
-// 	var returnThis = "";
-// 	for(var i = 0; i < string.length - 1; i++){
-// 		if(checkForSymbol(string[i]) != ""){
-// 			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '') + "";
-// 		}
-// 	}
-// 	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
-// 	return returnThis;
-// }
+/**
+ *Converts the string into a selector name </p>
+ *ex: 'Denver Water' -> '.Denver.Water'
+ */
+function convert_to_id(inputString){
 
-// /**
-//  *Converts the string into an id selector name </p>
-//  *ex: 'Denver Water' -> '.Denver.Water'
-//  */
-// function dot_id_selector(inputString){
-// 	var string = inputString.split(" ");
-// 	var returnThis = "#D";
-// 	for(i = 0; i < string.length - 1; i++){
-// 		if(checkForSymbol(string[i]) != ""){
-// 			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '') + "";
-// 		}
-// 	}
-// 	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
-// 	return returnThis.toString();
-// }
+	var string = inputString.split(" ");
+	var returnThis = "";
+	for(i = 0; i < string.length - 1; i++){
+		if(checkForSymbol(string[i]) != ""){
+			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '') + "";
+		}
+	}
+	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
+	return returnThis;
+}
 
-// /**
-//  *Converts the string into a selector name </p>
-//  *ex: 'Denver Water' -> '.Denver.Water'
-//  */
-// function dot_class_selector(inputString){
-// 	var string = inputString.split(" ");
-// 	var returnThis = ".D";
-// 	for(i = 0; i < string.length - 1; i++){
-// 		if(checkForSymbol(string[i]) != ""){
-// 			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '')// + ".";
-// 		}
-// 	}
-// 	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
-// 	return returnThis.toString();
-// }
+/**
+ *Converts the string into an id selector name </p>
+ *ex: 'Denver Water' -> '.Denver.Water'
+ */
+function dot_id_selector(inputString){
+	var string = inputString.split(" ");
+	var returnThis = "#D";
+	for(i = 0; i < string.length - 1; i++){
+		if(checkForSymbol(string[i]) != ""){
+			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '') + "";
+		}
+	}
+	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
+	return returnThis.toString();
+}
 
-// /**
-//  *Converts the string into a selector name </p>
-//  *ex: 'Denver Water' -> '.Denver.Water'
-//  */
-// function path_class_selector(inputString){
-// 	var string = inputString.split(" ");
-// 	var returnThis = ".T";
-// 	for(i = 0; i < string.length - 1; i++){
-// 		if(checkForSymbol(string[i]) != ""){
-// 			returnThis = returnThis + string[i]//.replace(/[^A-Za-z0-9]/g, '') + ".";
-// 		}
-// 	}
-// 	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
-// 	return returnThis.toString();
-// }
+/**
+ *Converts the string into a selector name </p>
+ *ex: 'Denver Water' -> '.Denver.Water'
+ */
+function dot_class_selector(inputString){
+	var string = inputString.split(" ");
+	var returnThis = ".D";
+	for(i = 0; i < string.length - 1; i++){
+		if(checkForSymbol(string[i]) != ""){
+			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '')// + ".";
+		}
+	}
+	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
+	return returnThis.toString();
+}
 
-// /**
-//  *Converts the string into an id selector name </p>
-//  *ex: 'Denver Water' -> '.Denver.Water'
-//  */
-// function path_id_selector(inputString){
-// 	var string = inputString.split(" ");
-// 	var returnThis = "#T";
-// 	for(i = 0; i < string.length - 1; i++){
-// 		if(checkForSymbol(string[i]) != ""){
-// 			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '') + "";
-// 		}
-// 	}
-// 	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
-// 	return returnThis.toString();
-// }
+/**
+ *Converts the string into a selector name </p>
+ *ex: 'Denver Water' -> '.Denver.Water'
+ */
+function path_class_selector(inputString){
+	var string = inputString.split(" ");
+	var returnThis = ".T";
+	for(i = 0; i < string.length - 1; i++){
+		if(checkForSymbol(string[i]) != ""){
+			returnThis = returnThis + string[i]//.replace(/[^A-Za-z0-9]/g, '') + ".";
+		}
+	}
+	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
+	return returnThis.toString();
+}
+
+/**
+ *Converts the string into an id selector name </p>
+ *ex: 'Denver Water' -> '.Denver.Water'
+ */
+function path_id_selector(inputString){
+	var string = inputString.split(" ");
+	var returnThis = "#T";
+	for(i = 0; i < string.length - 1; i++){
+		if(checkForSymbol(string[i]) != ""){
+			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '') + "";
+		}
+	}
+	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
+	return returnThis.toString();
+}
 
 //-----------------------Helper functions that move elements forward or back in the svg canvas-------------------------
 /*
@@ -2546,11 +2286,11 @@ d3.selection.prototype.moveToFront = function() {
 //--------------------------------------------------Resize------------------------------------------------------------
 //upate Table if windows is resized
 //in ./javascript/resize.js
-// d3.select(window).on('resize', function(){
-// 	if(gapminderSelected){
-// 		resize();
-// 	}
-// });
+d3.select(window).on('resize', function(){
+	if(gapminderSelected){
+		resize();
+	}
+});
 
 window.onunload = function(){
 	devTools.close();
@@ -2560,13 +2300,12 @@ window.onunload = function(){
  *Resizes the chart elements when window is resized
  */
 function resize() {
-    let height = $("#Gapminder").parent().height() - 270;
-	let width = $(".box").width();
+    height = $("#Gapminder").parent().height() - 270;
+	width = $(".box").width();
 
 	console.log("width: ", width);
 	console.log("height: ", height);
-
-
+	
 	d3.select("svg.box").attr("height", height);
 
 	xScale.range([yTextBox.width + margin.left + 15, (width-25)]);
@@ -2606,9 +2345,7 @@ function resize() {
 	//update line paths (tracers) for dots
 	if(tracer){
 		line.x(function(d) {return xScale(x(d));}).y(function(d) {return yScale(y(d));})	
-		path.attr("d", function(d){
-			return line(d[1]); // data value accessed using d[1]
-		});
+		path.attr("d", function(d){return line(d.values);});
 	}
 
 	if($("#annotationLine").length){
@@ -2781,7 +2518,6 @@ function updateGapminder(date){
 	/*pathData = [];
 	updatePath(interpolatePath(demensions.dateMin), pathData);*/
 
-	// update path here instead !!!
 	if(!tracer){
 		document.getElementById("tracerButton").innerHTML = "Turn Tracer On";
 	}
@@ -2789,491 +2525,4 @@ function updateGapminder(date){
 	d3.selectAll(".dot").remove();
 	var data = interpolateData(demensions.dateMin);
 	add_dots();
-}
-
-// /**
-//  *Callback Function: Called when clicking Turn Annotations On/ Turn Annotations Off </p>
-//  *Either displays the annotation shapes on the canvas or hides them
-//  */
-// function annotationsButton(){
-// 	var elem = document.getElementById("annotationsButton");
-// 	if(elem.innerHTML == "Turn Annotations On"){
-// 		properties.AnnotationShapes.toUpperCase() == "ON";
-// 		if($("annotationText").length){annotationText.attr("fill-opacity", 1).on("mouseover", mouseoverAnnotation);}
-// 		d3.selectAll(".annotationShape").attr("stroke-opacity", 1).on("mouseover", mouseoverAnnotation);
-// 		//if(devTools) devTools.document.getElementById("annotations").innerHTML = "<strong>annotations:</strong> true";
-// 		elem.innerHTML = "Turn Annotations Off";
-// 	}else{
-// 		properties.AnnotationShapes.toUpperCase() == "OFF";
-// 		if($("annotationText").length){annotationText.attr("fill-opacity", 0).on("mouseover", null);}
-// 		d3.selectAll(".annotationShape").attr("stroke-opacity", 0).on("mouseover", null);
-// 		//if(devTools) devTools.document.getElementById("annotations").innerHTML = "<strong>annotations:</strong> false";
-// 		elem.innerHTML = "Turn Annotations On";
-// 	}
-// }
-
-// end wrapper function
-}
-
-
-/**
- *Callback Function: Called when clicking on Select All button </p>
- *Displays all dots
- */
-export function selectAllButton(){
-
-	displayAll = true;
-	d3.selectAll(".dot").style("fill-opacity", "1").attr("stroke-width", function(){
-		if(d3.select(this).attr("checked") != "true"){
-			return 1;
-		}else{
-			return 4;
-		}
-	}).attr("display", "true");
-	// console.log("Dot: ", dot);
-	dot.sort(order);
-	d3.selectAll("text").style("font-weight", "normal")
-	if(tracer){
-		d3.selectAll("path.tracer").style("stroke-opacity", .75);
-	}
-	firstClick = true;
-}
-
-/**
- *Callback Function: Called when clicking Turn Tracer On/ Turn Tracer Off </p>
- *Either displays all tracers or turns them all off
- */
-export function tracerButton(){
-	var elem = document.getElementById("tracerButton");
-	if(elem.innerHTML == "Turn Tracer On"){
-		//turn on display for all tracers
-		if(displayAll){
-			d3.selectAll("path.tracer").style("stroke-opacity", .75);
-		}else{
-			d3.selectAll("path" + path_id_selector(selectedGroup)).style("stroke-opacity", .75);
-		}
-		tracer = true;
-		//if(devTools) devTools.document.getElementById("tracer").innerHTML = "<strong>tracer:</strong> true";
-		elem.innerHTML = "Turn Tracer Off";
-	}else{
-		//turn off display for tracers
-		d3.selectAll("path.tracer").style("stroke-opacity", 0);
-		tracer = false;
-		//if(devTools) devTools.document.getElementById("tracer").innerHTML = "<strong>tracer:</strong> false";
-		elem.innerHTML = "Turn Tracer On";
-	}
-}
-
-
-/**
- *Callback Function: Called when clicking Turn Annotations On/ Turn Annotations Off </p>
- *Either displays the annotation shapes on the canvas or hides them
- */
-export function annotationsButton(){
-	var elem = document.getElementById("annotationsButton");
-	if(elem.innerHTML == "Turn Annotations On"){
-		properties.AnnotationShapes.toUpperCase() == "ON";
-		if($("annotationText").length){annotationText.attr("fill-opacity", 1).on("mouseover", mouseoverAnnotation);}
-		d3.selectAll(".annotationShape").attr("stroke-opacity", 1).on("mouseover", mouseoverAnnotation);
-		//if(devTools) devTools.document.getElementById("annotations").innerHTML = "<strong>annotations:</strong> true";
-		elem.innerHTML = "Turn Annotations Off";
-	}else{
-		properties.AnnotationShapes.toUpperCase() == "OFF";
-		if($("annotationText").length){annotationText.attr("fill-opacity", 0).on("mouseover", null);}
-		d3.selectAll(".annotationShape").attr("stroke-opacity", 0).on("mouseover", null);
-		//if(devTools) devTools.document.getElementById("annotations").innerHTML = "<strong>annotations:</strong> false";
-		elem.innerHTML = "Turn Annotations On";
-	}
-}
-
-
-/**
- *Callback Function: Called when clicking on play button </p>
- *Starts the animation </p>
- *Disables play button </p>
- *Enables pause button 
- */
-export function playButton(){
-	playAnimation();
-	document.getElementById("play").disabled = true;
-	document.getElementById("pause").disabled = false;
-	document.getElementById("back").disabled = false;
-}
-
-/**
- *Callback Function: Called when clicking on pause button </p>
- *Pauses the animation </p>
- *Disables pause button </p>
- *Enables play button 
- */
-export function pauseButton(){
-	stopAnimation();
-	document.getElementById("pause").disabled = true;
-	document.getElementById("play").disabled = false;
-}
-
-
-/**
- *Callback Function: Called when clicking on replay button </p>
- *Restarts the animation from Config.yearMin </p>
- *Disables play button </p>
- *Enables pause button 
- */
-export function replayButton(){
-	stopAnimation();
-	document.getElementById("play").disabled = true;
-	document.getElementById("pause").disabled = false;
-	document.getElementById("back").disabled = false;
-	document.getElementById("forward").disabled = false;
-	var end = false;
-	setTimeout(function(){
-		replay()
-	}, 100);
-}
-
-/**
- *Callback Function: Called when clicking on back button </p>
- *Displays the animation one year/date back </p>
- *Disables pause button </p>
- *Enables play button
- */
-export function backButton(){
-	currYear = roundDate(currYear);
-	decrementDate(currYear);
-	document.getElementById("pause").disabled = true;
-	document.getElementById("play").disabled = false;
-	document.getElementById("forward").disabled = false;
-	if(currYear >= demensions.dateMin){
-		stopAnimation();
-		setTimeout(function(){
-			displayYear(currYear);
-		}, 100);
-	}else{
-		displayYear(demensions.dateMin);
-		document.getElementById("back").disabled = true;
-	}
-}
-
-/**
- *Callback Function: Called when clicking on the forward button </p>
- *Displays the animation one year/date forward </p>
- *Disables pause button </p>
- *Enables play button
- */
-export function forwardButton(){
-	document.getElementById("back").disabled = false;
-	if(currYear <= demensions.maxPopulatedDate){
-		incrementDate(currYear);
-		document.getElementById("pause").disabled = true;
-		document.getElementById("play").disabled = false;
-		if(currYear <= demensions.maxPopulatedDate){
-			stopAnimation();
-			setTimeout(function(){
-				displayYear(currYear);
-			}, 100);
-		}else{
-			displayYear(demensions.maxPopulatedDate);
-			document.getElementById("forward").disabled = true;
-			document.getElementById("play").disabled = true;
-		}
-	}
-}
-
-/**
- *Called inside replayButton() </p>
- *Called seperately to create a synchronous ordering of things,
- * this way the global variables are properly configured before starting the animation agian.
- */
-// export function replay(){
-// 	var pathData = [];
-// 	console.log()
-// 	updatePath(nest(interpolatePath(demensions.dateMin), pathData));
-// 	topYear = demensions.dateMin;
-// 	currYear = demensions.dateMin;
-// 	playAnimation();
-// }
-
-/**
- *Ensures smallest dots are above larger dots
- *
- *@param {object} a - the svg dot to check against
- *@param {object} b - the svg dot to check against
- */
-function order(a, b) {
-	return radius(b) - radius(a);
-}
-
-
-/**
- *Returns a minimum value for the radius of dots (3.0px)
- *
- *@param {number} value - number to check minimum on
- */
-function minRadius(value){
-	return value < 3.0 ? 3.0 : value;
-}
-
-//-----------------------------------Other Callback Functions for various elements----------------------------------
-// /**
-//  *Callback Function: Called when clicking and dragging the year slider </p>
-//  *Pauses animation and calls display year to display data associated with selected date
-//  *
-//  *@param {number} year - date selected from year slider
-//  */ 
-// function draggedYear(date) {
-// 	slider_tooltip.style("opacity", 0);
-// 	date.setHours(0,0,0);
-// 	stopAnimation();
-// 	document.getElementById("pause").disabled = true;
-// 	document.getElementById("play").disabled = false;
-// 	if(date >= demensions.dateMin && date < demensions.maxPopulatedDate){
-// 		displayYear(date);
-// 		document.getElementById("forward").disabled = false;
-// 		document.getElementById("back").disabled = false;
-// 		document.getElementById("play").disabled = false;
-// 	} 
-// 	else if(date > demensions.maxPopulatedDate){
-// 		displayYear(demensions.maxPopulatedDate);
-// 		document.getElementById("forward").disabled = true;
-// 		document.getElementById("play").disabled = true;
-// 	} 
-// 	else if(date < demensions.dateMin){
-// 		displayYear(demensions.dateMin);
-// 		document.getElementById("back").disabled = true;
-// 	} 
-// }
-
-// /**
-//  *Callback Function: Called when user mouse's over an annotation shape on the canvas </p>
-//  *Displays a tooltip with the annotation information at mouseover event
-//  */
-function mouseoverAnnotation(event, d){
-	
-	// console.log("d.annotation in mouseover annotation: ", d.Annotation);
-
-	console.log("mouseoverAnnotations event : ", event);
-	console.log("mouseoverAnnotations d : ", d);
-	console.log("mouseoverAnnotations d.Annnotation  : ", d.Annotation);
-
-
-	tip.transition().duration(0);
-	tip.style('top', ( event.pageY - 20) + 'px')	// d3.event ⇨ (event) 
-		.style('left', ( event.pageX + 13) + 'px')	// d3.event ⇨ (event) 
-		.style('display', 'block')
-		.html(d.Annotation);
-}
-
-//BUTTON CALLBACKS:
-/**
- *Callback Function: Called when clicking on a selection (basin) on the legend </p>
- *Displays only dots related to that specific label
- */
-function legendButton(d, selectMultiple){
-	// console.log("LegendButton(), d: ", d);
-	displayAll = false;
-	var selectedGroup = d;
-	console.log("SelectedGroup: ", selectedGroup);
-	if(!selectMultiple){
-		d3.selectAll("path.tracer").style("stroke-opacity", 0);
-		d3.selectAll(".dot").style("fill-opacity", ".2").attr("stroke-width", "0").attr("display", "false");
-		d3.selectAll("text").style("font-weight", "normal")
-	}
-	d3.selectAll("text" + dot_class_selector(d)).style("font-weight", "bold");
-	setTimeout(function(){
-		d3.selectAll(dot_class_selector(d)).style("fill-opacity", "1").attr("stroke-width", function(){
-			if(d3.select(this).attr("checked") != "true"){
-				return 1;
-			}else{
-				return 4;
-			}
-		}).attr("display", "true");
-		if(tracer){
-			d3.selectAll("path" + path_id_selector(d)).style("stroke-opacity", .75);
-		}
-	}, 100);
-	
-}
-
-//---------------Various accessors that specify the four dimensions of data to visualize.-------------------
-/**
- *Accessor function for x-variable
- */
-function x(d) { return d.xVar; }
-/**
- *Accessor function for y-variable
- */
-function y(d) { return d.yVar; }
-/**
- *Accessor function for size of dot
- */
-function radius(d) { return d.size; }
-/**
- *Accessor function for color of dot
- */
-function color(d) {return d.color; }
-/**
- *Accessor function for name of dot
- */
-function key(d) { return d.name; }
-/**
- *Accessor function for date
- */
-function date(d){ return d.year; }
-
-//----------------------------Helper Functions that minipulate strings for d3.select() purposes-------------------------
-/**
- *Removes symbols form string, returns the string with no symbols
- *
- *@param {string} string - a string
- */
-function checkForSymbol(string){
-	return string.replace(/[^A-Za-z0-9]/g, '');
-}  
-
-/**
- *Converts the string into a selector name </p>
- *ex: 'Denver Water' -> '.Denver.Water'
- */
-function class_selector(inputString){
-	var string = inputString.split(" ");
-	var returnThis = ".";
-	for(var i = 0; i < string.length - 1; i++){
-		if(checkForSymbol(string[i]) != ""){
-			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '')// + ".";
-		}
-	}
-	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
-	return returnThis.toString();
-}
-
-/**
- *Converts the string into a selector name </p>
- *ex: 'Denver Water' -> '.Denver.Water'
- */
-function convert_to_id(inputString){
-	var string = inputString.split(" ");
-	var returnThis = "";
-	for(var i = 0; i < string.length - 1; i++){
-		if(checkForSymbol(string[i]) != ""){
-			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '') + "";
-		}
-	}
-	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
-	return returnThis;
-}
-
-/**
- *Converts the string into an id selector name </p>
- *ex: 'Denver Water' -> '.Denver.Water'
- */
-function dot_id_selector(inputString){
-	var string = inputString.split(" ");
-	var returnThis = "#D";
-	for(var i = 0; i < string.length - 1; i++){
-		if(checkForSymbol(string[i]) != ""){
-			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '') + "";
-		}
-	}
-	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
-	return returnThis.toString();
-}
-
-/**
- *Converts the string into a selector name </p>
- *ex: 'Denver Water' -> '.Denver.Water'
- */
-function dot_class_selector(inputString){
-	var string = inputString.split(" ");
-	var returnThis = ".D";
-	for(var i = 0; i < string.length - 1; i++){
-		if(checkForSymbol(string[i]) != ""){
-			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '')// + ".";
-		}
-	}
-	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
-	return returnThis.toString();
-}
-
-/**
- *Converts the string into a selector name </p>
- *ex: 'Denver Water' -> '.Denver.Water'
- */
-function path_class_selector(inputString){
-	var string = inputString.split(" ");
-	var returnThis = ".T";
-	for(var i = 0; i < string.length - 1; i++){
-		if(checkForSymbol(string[i]) != ""){
-			returnThis = returnThis + string[i]//.replace(/[^A-Za-z0-9]/g, '') + ".";
-		}
-	}
-	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
-	return returnThis.toString();
-}
-
-/**
- *Converts the string into an id selector name </p>
- *ex: 'Denver Water' -> '.Denver.Water'
- */
-function path_id_selector(inputString){
-	var string = inputString.split(" ");
-	var returnThis = "#T";
-	for(var i = 0; i < string.length - 1; i++){
-		if(checkForSymbol(string[i]) != ""){
-			returnThis = returnThis + string[i].replace(/[^A-Za-z0-9]/g, '') + "";
-		}
-	}
-	returnThis = returnThis + string[string.length-1].replace(/[^A-Za-z0-9]/g, '');
-	return returnThis.toString();
-}
-
-
-/**
- *Depending on precision units from Config file, incremments the date 
- */
-function incrementDate(date){
-	switch(precisionUnit){
-		case "Year":
-			date.setFullYear(date.getFullYear() + precisionInt);
-			break;
-		case "Month":
-			date.setMonth(date.getMonth() + precisionInt);
-			break;
-		case "Day":
-			date.setDate(date.getDate() + precisionInt);
-			break;
-		case "Hour":
-			date.setHours(date.getHours() + precisionInt);
-			break;
-		case "Minute":
-			date.setMinutes(date.getMinutes() + precisionInt);
-			break;
-		case "Second":
-			date.setSeconds(date.getSeconds() + precisionInt);
-			break;
-		default:
-			break;
-	}
-}
-
-
-
-/**
- *Adds data to the array and then nests that data by name </p>
- *[d3.js nest]{@link https://github.com/d3/d3-3.x-api-reference/blob/master/Arrays.md#nest}
- *
- *@param {object} data - an object containing the data
- *@param {array} array - an array containing data
- */
-function nest(data, array){
-	for(var i = 0; i < data.length; i++){
-		array.push(data[i]);
-	}
-
-	// depricated
-	// var nested = d3.group()
-	// 	.key(function(d){return d.name;})
-	// 	.entries(array);
-	
-	var group = d3.group(array, function(d){return d.name;});
-	return group;
 }

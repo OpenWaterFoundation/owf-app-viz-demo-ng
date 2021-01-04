@@ -13,6 +13,7 @@ when imported here it only styles the provider dropdown a little bit but not all
     color: #333;
     background-color: #fff;
     border-color: #ccc;
+    margin-bottom: 20px;
 }
 
 #tracerButton{
@@ -28,3 +29,83 @@ when imported here it only styles the provider dropdown a little bit but not all
     border-color: #ccc;
 
 }
+
+/* #buttons {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+} */
+#play, #pause, #replay, #back, #forward{
+    
+    border-color: #ccc;
+    margin: 3px;
+   
+
+}
+.btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+/* dialog content css */
+/* .drag-header-main {
+    background-color: #e6e6e6;
+    height: 40px;
+    margin: 0px;
+  }
+  .header-div {
+    display: inline-block;
+    height: 100%;
+    width: 80%;
+  }
+  
+  .header-title {
+    font-size: medium;
+    padding-left: 20%;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .property-content {
+    height: calc(100% - 91px);
+    padding: 0px 10px 0px 10px;
+    overflow-x: auto;
+    overflow-y: auto;
+  }
+  
+  .properties-components-group {
+    float: right;
+    height: 50px;
+  }
+  
+  .properties-components-group button {
+    margin: 5px 25px 0px 0px;
+    background-color: #c2c1c1;
+  }
+  
+
+  .upper-close-button {
+    background-color: #c2c1c1;
+    height: 100%;
+    width: 80px;
+    float: right;
+    outline: none;
+  } */

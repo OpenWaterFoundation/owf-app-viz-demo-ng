@@ -38,6 +38,13 @@ export class DialogGapminderComponent  {
   
   
     }
+    /**
+   * Closes the Mat Dialog popup when the Close button is clicked.
+   */
+    public onClose(): void {
+      this.dialogRef.close();
+      // this.windowManager.removeWindow(this.windowID);
+    }
   
     public dataLoaded = false;
     public gapminderSelected = true;
