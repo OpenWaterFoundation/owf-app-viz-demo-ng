@@ -159,7 +159,7 @@ export class NavBarComponent implements OnInit {
 
       const dialogConfig = new MatDialogConfig();
       dialogConfig.data = {
-        configPath: configPath,
+        resourcePath: configPath,
       }
         
       // Open the dialog WITHOUT any given data for right now.

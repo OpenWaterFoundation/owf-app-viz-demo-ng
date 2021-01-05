@@ -21,7 +21,7 @@ export class DialogGapminderComponent  {
             public dialogRef: MatDialogRef<DialogGapminderComponent>,
             @Inject(MAT_DIALOG_DATA) public dataObject: any) { 
             
-              this.configurationFile = dataObject.data.configPath;
+              this.configurationFile = dataObject.data.resourcePath;
         
     }
   

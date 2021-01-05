@@ -64,6 +64,11 @@ when imported here it only styles the provider dropdown a little bit but not all
     border-radius: 4px;
 }
 
+#table {
+  font-size:12px !important;
+  padding-left: 40px;
+}
+
 /* dialog content css */
 /* .drag-header-main {
     background-color: #e6e6e6;

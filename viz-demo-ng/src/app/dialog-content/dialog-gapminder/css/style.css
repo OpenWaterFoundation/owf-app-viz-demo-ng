@@ -1,8 +1,3 @@
-/*------------------------------GENERAL STYLING FOR WHOLE PAGE-----------------------------*/
-body {
-  font-size:12px !important;
-  min-width: 1025px;
-}
 
 /*---------------------------------STYLE FOR TAB ELEMENTS-----------------------------------*/
 /* adds a scroll option for data overflowing from data tab */

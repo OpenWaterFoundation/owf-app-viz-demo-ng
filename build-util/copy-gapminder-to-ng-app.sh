@@ -21,7 +21,6 @@
 # - third parameter is the destination folder for Gapminder asset files
 # '-z' string: True if the string is null (an empty string)
 copyGapminderD3Version6Files() {
-  echo "Inside copy gapminder d3 version function"
   if [ -z "${1}" ]; then
     logError "copyGapminderD3Version6Files first argument should be repo folder - check script."
     return 1
@@ -38,14 +37,8 @@ copyGapminderD3Version6Files() {
   # Set the full path to source and destination folders.
   SOURCE="${1}/viz-demo-ng/src/app/dialog-content/dialog-gapminder"
   destinationCodeFolder="${2}"
-  SRCASSETS="${SOURCE}/viz-demo-ng/src/assets/gapminder-data"
+  SRCASSETS="${1}/viz-demo-ng/src/assets/gapminder-data"
   destinationAssetsFolder="${3}"
-
-  # echo "Source: ${SOURCE}"
-  # echo "Desination code: ${destinationCodeFolder}"
-  # echo "Source Assets: ${SRCASSETS}"
-  # echo "destination Assets: ${destinationAssetsFolder}"
-
 
   # Check that the folders exist.
   if [ ! -d "${SOURCE}" ]; then
@@ -76,7 +69,7 @@ copyGapminderD3Version6Files() {
 
   # Copy files, using -v for verbose so file names are printed as copied.
   # rm -rv "$destinationCodeFolder/script-test" 
-  cp -rv "$SOURCE/test-script" $destinationCodeFolder
+  # cp -rv "$SOURCE/test-script" $destinationCodeFolder
 
   cp -rv "$SOURCE/css" $destinationCodeFolder
   cp -rv "$SOURCE/js" $destinationCodeFolder
@@ -89,41 +82,49 @@ copyGapminderD3Version6Files() {
   #INFOMAPPER GLOBAL STYLING PATH
   # TODO smalers 2020-12-21 the following needs to be relative to a starting folder.
   # - if necessary the script may need another parameter like --destinationStyle=.....
-  STYLECSS="./../owf-app-infomapper-ng/infomapper/src/styles.css"
+  STYLECSS="./../../owf-app-infomapper-ng/infomapper/src/styles.css"
 
   #GLOBAL IMPORTS 
   # TODO smalers 2020-12-21 need to explain what the following is doing.... ALL of the following.
   IMPSELECT2="@import \"../node_modules/select2/dist/css/select2.min.css\";"
   IMPGAPSTYLE="@import \"./app/map-components/dialog-content/dialog-gapminder/css/style.css\";"
   
+  # Check that the file exists.
+  if [ ! -f "${STYLECSS}" ]; then
+    logError "The source file does not exist:  ${STYLECSS}"
+    return 1
+  fi
+
   # ASK TO MODIFY GLOBALS.CSS
-  # if grep -Fxq "$IMPSELECT2" $STYLECSS
-  # then
-  #     echo "Contains"
-  # else
-      # echo "Your file does not contain the needed global imports?"
-      #    read -p "Would you like this script to modify your file? Y/N: " ANSWER
-      #   case "$ANSWER" in 
-      #       [yY] | [yY][eE][sS])  # must have the ')' at the end of case
-                  # sed stream editor, used to write to file 
-      #            sed -i "1i\ $IMPSELECT2" $STYLECSS
-      #            sed -i "1i\ $IMPGAPSTYLE" $STYLECSS
-      #            echo "File modified"
-      #           ;;     # close the case
-      #       [nN] | [nN][oO])
-      #            echo "No files modified: Manually add the following imports to your file";
-      #            echo "@import \"../node_modules/select2/dist/css/select2.min.css\";"
-      #            echo "@import \"./app/map-components/dialog-content/dialog-gapminder/css/style.css\";"
-      #           ;;
-      #       *)      # default case
-      #           echo "Please enter y/yes or n/no"
-      #           ;;
-      #   esac
-  # fi
+  if grep -Fxq "$IMPSELECT2" $STYLECSS
+  then
+      echo "Contains"
+  else
+      echo "Your file does not contain the needed global imports?"
+         read -p "Would you like this script to modify your file? Y/N: " ANSWER
+        case "$ANSWER" in 
+            [yY] | [yY][eE][sS])  # must have the ')' at the end of case
+                  sed stream editor, used to write to file 
+                 sed -i "1i\ $IMPSELECT2" $STYLECSS
+                 sed -i "1i\ $IMPGAPSTYLE" $STYLECSS
+                 echo "File modified"
+                ;;     # close the case
+            [nN] | [nN][oO])
+                 echo "No files modified: Manually add the following imports to your file";
+                 echo "@import \"../node_modules/select2/dist/css/select2.min.css\";"
+                 echo "@import \"./app/map-components/dialog-content/dialog-gapminder/css/style.css\";"
+                ;;
+            *)      # default case
+                echo "Please enter y/yes or n/no"
+                ;;
+        esac
+  fi
 
   logInfo "Remember to do the following in the Angular application:"
-  logInfo "- Add ng-d3 to the package.json"
-  logInfo "- Create a method that will pass the configuration path to gapminder() function or hardcode within TypeScript file"
+  logInfo "- Make sure the appropriate dependencies are installed via npm: D3, clusterize, select2, papaparse"
+  logInfo "- Create a method that will pass the configuration path to gapminder() function or hardcode configuration path within TypeScript file"
+  logInfo "- Adjust path for the clusterize import statement in 'dialog-gaminder.component'"
+
   return 0
 }
 
