@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 /* Reference to JS functions */
-import * as gapminderv6         from '../gapminder-js/js/gapminder-4.0.0.js';
-import * as display             from '../gapminder-js/js/gapminder-util/display-data.js';
+// import * as gapminderv6         from '../gapminder-js/js/gapminder-4.0.0.js';
+// import * as display             from '../gapminder-js/js/gapminder-util/display-data.js';
 
+// Reference to local gapminder package 
+import * as gapminderv6         from 'gapminder-package-test';
 
 
 // Define gapminder configuration: Will be set using configuration. Hard coded for now 
@@ -82,7 +84,7 @@ export class  GeneralGapminderJSComponent {
       this.gapminderSelected = false;
     }
     if(name == "Data" && !this.dataLoaded){
-      display.displayData(configurationFile);
+      gapminderv6.displayData(configurationFile);
       this.dataLoaded = true;
     }
       var i, tabcontent, tablinks;

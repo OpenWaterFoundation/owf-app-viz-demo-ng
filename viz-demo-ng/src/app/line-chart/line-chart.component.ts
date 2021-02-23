@@ -21,7 +21,7 @@ import { Papa } from 'ngx-papaparse';
   templateUrl: './../generic-content/generic-content.component.html',
   styleUrls: ['./line-chart.component.css']
 })
-export class LineChartComponent implements OnInit {
+export class ChartJsSnodasComponent implements OnInit {
   constructor(public dialog: MatDialog, private eventEmitterService: EventEmitterService, private router: Router, private route: ActivatedRoute ) {}
 
 
@@ -36,7 +36,6 @@ export class LineChartComponent implements OnInit {
   }
 
   openDialog(): void {
-    console.log("Entered openDialog Function")
     const dialogRef = this.dialog.open(SnodasChartJSDialog, {
       height: '650px',
       width: '1000px',
@@ -116,13 +115,11 @@ export class LineChartComponent implements OnInit {
                .then(function (parsedData) {
                    results = parsedData
                });
-              //  console.log("Results: ", results);
            return results
          }
          
    
          chartData = await waitForParsedData(data);
-         console.log("chartData 78: ", chartData);
   
          _this.chartType = 'line';
          _this.chartLegend = true;
@@ -144,8 +141,6 @@ export class LineChartComponent implements OnInit {
              }
              min_time = labelsArray[0]; // minimum date on the xAxis
              max_time = labelsArray[labelsArray.length - 2]; // maximum date on the xAxis
-             console.log('MinTime: ', min_time);
-             console.log('MaxTIme: ', max_time);
              _this.chartData = [ // data object for the chart
                {
                  fill: false,
@@ -165,12 +160,10 @@ export class LineChartComponent implements OnInit {
                  if(row == 0 && col != 0){
                    nameLabelsArray[col-1] = chartData['data'][row][col].substr(chartData['data'][row][col].indexOf("[")+1, 4);
                    lineData[col-1] = new Array();
-                   console.log("line data", lineData);
                  }
                  // Add each date to the labelsArray
                  else if(col == 0){
                    labelsArray[row-1] = new Date (chartData['data'][row][col]);
-                   console.log("labelsArray", labelsArray);
   
                  }
                  else if(row != 0 && col != 0){
@@ -179,7 +172,6 @@ export class LineChartComponent implements OnInit {
                    }
                    else{
                      lineData[col-1][row-1] = Number(chartData['data'][row][col]);
-                    //  console.log(lineData[3]);
    
                    }
                  }

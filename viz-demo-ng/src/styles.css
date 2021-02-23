@@ -4,7 +4,8 @@
 
 /* Styling imports for gapminder */
 @import "../node_modules/select2/dist/css/select2.min.css"; /* Gapminder Styling all the way */
-@import "./app/dialog-content/dialog-gapminder/css/style.css"; /* Gapminder Styling  all the way */
+@import "./app/dialog-content/dialog-gapminder/css/style.css"; 
+/* Gapminder Styling  all the way */
 
 
 /* body {

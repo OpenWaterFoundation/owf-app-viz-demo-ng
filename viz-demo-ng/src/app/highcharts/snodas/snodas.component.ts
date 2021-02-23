@@ -41,7 +41,6 @@ export class SnodasComponent implements OnInit {
   openDialog(DataSpecification): void {
     TypeofData = DataSpecification;
 
-    console.log("Entered openDialog Function")
     const dialogRef = this.dialog.open(HighchartsSnodasDialog, {
       height: '650px',
       width: '1000px',
@@ -82,7 +81,6 @@ export class HighchartsSnodasDialog {
   
 
   ngOnInit() {
-    console.log(this.typeOfChart);
 
     this.plotlychart(this.typeOfChart);
   }
@@ -92,7 +90,6 @@ export class HighchartsSnodasDialog {
  onClose(): void { this.dialogRef.close(); }
 
  public plotlychart(TypeOfData){
-   console.log('Inside SnodasPlotlyDialog component');
    let _this = this;
    // _this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'xl'});
    let file;
@@ -104,7 +101,6 @@ export class HighchartsSnodasDialog {
        file = 'assets/SnowpackStatisticsByBasin/SnowpackStatisticsByBasin_UpstreamTotal_'+_this.chartBasinID+'.csv';
        break;
      case 'Volume_Graph':
-       // console.log("Entered Volume Graph case");
        _this.typeOfSnodasChart = 'SWE Volume Graph';
        file = 'assets/SnowpackCSVByBasin/'+ this.chartBasinID+'-SWE-Volume.csv';
        break;
@@ -118,7 +114,6 @@ export class HighchartsSnodasDialog {
    var chartData;
    $.get(file, async function(data) {
      /* waitForParsedData waits for papaparse to parse the csv file */
-     console.log("Inside Get function, data: ", data);
      const waitForParsedData = async (file) => {
        let parsePromise = function (file) {
            return new Promise(function (complete, error) {
@@ -134,13 +129,11 @@ export class HighchartsSnodasDialog {
            .then(function (parsedData) {
                results = parsedData
            });
-          //  console.log("Results: ", results);
        return results
      }
      
 
      chartData = await waitForParsedData(data);
-     // console.log("chartData 78: ", chartData);
 
      // _this.chartType = 'line';
      // _this.chartLegend = true;
@@ -155,7 +148,6 @@ export class HighchartsSnodasDialog {
      according to what type of chart is being created */
      switch(TypeOfData){
        case 'Volume_Graph':
-         console.log("Inside Second case: ");
          yAxisLabelString = 'SWE Acre-foot'; // label for yAxis of chart
          for(let row = 0; row < chartData['data'].length - 1; row++){
            for(let col = 0; col < chartData['data'][row].length; col++){
@@ -163,7 +155,6 @@ export class HighchartsSnodasDialog {
              if(row == 0 && col != 0){
                nameLabelsArray[col-1] = chartData['data'][row][col].substr(chartData['data'][row][col].indexOf("[")+1, 4);
                lineData[col-1] = new Array();
-               // console.log("line data", lineData);
              }
              // Add each date to the labelsArray
              else if(col == 0){
@@ -192,7 +183,6 @@ export class HighchartsSnodasDialog {
                }
                else{
                  lineData[col-1][row-1] = Number(chartData['data'][row][col]);
-                //  console.log(lineData[3]);
 
                }
              }
@@ -200,19 +190,13 @@ export class HighchartsSnodasDialog {
          }
 
          let datesArrayHC= [];
-         // console.log("LineData Array: ", lineData);
-         // console.log("nameLabels Array: ", nameLabelsArray);
          datesArray.shift();
 
          datesArray.forEach(function(point){
-          //  console.log("in foreach point1: ", point);
            point = new Date(point).getTime();
-          //  console.log("point2:", point);
            datesArrayHC.push(point);
          });
 
-         console.log("DatesArray: ", datesArray);
-         console.log("DatesArrayHC: ", datesArrayHC);
 
          min_time = labelsArray[0];
          max_time = labelsArray[labelsArray.length - 1];
@@ -221,21 +205,15 @@ export class HighchartsSnodasDialog {
           let dataMerge = datesArrayHC.map(function(x, j){
             return [x, lineData[i][j]];
           });
-          console.log("DataMerge:", dataMerge);
-          console.log("LineData[i][0], ", lineData[i][0]);
            _this.chartData.push({
              name: nameLabelsArray[i], 
              data: dataMerge
-            //  x: datesArrayHC,
-            //  y: lineData[i]
         
            })
          }
          
          this.plotChartData = _this.chartData;
-         console.log("ChartData!: ", _this.chartData);
          const element = document.getElementById("chart") as HTMLDivElement;
-         console.log("Element: ", element);
      
          var layout = {
            title: 'SNODAS Volume Graph',
@@ -251,11 +229,6 @@ export class HighchartsSnodasDialog {
            }
          };
          
-         console.log("Right befor plotting plotChartData: ", this.plotChartData );
-
-        //  Plotly.plot( element, this.plotChartData, layout);
-         console.log("Chart is ploted")
-
 // _________________________________
     // Highcharts.chart('container', {})
 

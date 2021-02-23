@@ -30,14 +30,9 @@
           </div>
         </li>
         <li ngbDropdown class="nav-item dropdown">
-          <a ngbDropdownToggle class="nav-link dropdown-toggle"  id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Showdown: SC</a>
+          <a ngbDropdownToggle class="nav-link dropdown-toggle"  id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Showdown: Self Contained</a>
           <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown01">
-            <a class="dropdown-item" >Showdown in Angular: Demo file</a>
             <a class="dropdown-item"  (click)= "openShowdownDialog('assets/app-content/content-pages/showdown-demos/table-formatting.md')"> Showdown Table formatting</a>
-            <a class="dropdown-item"  (click)= "showdownImgFunction()"> Showdown Image Integration</a>
-            <a class="dropdown-item"  (click)= "showdownOptionsFunction()"> Showdown Options</a>
-            <a class="dropdown-item"  (click)= "showdownCSSFunction()" > Showdown Custom CSS</a>
-
 
             <!-- <a class="dropdown-item" href="#">Something else here</a> -->
           </div>
@@ -100,9 +95,9 @@
             >D3</a>
             <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown01">
               <!-- <a class="dropdown-item" routerLink = "D3/generic" routerLinkActive="active"> Generic D3</a> -->
-              <a class="dropdown-item" routerLink = "D3/generic-test" routerLinkActive="active" > Generic test</a>
+              <a class="dropdown-item" routerLink = "D3/generic-test" routerLinkActive="active" > Generic D3 test</a>
               <a class="dropdown-item" routerLink = "D3/gapminder" routerLinkActive="active" > Gapminder-NG dev</a>
-              <a class="dropdown-item" routerLink = "D3/gapminder-js" routerLinkActive="active" > Gapminder-JS</a>
+              <a class="dropdown-item" routerLink = "D3/gapminder-js" routerLinkActive="active" > Gapminder-JS-library</a>
               <a class="dropdown-item" (click) = "openGapminderDialog('assets/gapminder-data/viz-config.json')" > Gapminder-SC</a>
 
               <a class="nav-link disabled" href="#" style="color: gray;">Disabled</a>
@@ -111,10 +106,7 @@
           
       </ul>
 
-      <!-- <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form> -->
+   
     </div>
     
   </nav>

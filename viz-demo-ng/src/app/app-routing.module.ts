@@ -1,6 +1,6 @@
 import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LineChartComponent } from './line-chart/line-chart.component';
+import { ChartJsSnodasComponent } from './line-chart/line-chart.component';
 import { PlotlyComponent } from './plotly/plotly.component';
 import { GeneralChartjsComponent } from './line-chart/general-chartjs/general-chartjs.component';
 import { GenericContentComponent, LinksComponent, NGXShowdownComponent } from './generic-content/generic-content.component';
@@ -39,7 +39,7 @@ const routes: Routes = [
 
 
   {path: 'chartjs/generic-month-line', component: GeneralChartjsComponent},
-  {path: 'chartjs/snodas-day-line', component: LineChartComponent},
+  {path: 'chartjs/snodas-day-line', component: ChartJsSnodasComponent},
   {path: 'chartjs/tstool-month-line', component: TstoolGraphConfigComponent},
 
   

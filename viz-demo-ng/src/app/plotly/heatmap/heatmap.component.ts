@@ -29,7 +29,6 @@ export class HeatmapComponent implements OnInit {
   }
 
   openHeatmapDialog(): void {
-    console.log("Entered openDialog Function")
     const dialogRef = this.dialog.open(HeatmapDialog, {
       height: '650px',
       width: '1000px',
@@ -64,17 +63,8 @@ export class HeatmapDialog implements OnInit{
 
   basicHeatmap(){
     const element = document.getElementById("heatmap-chart") as HTMLDivElement;
-    console.log('Element: ', element);
 
-    // var data = [
-    //   {
-    //     z: [[1, null, 30, 50, 1], [20, 1, 60, 80, 30], [30, 60, 1, -10, 20]],
-    //     x: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-    //     y: ['Morning', 'Afternoon', 'Evening'],
-    //     type: 'heatmap',
-    //     hoverongaps: false
-    //   }
-    // ];
+  
     var xValues = ['A', 'B', 'C', 'D', 'E'];
 
     var yValues = ['W', 'X', 'Y', 'Z'];
@@ -163,7 +153,6 @@ export class Heatmap2Component implements OnInit {
   }
 
   openDialog(): void {
-    console.log("Entered openDialog Function")
     const dialogRef = this.dialog.open(Heatmap2Dialog, {
       height: '650px',
       width: '1000px',
@@ -198,7 +187,6 @@ export class Heatmap2Dialog implements OnInit{
     const element = document.getElementById("chart") as HTMLDivElement;
     var _this = this;
     
-    console.log('Element: ', element);
 
     $.ajaxSetup({
       async: false
@@ -230,25 +218,11 @@ export class Heatmap2Dialog implements OnInit{
           }
       }
 
-      // var colorscaleValue = [
-      //     [0, '#e60000'],
-      //     [.25, '#cc0099'],
-      //     [.5, '#990073'],
-      //     // [.6, 'green'],
-      //     // [.8, 'blue'],
-      //     [1, '#4747d1']
-      // ];
-
-      console.log("Zaxis: ", zAxis);
-      console.log("Xaxis: ", xAxis);
-      console.log("Yaxis: ", yAxis);
-
 
       let dataMerge = yAxis.map(function(x, j){
         return [x, xAxis, zAxis[j]];
       });
       
-      console.log("dataMerge, ", dataMerge);
 
       let yearData;
       
@@ -258,18 +232,14 @@ export class Heatmap2Dialog implements OnInit{
 
         yearData = new Array(366).fill(yAxis[i]);
 
-        console.log("yearData", yearData);
         // use yeardata instead of yAxis
         dataMerge2 = yearData.map(function(x, j){
           return [x, xAxis[j], zAxis[i][j]];
         });
 
-        // fulldata = fulldata.concat(dataMerge2);
         
       }
 
-      // console.log("full Data array 2000-2019: ", fulldata);
-      console.log("datamerge2: ", dataMerge2);
 
 
       var plotlyData = [

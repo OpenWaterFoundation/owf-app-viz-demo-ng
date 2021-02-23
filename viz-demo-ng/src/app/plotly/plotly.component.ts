@@ -34,7 +34,6 @@ export class PlotlyComponent implements OnInit{
   openDialog(DataSpecification): void {
     TypeofData = DataSpecification;
     
-    console.log("Entered openDialog Function")
     const dialogRef = this.dialog.open(SnodasPlotlyDialog, {
       height: '650px',
       width: '1000px',
@@ -63,7 +62,6 @@ export class SnodasPlotlyDialog implements OnInit{
   constructor(private modalService: NgbModal,private papa: Papa,
     public dialogRef: MatDialogRef<SnodasPlotlyDialog>) { }
 
-  // console.log('Inside SnodasPlotlyDialog component');
 
   public chartData;
   public plotChartData;
@@ -75,7 +73,6 @@ export class SnodasPlotlyDialog implements OnInit{
   
 
   ngOnInit() {
-    console.log(this.typeOfChart);
 
     this.plotlychart(this.typeOfChart);
   }
@@ -86,7 +83,6 @@ export class SnodasPlotlyDialog implements OnInit{
   onClose(): void { this.dialogRef.close(); }
 
   public plotlychart(TypeOfData){
-    console.log('Inside SnodasPlotlyDialog component');
     let _this = this;
     // _this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title', size: 'xl'});
     let file;
@@ -98,7 +94,6 @@ export class SnodasPlotlyDialog implements OnInit{
         file = 'assets/SnowpackStatisticsByBasin/SnowpackStatisticsByBasin_UpstreamTotal_'+_this.chartBasinID+'.csv';
         break;
       case 'Volume_Graph':
-        // console.log("Entered Volume Graph case");
         _this.typeOfSnodasChart = 'SWE Volume Graph';
         file = 'assets/SnowpackCSVByBasin/'+ this.chartBasinID+'-SWE-Volume.csv';
         break;
@@ -112,7 +107,6 @@ export class SnodasPlotlyDialog implements OnInit{
     var chartData;
     $.get(file, async function(data) {
       /* waitForParsedData waits for papaparse to parse the csv file */
-      // console.log("Inside Get function");
       const waitForParsedData = async (file) => {
         let parsePromise = function (file) {
             return new Promise(function (complete, error) {
@@ -128,13 +122,11 @@ export class SnodasPlotlyDialog implements OnInit{
             .then(function (parsedData) {
                 results = parsedData
             });
-           //  console.log("Results: ", results);
         return results
       }
       
 
       chartData = await waitForParsedData(data);
-      console.log("chartData 137: ", chartData);
 
       // _this.chartType = 'line';
       // _this.chartLegend = true;
@@ -149,7 +141,6 @@ export class SnodasPlotlyDialog implements OnInit{
       according to what type of chart is being created */
       switch(TypeOfData){
         case 'Volume_Graph':
-          console.log("Inside Second case: ");
           yAxisLabelString = 'SWE Acre-foot'; // label for yAxis of chart
           for(let row = 0; row < chartData['data'].length - 1; row++){
             for(let col = 0; col < chartData['data'][row].length; col++){
@@ -157,7 +148,6 @@ export class SnodasPlotlyDialog implements OnInit{
               if(row == 0 && col != 0){
                 nameLabelsArray[col-1] = chartData['data'][row][col].substr(chartData['data'][row][col].indexOf("[")+1, 4);
                 lineData[col-1] = new Array();
-                // console.log("line data", lineData);
               }
               // Add each date to the labelsArray
               else if(col == 0){
@@ -186,15 +176,11 @@ export class SnodasPlotlyDialog implements OnInit{
                 }
                 else{
                   lineData[col-1][row-1] = Number(chartData['data'][row][col]);
-                 //  console.log(lineData[3]);
 
                 }
               }
             }
           }
-          console.log("LineData Array: ", lineData);
-          // console.log("nameLabels Array: ", nameLabelsArray);
-          console.log("DatesArray: ", datesArray);
           min_time = labelsArray[0];
           max_time = labelsArray[labelsArray.length - 1];
           _this.chartData = [];
@@ -209,9 +195,7 @@ export class SnodasPlotlyDialog implements OnInit{
             })
           }
           this.plotChartData = _this.chartData;
-          console.log("ChartData: ", _this.chartData);
           const element = document.getElementById("chart") as HTMLDivElement;
-          console.log("Element: ", element);
       
           var layout = {
             title: 'SNODAS Volume Graph',
@@ -227,10 +211,8 @@ export class SnodasPlotlyDialog implements OnInit{
             }
           };
           
-          console.log("Right befor plotting plotChartData: ", this.plotChartData );
 
           Plotly.plot( element, this.plotChartData, layout);
-          console.log("Chart is ploted")
           break;
           
       }

@@ -110,7 +110,6 @@ export class TstoolConfigComponent implements OnInit {
              * @param featureProperties 
              */
   obtainPropertiesFromLine(key: any, value: string, featureProperties: Object): string {
-    // console.log( "Inside ObtainPropertiesFromLine function");
       var propertyString = '';
       var valueLength = 0;
       var formattedValue = '';
@@ -223,7 +222,6 @@ export class TstoolConfigComponent implements OnInit {
       }
   
       graphTemplateObject = this.replaceProperties(graphTemplateObject, featureProperties);
-      console.log("Graph tem obj" , graphTemplateObject);
 
       var dialog = this.dialog;
                                                               
@@ -241,29 +239,9 @@ export class TstoolConfigComponent implements OnInit {
         }
       } else console.error('The TSID has not been set in the graph template file');
       
-      console.log("graphTemplate object", graphTemplateObject);
 
       globalGraphtemplateObject = graphTemplateObject;
-    // showGraph(dialog, graphTemplateObject, graphFilePath, TSID_Location);
     
-    // /**
-    //   * Creates the Dialog object to show the graph in and passes the info needed for it.
-    //   * @param dialog The dialog object needed to create the Dialog popup
-    //   * @param graphTemplateObject The template config object of the current graph being shown
-    //   * @param graphFilePath The file path to the current graph that needs to be read
-    //   */
-    //   function showGraph(dialog: any, graphTemplateObject: any, graphFilePath: string, TSID_Location: string): void {
-    //   //  console.log("Inside showGraph function:")
-    //     // Create and use a MatDialogConfig object to pass the data we need for the graph that will be shown
-    //     const dialogConfig = new MatDialogConfig();
-    //     dialogConfig.data = {
-    //       graphTemplate: graphTemplateObject,
-    //       graphFilePath: graphFilePath,
-    //       TSID_Location: TSID_Location
-    //     }
-    //   const dialogRef = dialog.open(DialogContent, dialogConfig);
-    //     // console.log("Open Dialog call");
-    //   }
 
     this.openDialog();
       });
@@ -271,7 +249,6 @@ export class TstoolConfigComponent implements OnInit {
   }
   
   openDialog(){
-    console.log("GLOBAL in open dialog graphTemplate object", globalGraphtemplateObject);
     this.showGraph(this.dialog, globalGraphtemplateObject, graphFilePath, TSID_Location);
   }
   
@@ -283,7 +260,6 @@ export class TstoolConfigComponent implements OnInit {
     * @param graphFilePath The file path to the current graph that needs to be read
     */
     showGraph(dialog: any, graphTemplateObject: any, graphFilePath: string, TSID_Location: string): void {
-    //  console.log("Inside showGraph function:")
       // Create and use a MatDialogConfig object to pass the data we need for the graph that will be shown
       const dialogConfig = new MatDialogConfig();
       dialogConfig.data = {
@@ -306,7 +282,6 @@ export class TstoolConfigComponent implements OnInit {
     }));
 
 
-      // console.log("Open Dialog call");
     }
 
 
@@ -703,25 +678,21 @@ export class TstoolConfigComponent implements OnInit {
     }
     
     private createPlotlyGraph(config: PopulateGraph[],  CSV:boolean): void {
-      console.log("Entered create plotly function");
 
       var finalData: {x: number[], y: number[], type: string}[] = [];
       var data: any;
       var mainGraphLabels = this.createChartMainGraphLabels(config);
       var colorwayArray: string[] = [];
-      console.log("config::", config);
       var hcFinalData = [];
       for (let i = 0; i < config.length; i++) {
         var datesDataX = CSV ? config[i].dataLabels : config[i].plotly_xAxisLabels;
         var dataY = CSV ? config[i].datasetData : config[i].plotlyDatasetData;
         
         
-        console.log("!!!!!!!!!!datesDatax: ", datesDataX);
         let dataMerge = datesDataX.map(function(x, j){
           return [x, dataY[j]];
         });
 
-        console.log("!!!!!!!!dataMerge: ", dataMerge);
         
         hcFinalData.push({
           name:config[i].legendLabel,
@@ -740,7 +711,6 @@ export class TstoolConfigComponent implements OnInit {
           size: 4
         };
         data.mode = this.setPlotlyGraphMode(config[i].chartType);
-        console.log("data.mode", data.mode);
         data.type =  this.setPlotlyGraphType(config[i].chartType);
         // data.x = mainGraphLabels;
         // data.y = config[i].plotlyDatasetData;
@@ -782,12 +752,6 @@ export class TstoolConfigComponent implements OnInit {
       };
       
       const element = document.getElementById("plotlyDiv") as HTMLDivElement;
-      console.log("ELEMENT", element);
-      // setTimeout(() =>{
-      //   Plotly.react(element, finalData, layout, plotlyConfig);
-
-      // })
-      console.log("!!FinalData!!: ", finalData);
 
       Plotly.react(element, finalData, layout, plotlyConfig);
 
@@ -796,14 +760,12 @@ export class TstoolConfigComponent implements OnInit {
 
     private createHighchartsGraph(config: PopulateGraph[],  CSV:boolean): void {
 
-      console.log("Entered create HIGHCHARTS function");
 
       var finalData: {x: number[], y: number[], type: string}[] = [];
       var data: any;
       var mainGraphLabels = this.createChartMainGraphLabels(config);
      
       var colorwayArray: string[] = [];
-      console.log("config::", config);
       var hcFinalData = [];
 
       var traceStyle = new Object();
@@ -812,53 +774,24 @@ export class TstoolConfigComponent implements OnInit {
       for (let i = 0; i < config.length; i++) {
 
 
-        console.log("Chart type: ", config[i].chartType);
         hcChartType = config[i].chartType;
 
-        // if (hcChartType= 'line'){
-        //   traceStyle  = {   
-        //     series: {
-        //         connectNulls: true,
-        //         // type: 'line',
-        //         marker: {
-        //           enabled: false
-        //         }
-        //         // lineWidth: 0
-        //     }
-        
-        //   }
-        // }
-        // if (hcChartType === "point"){
-        //   traceStyle  = {   
-        //     series: {
-        //         // connectNulls: true,
-        //         // marker: {
-        //         //   enabled: false
-        //         // }
-        //         lineWidth: 0
-        //     }
-        
-        //   }
-        // }
+
 
         var dataX = CSV ? config[i].dataLabels : config[i].plotly_xAxisLabels;
         var dataY = CSV ? config[i].datasetData : config[i].plotlyDatasetData;
 
-        console.log("dataX" , dataX);
 
-        console.log("dataY" , dataY);
 
         let dataMerge = dataX.map(function(x, j){
           return [x, dataY[j]];
         });
 
-        console.log("DataMerge,", dataMerge);
           let connect;
           let markers;
           let lineWidth;
 
          if (hcChartType== 'line'){
-          console.log("inside line case");
 
            connect = true;
            markers = false;
@@ -866,21 +799,17 @@ export class TstoolConfigComponent implements OnInit {
          
         }
         else if (hcChartType == "point"){
-          console.log("inside point case");
           connect = false;
           markers = true;
           lineWidth = 0;
 
-          console.log( "Point connect", connect, "Poing markers", markers);
 
   
         
         }
 
-        console.log("connect: ", connect, "Markers: ", markers);
 
 
-        console.log('hcFinal data dif types:', hcFinalData);
         hcFinalData.push({
           name:config[i].legendLabel,
           data: dataMerge,
@@ -892,26 +821,7 @@ export class TstoolConfigComponent implements OnInit {
 
         });
 
-        // line
-        // traceStyle  = {   
-        //   series: {
-        //       connectNulls: true,
-        //       marker: {
-        //         enabled: false
-        //       }
-        //       // lineWidth: 0
-        //   }
-      
-        // }
-
-        // point
-        // traceStyle  = {   
-        //   series: {
-             
-        //       lineWidth: 0
-        //   }
-      
-        // }
+  
 
         colorwayArray.push(config[i].datasetBackgroundColor);
         finalData.push(data);
@@ -1076,18 +986,7 @@ export class TstoolConfigComponent implements OnInit {
         
       }
 
-      // this.setChartTemplateObject(this.graphTemplateObject);
-      // this.setGraphFilePath(this.graphFilePath);
-      // this.setTSIDLocation(this.TSID_Location);
-      
-      // // Set the mainTitleString to be used by the map template file to display as the TSID location (for now)
-      // this.mainTitleString = this.templateGraph.graphTemplate['product']['properties'].MainTitleString;
-  
-      // //didnt need this originally
-      // // if (this.graphFilePath.includes('.csv'))
-      // //   this.parseCSVFile();
-      // // else if (this.graphFilePath.includes('.stm'))
-      //   this.parseStateModFile();
+
     }
   
   
@@ -1113,7 +1012,6 @@ export class TstoolConfigComponent implements OnInit {
     }
 
     private buildMultTables(results: any): void {
-      console.log("Inside buildMultTables function");
       var chartConfig: Object = this.graphTemplateObject;
       var configArray: PopulateGraph[] = [];
       var templateYAxisTitle: string;
@@ -1123,7 +1021,6 @@ export class TstoolConfigComponent implements OnInit {
       for (let rIndex = 0; rIndex < results.length; rIndex++) {
         
         element = element + rIndex;
-        console.log("element in loop: ", element);
 
         // These two are the string representing the keys in the current result.
         // They will be used to populate the x- and y-axis arrays
@@ -1170,7 +1067,6 @@ export class TstoolConfigComponent implements OnInit {
         element = "plotlyTableDiv";
     
       }   
-        //  element = "plotlyTableDiv";
 
     }
 
@@ -1195,16 +1091,12 @@ export class TstoolConfigComponent implements OnInit {
             // Depending on whether it's a full TSID used in the graph template file, determine what the file path of the StateMod
             // file is. (TSIDLocation~/path/to/filename.stm OR TSIDLocation~StateMod~/path/to/filename.stm)
 
-            // console.log("TSIDLocation", TSIDLocation);
-            // console.log("data.properties.TSID.split('~')", data.properties.TSID.split('~'));
-            // console.log("data.properties.TSID.split('~').length", data.properties.TSID.split('~').length);
-
+           
             if (data.properties.TSID.split('~').length === 2) {
               filePath = data.properties.TSID.split('~')[1];
             } 
             else if (data.properties.TSID.split('~').length === 3) {
               filePath = data.properties.TSID.split('~')[2];
-              console.log("filepath: ", filePath)
              
   
               Papa.parse(this.buildPath('csvPath', [filePath]),
@@ -1219,10 +1111,8 @@ export class TstoolConfigComponent implements OnInit {
           
                   allResults.push(result);
                   // this.populateTableData(result.data);
-                  // console.log("result.data: " ,result.data);
                   if (allResults.length === dataArray.length) {
-                    console.log("allresults length before passing to create csv config: ", allResults.length);
-                    console.log("about to call build all tables functions");
+           
                     this.buildMultTables(allResults);
                   }
                   
@@ -1233,115 +1123,9 @@ export class TstoolConfigComponent implements OnInit {
           }
       }
       
-      // console.log("allresults array length: ", allResults.length);
-
-     
-      // var values = [x_axisLabels, y_axisData];
-
-   
-  
-      // var data = [{
-      //   type: 'table',
-      //   header: {
-      //     values: [["<b>Year</b>"], ["<b>Population</b>"]],
-      //     align: "center",
-      //     line: {width: 1, color: 'black'},
-      //     fill: {color: "grey"},
-      //     font: {family: "Arial", size: 12, color: "white"}
-      //   },
-      //   cells: {
-      //     values: values,
-      //     align: "center",
-      //     line: {color: "black", width: 1},
-      //     font: {family: "Arial", size: 11, color: ["black"]}
-      //   }
-      // }]
-      
-      // Plotly.newPlot('plotlyTableDiv1', data);
-  
   
     }
-    /**
-   * Calls Papa Parse to asynchronously read in a CSV file.
-   */
-  // parseCSVFile(): void {
-  //   console.log("inside Parse CSV function");
-
-  //   var templateObject = this.getChartTemplateObject();
-  //   console.log("teplateobject in parseCSV:", templateObject);
-
-  //   console.log("getGraphFilePath", this.getGraphFilePath());
-  //   console.log("templateObject data length: ", templateObject['product']['subProducts'][0]['data'].length);
-  //   if (templateObject['product']['subProducts'][0]['data'].length === 1){
-  //     Papa.parse(this.buildPath('csvPath', [this.getGraphFilePath()]),
-  //     {
-  //       delimiter: ",",
-  //       download: true,
-  //       comments: "#",
-  //       skipEmptyLines: true,
-  //       header: true,
-  //       complete: (result: any, file: any) => {
-  //         // this.createCSVConfig(result.data);
-  //       }
-  //     });
-
-  //   }
-
-  //   else if (templateObject['product']['subProducts'][0]['data'].length > 1) {
-  //     console.log("MORE THAN ONE TRACE");
-  //     console.log("buildPath: ", this.buildPath);
-      
-  //       // Create an array to hold our Observables of each file read
-  //       var dataArray: any[] = [];
-  //       var dataArray2: any[] = [];
-  //       var filePath: string;
-  //       var TSIDLocation: string;
-  //       for (let data of templateObject['product']['subProducts'][0]['data']) { 
-  //         // Obtain the TSID location for the readTimeSeries method
-  //         TSIDLocation = data.properties.TSID.split('~')[0];
-  //         // Depending on whether it's a full TSID used in the graph template file, determine what the file path of the StateMod
-  //         // file is. (TSIDLocation~/path/to/filename.stm OR TSIDLocation~StateMod~/path/to/filename.stm)
-          
-  //         // console.log("TSIDLocation", TSIDLocation);
-  //         // console.log("data.properties.TSID.split('~')", data.properties.TSID.split('~'));
-
-  //         // console.log("data.properties.TSID.split('~').length", data.properties.TSID.split('~').length);
-
-
-  //         if (data.properties.TSID.split('~').length === 2) {
-  //           filePath = data.properties.TSID.split('~')[1];
-  //         } else if (data.properties.TSID.split('~').length === 3) {
-  //           filePath = data.properties.TSID.split('~')[2];
-  //           // console.log("filepath: ", filePath)
-
-  //           Papa.parse(this.buildPath('csvPath', [filePath]),
-  //           {
-  //             delimiter: ",",
-  //             download: true,
-  //             comments: "#",
-  //             skipEmptyLines: true,
-  //             header: true,
-  //             complete: (result: any, file: any) => {
-  //               // this.createCSVConfig(result.data);
-  //               console.log("result.data: " ,result.data);
-  //               dataArray = result.data;
-  //               dataArray2.push(result.data);
-                
-  //               // console.log(" the dataArray: ", dataArray)
-  //             }
-  //           });    
-  //         }
-         
-  //       }
-        
-  //   }
-  //     console.log("DataArray2:", dataArray2);
-  //     // console.log("DataArray2 [].length:", dataArray2[0].length);
-
-  //     this.createCSVConfig(dataArray2);
-    
-  // }
-
+  
   parseCSVFile(): void {
 
     var templateObject: Object = this.getChartTemplateObject();
@@ -1371,10 +1155,8 @@ export class TstoolConfigComponent implements OnInit {
         header: true,
         complete: (result: any, file: any) => {
           allResults.push(result);
-            console.log("allresults length should be at most 2: ", allResults.length, "dataArray length: ", dataArray.length);
           
           if (allResults.length === dataArray.length) {
-            console.log("allresults length before passing to create csv config: ", allResults.length);
             this.createCSVConfig(allResults);
             this.buildMultTables(allResults);
           }
@@ -1433,21 +1215,7 @@ export class TstoolConfigComponent implements OnInit {
       case 'classificationPath':
         if (path.startsWith('/')) {
           return path.substring(1);
-      //   } else {
-      //     return this.getMapConfigPath() + path;
-      //   }
-      // case 'builtinSymbolImage':
-      //   if (path.startsWith('/')) {
-      //     return 'assets/app-default/' + path.substring(1);
-      //   } else {
-      //     return 'assets/app-default/' + path;
-      //   }
-      // case 'rasterPath':
-      // case 'symbolImage':
-      //   if (path.startsWith('/')) {
-      //     return path.substring(1);
-      //   } else {
-          // return path;
+
         }
     }
     
@@ -1523,7 +1291,6 @@ export class TstoolConfigComponent implements OnInit {
       this.createChartJSGraph(configArray);
     } else {
       if (this.chartPackage.toUpperCase() === 'PLOTLY') {
-        console.log("Plotly condition");
         this.createPlotlyGraph(configArray, true);
       }
       if (this.chartPackage.toUpperCase() === 'HIGHCHARTS') {
@@ -1595,7 +1362,6 @@ export class TstoolConfigComponent implements OnInit {
           true));
         }
 
-        console.log("dataArray", dataArray)
         // Now that the array has all the Observables needed, forkJoin and subscribe to them all. Their results will now be
         // returned as an Array with each index corresponding to the order in which they were pushed onto the array.
         forkJoin(dataArray).subscribe((resultsArray: any) => {
