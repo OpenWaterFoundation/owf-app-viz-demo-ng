@@ -37,7 +37,7 @@
     "clusterize.js": "^0.18.1",
     "d3": "^6.1.1",
     "font-awesome": "^4.7.0",
-    "highcharts": "^8.1.2",
+    "highcharts": "^9.0.0",
     "highcharts-angular": "^2.7.0",
     "i": "^0.3.6",
     "jquery": "^3.5.1",
